@@ -239,7 +239,12 @@ function App() {
     );
   }
 
-  const current = filteredQuestions[index];
+  if (!filteredQuestions.length) {
+  return <div style={{ padding: 20 }}>Loading questions or no matching filters...</div>;
+}
+
+const current = filteredQuestions[index];
+
 
   return (
     <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '30px', fontFamily: 'Segoe UI, sans-serif' }}>
