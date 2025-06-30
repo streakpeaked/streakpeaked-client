@@ -3,12 +3,14 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCE92Z7kCr0DCS9ZgWWbfycOeu0AbRGR6E",
+  apiKey: "AIzaSyB4B05pFDNjzNk7isUPR9z6OVQzhkJypjg",
   authDomain: "streakpeaked-auth.firebaseapp.com",
+  databaseURL: "https://streakpeaked-auth-default-rtdb.firebaseio.com",
   projectId: "streakpeaked-auth",
-  storageBucket: "streakpeaked-auth.appspot.com",
-  messagingSenderId: "583097727179",
-  appId: "1:583097727179:web:f5b1674fbb64087bcf347d"
+  storageBucket: "streakpeaked-auth.firebasestorage.app",
+  messagingSenderId: "253188628591",
+  appId: "1:253188628591:web:cf7965b311a86177d46d9a",
+  measurementId: "G-NSZB6E7LF2"
 };
 
 const app = initializeApp(firebaseConfig);
