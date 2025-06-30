@@ -31,22 +31,19 @@ function App() {
   const [selected, setSelected] = useState(null);
   const [startTime, setStartTime] = useState(Date.now());
   const [timeSpent, setTimeSpent] = useState([]);
-  const [bgColor, setBgColor] = useState('#ADD8E6');
+  const [bgColor, setBgColor] = useState('#f0f8ff');
   const [seconds, setSeconds] = useState(0);
   const [difficultyFilter, setDifficultyFilter] = useState("All");
   const [sectionFilter, setSectionFilter] = useState("All");
   const [testComplete, setTestComplete] = useState(false);
   const [user, setUser] = useState(null);
-  const [gptFeedback, setGptFeedback] = useState("");
-  const [showGPTChat, setShowGPTChat] = useState(false);
-  const [chatInput, setChatInput] = useState("");
-  const [chatResponse, setChatResponse] = useState("");
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     const fetchQuestions = async () => {
       const snapshot = await getDocs(collection(db, "questions"));
       let qList = snapshot.docs.map(doc => doc.data()).filter(q => !q.image);
-      qList = qList.sort(() => Math.random() - 0.5);  
+      qList = qList.sort(() => Math.random() - 0.5);
       setQuestions(qList);
     };
     fetchQuestions();
@@ -66,29 +63,23 @@ function App() {
   }, [questions, difficultyFilter, sectionFilter]);
 
   useEffect(() => {
-    if (testComplete) {
-      playStreakMusic();
-      if (user) getGPTFeedback().then(setGptFeedback);
-    }
-  }, [testComplete]);
-
-  useEffect(() => {
+    if (testComplete) playStreakMusic();
     return () => stopStreakMusic();
-  }, []);
+  }, [testComplete]);
 
   useEffect(() => {
     if (testComplete) return;
     const timer = setInterval(() => {
       const sec = Math.floor((Date.now() - startTime) / 1000);
       setSeconds(sec);
-      if (sec < 10) setBgColor('#ADD8E6');
-      else if (sec < 20) setBgColor('#1E90FF');
-      else if (sec < 30) setBgColor('#B0B0B0');
-      else if (sec < 40) setBgColor('#FFA500');
-      else if (sec < 50) setBgColor('#FF0000');
+      if (sec < 10) setBgColor('#f0f8ff');
+      else if (sec < 20) setBgColor('#dbeafe');
+      else if (sec < 30) setBgColor('#e5e7eb');
+      else if (sec < 40) setBgColor('#fcd34d');
+      else if (sec < 50) setBgColor('#f87171');
       else {
         const blink = sec % 2 === 0;
-        setBgColor(blink ? '#FF0000' : '#000');
+        setBgColor(blink ? '#ef4444' : '#000');
         if (sec === 51) speak("You may wanna skip this question");
         if (sec === 56) speak("It's eating your time");
       }
@@ -109,21 +100,17 @@ function App() {
 
   const handleOption = (opt) => {
     if (testComplete) return;
-
     setSelected(opt);
     const endTime = Date.now();
     const duration = Math.floor((endTime - startTime) / 1000);
-
     const correct = opt === filteredQuestions[index].answer;
     if (correct) setScore(prev => prev + 1);
-
     setTimeSpent(prev => [...prev, {
       section: filteredQuestions[index].section,
       level: filteredQuestions[index].level,
       time: duration,
       correct
     }]);
-
     setTimeout(() => {
       setSelected(null);
       if (!correct || index + 1 >= filteredQuestions.length) {
@@ -136,103 +123,21 @@ function App() {
     }, 1000);
   };
 
-  const getMatrix = () => {
-    const matrix = {};
-    timeSpent.forEach(item => {
-      const band = item.time < 10 ? '0-10s' : item.time < 20 ? '10-20s' : '20s+';
-      const key = `${item.section}_${item.level}_${band}`;
-      matrix[key] = (matrix[key] || 0) + 1;
-    });
-    return matrix;
-  };
-
-  const getFeedback = () => {
-    const correctBySection = {};
-    timeSpent.forEach(item => {
-      if (item.correct) {
-        correctBySection[item.section] = (correctBySection[item.section] || 0) + 1;
-      }
-    });
-
-    const strong = Object.entries(correctBySection).filter(([sec, val]) => val >= 10);
-    const weak = Object.entries(correctBySection).filter(([sec, val]) => val < 3);
-
-    const strongMsg = strong.length > 0 ? `You did well in ${strong.map(s => s[0]).join(", ")} by answering more than 10 correctly.` : "";
-    const weakMsg = weak.length > 0 ? `You need to improve in ${weak.map(s => s[0]).join(", ")} where less than 3 were correct.` : "";
-
-    return `${strongMsg} ${weakMsg} Total score: ${score}/${timeSpent.length}`;
-  };
-
   const restartTest = () => {
-  stopStreakMusic();
-  setIndex(0);
-  setScore(0);
-  setTimeSpent([]);
-  setTestComplete(false);
-  setStartTime(Date.now());
-  setSeconds(0);
-  setGptFeedback("");
-  setChatInput("");
-  setChatResponse("");
-  setShowGPTChat(false);
-
-  // 🔀 Shuffle again and re-filter
-  const shuffled = [...questions].sort(() => Math.random() - 0.5);
-  const result = shuffled.filter(q => {
-    const matchSection = sectionFilter === "All" || q.section === sectionFilter;
-    const matchDifficulty = difficultyFilter === "All" || q.level === difficultyFilter;
-    return matchSection && matchDifficulty;
-  });
-  setFilteredQuestions(result);
-};
-
-const getGPTFeedback = async () => {
-  const matrix = getMatrix();
-  const prompt = `Based on this SSC CGL test performance matrix:\n${JSON.stringify(matrix, null, 2)}\n\nGive a 2-line summary of strengths and weaknesses.`;
-
-  try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: prompt }]
-      })
+    stopStreakMusic();
+    setIndex(0);
+    setScore(0);
+    setTimeSpent([]);
+    setTestComplete(false);
+    setStartTime(Date.now());
+    setSeconds(0);
+    const shuffled = [...questions].sort(() => Math.random() - 0.5);
+    const result = shuffled.filter(q => {
+      const matchSection = sectionFilter === "All" || q.section === sectionFilter;
+      const matchDifficulty = difficultyFilter === "All" || q.level === difficultyFilter;
+      return matchSection && matchDifficulty;
     });
-
-    const data = await response.json();
-    console.log("GPT raw response:", data);  // 👈 This line shows full output
-    return data.choices?.[0]?.message?.content || "No feedback available.";
-  } catch (err) {
-    console.error("GPT error:", err);
-    return "No feedback available.";
-  }
-};
-
-
-  const handleGPTChat = async () => {
-    const fullPrompt = `User just scored ${score}/${timeSpent.length} in SSC CGL test. ${getFeedback()}\nThey asked: ${chatInput}`;
-    try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: fullPrompt }]
-        })
-      });
-      const data = await response.json();
-      setChatResponse(data.choices?.[0]?.message?.content || "GPT didn't respond.");
-    } catch (err) {
-      console.error("ChatGPT error:", err);
-      setChatResponse("Error contacting GPT.");
-    }
+    setFilteredQuestions(result);
   };
 
   if (filteredQuestions.length === 0) {
@@ -241,50 +146,26 @@ const getGPTFeedback = async () => {
 
   if (testComplete) {
     return (
-      <div style={{ backgroundColor: '#111', color: 'white', minHeight: '100vh', padding: '40px' }}>
-        <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: '#222', padding: '30px', borderRadius: '12px' }}>
-          <h2>Test Complete</h2>
-          <p>Streak Score: {score}</p>
-          <p>Total Questions Attempted: {timeSpent.length}</p>
-          <p>Overall Score: {score}/{timeSpent.length}</p>
-          <h4>Feedback:</h4>
-          <p>{getFeedback()}</p>
-          <h4>Score Matrix:</h4>
-          <pre>{JSON.stringify(getMatrix(), null, 2)}</pre>
-
-          {user && (
-            <>
-              <h4>Personalized Insights:</h4>
-              <p>{gptFeedback}</p>
-              {!showGPTChat && (
-                <button onClick={() => setShowGPTChat(true)}>
-                  Want to further discuss the results and your areas of improvement? Click here
-                </button>
-              )}
-              {showGPTChat && (
-                <div style={{ marginTop: 20 }}>
-                  <input
-                    type="text"
-                    placeholder="Ask ChatGPT about your performance..."
-                    value={chatInput}
-                    onChange={(e) => setChatInput(e.target.value)}
-                    style={{ width: '100%', padding: '8px' }}
-                  />
-                  <button onClick={handleGPTChat} style={{ marginTop: '10px' }}>Ask GPT</button>
-                  <p style={{ marginTop: '10px' }}>{chatResponse}</p>
-                </div>
-              )}
-            </>
-          )}
-
-          <div style={{ marginTop: 20 }}>
-            <button onClick={restartTest}>Restart Test</button>
+      <div style={{ backgroundColor: '#f9fafb', minHeight: '100vh', padding: '30px', fontFamily: 'Segoe UI, sans-serif' }}>
+        <div style={{ maxWidth: '800px', margin: 'auto', backgroundColor: 'white', borderRadius: '12px', padding: '40px', boxShadow: '0 0 15px rgba(0,0,0,0.1)' }}>
+          <h1 style={{ fontSize: '32px', marginBottom: '20px', color: '#1e3a8a' }}>🎓 Test Summary</h1>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', marginBottom: '20px' }}>
+            <div><strong>Streak Score:</strong> {score}</div>
+            <div><strong>Questions Attempted:</strong> {timeSpent.length}</div>
+            <div><strong>Accuracy:</strong> {((score / timeSpent.length) * 100).toFixed(1)}%</div>
           </div>
-          {!user && (
-            <p style={{ marginTop: 10, fontSize: '14px' }}>
-              Want to chat with other users or save your performance? <button onClick={signInWithGoogle}>Login with Google</button>
-            </p>
-          )}
+          <hr style={{ margin: '20px 0' }} />
+          <div>
+            <h3 style={{ color: '#2563eb' }}>📊 Score Matrix</h3>
+            <pre style={{ backgroundColor: '#f3f4f6', padding: '10px', borderRadius: '8px' }}>{JSON.stringify(getMatrix(), null, 2)}</pre>
+          </div>
+          <div style={{ marginTop: '20px' }}>
+            <h3 style={{ color: '#2563eb' }}>💡 Feedback</h3>
+            <p>{`You're doing well! Keep practicing and improve time across all sections.`}</p>
+          </div>
+          <div style={{ textAlign: 'center', marginTop: '30px' }}>
+            <button onClick={restartTest} style={{ backgroundColor: '#10b981', color: 'white', padding: '12px 24px', fontSize: '16px', borderRadius: '8px', cursor: 'pointer', transition: 'all 0.3s ease' }}>🔁 Retake Test</button>
+          </div>
         </div>
       </div>
     );
@@ -293,59 +174,79 @@ const getGPTFeedback = async () => {
   const current = filteredQuestions[index];
 
   return (
-    <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '40px' }}>
-      <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: 'white', color: '#000', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.2)' }}>
-        <h1>Timer: {seconds}s</h1>
+    <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '30px', fontFamily: 'Segoe UI, sans-serif' }}>
+      <header style={{ textAlign: 'center', marginBottom: '30px' }}>
+        <img src="/logo.png" alt="Logo" style={{ height: '60px', marginBottom: '10px' }} />
+        <h1 style={{ fontSize: '28px', color: '#1e3a8a' }}>StreakPeaked SSC CGL Practice</h1>
+      </header>
 
-        <div style={{ marginTop: 20, marginBottom: 20 }}>
-          <label>
-            Difficulty:
-            <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
-              <option value="All">All</option>
-              <option value="Easy">Easy</option>
-              <option value="Medium">Medium</option>
-              <option value="Hard">Hard</option>
-            </select>
-          </label>
+      <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
+        <div style={{ flex: 1, maxWidth: '700px', backgroundColor: '#ffffff', color: '#000', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.1)' }}>
+          <h2 style={{ fontSize: '22px', marginBottom: '10px' }}>{current.section} ({current.level})</h2>
+          <p style={{ fontSize: '18px' }}>{current.question}</p>
 
-          <label style={{ marginLeft: 20 }}>
-            Section:
-            <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)}>
-              <option value="All">All</option>
-              <option value="Maths">Maths</option>
-              <option value="GK">GK</option>
-              <option value="Reasoning">Reasoning</option>
-              <option value="English">English</option>
-            </select>
-          </label>
+          <div style={{ marginBottom: 20, marginTop: 20 }}>
+            <label>
+              Difficulty:
+              <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
+                <option value="All">All</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </label>
+            <label style={{ marginLeft: 20 }}>
+              Section:
+              <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)}>
+                <option value="All">All</option>
+                <option value="Maths">Maths</option>
+                <option value="GK">GK</option>
+                <option value="Reasoning">Reasoning</option>
+                <option value="English">English</option>
+              </select>
+            </label>
+          </div>
+
+          {current.options.map((opt, idx) => (
+            <button
+              key={idx}
+              onClick={() => handleOption(opt)}
+              style={{
+                margin: '10px 10px 0 0',
+                padding: '10px 16px',
+                backgroundColor: selected === opt ? (opt === current.answer ? '#16a34a' : '#dc2626') : '#3b82f6',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                transition: 'background-color 0.3s ease'
+              }}
+            >
+              {opt}
+            </button>
+          ))}
+
+          {!user && (
+            <p style={{ marginTop: 30, fontSize: '14px' }}>
+              Want to chat with others and save your history? <button onClick={signInWithGoogle}>Login with Google</button>
+            </p>
+          )}
         </div>
 
-        <h2>{current.section} ({current.level})</h2>
-        <p>{current.question}</p>
-        {current.options.map((opt, idx) => (
-          <button
-            key={idx}
-            onClick={() => handleOption(opt)}
-            style={{
-              margin: 10,
-              padding: 10,
-              backgroundColor: selected === opt ? (opt === current.answer ? 'green' : 'red') : 'gray',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              minWidth: '60px'
-            }}
-          >
-            {opt}
-          </button>
-        ))}
-        {!user && (
-          <p style={{ marginTop: 30, fontSize: '14px' }}>
-            Want to chat with others and save your history? <button onClick={signInWithGoogle}>Login with Google</button>
-          </p>
+        {user && showChat && (
+          <div style={{ width: '300px', backgroundColor: '#f3f4f6', borderRadius: '12px', padding: '20px', boxShadow: '0 0 8px rgba(0,0,0,0.1)' }}>
+            <ChatSidebar user={user} />
+          </div>
         )}
       </div>
-      {user && <ChatSidebar user={user} />}
+
+      {user && (
+        <div style={{ textAlign: 'center', marginTop: 20 }}>
+          <button onClick={() => setShowChat(!showChat)} style={{ padding: '10px 20px', fontSize: '14px', backgroundColor: '#1e40af', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
+            {showChat ? 'Hide Chat' : 'Show Chat'}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
