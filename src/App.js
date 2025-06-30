@@ -143,7 +143,8 @@ function App() {
       <div style={{ backgroundColor: '#111', color: 'white', minHeight: '100vh', padding: '40px' }}>
         <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: '#222', padding: '30px', borderRadius: '12px' }}>
           <h2>Test Complete ({mode} Mode)</h2>
-          <p>Score: {score} / {filteredQuestions.length}</p>
+          <p>Streak Score: {score}</p>
+          <p>Total Questions Attempted: {timeSpent.length}</p>
           <h4>Feedback:</h4>
           <p>{getFeedback()}</p>
           <h4>Score Matrix:</h4>
