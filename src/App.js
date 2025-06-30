@@ -293,12 +293,14 @@ function App() {
                 border: 'none',
                 borderRadius: '6px',
                 cursor: 'pointer',
-                transition: 'background-color 0.3s ease'
-              }}
-            >
-              {opt}
-            </button>
-          ))}
+                transition: 'background-color 0.3s ease',
+                width: '100%',
+                textAlign: 'left'
+               }}
+               >
+               {String.fromCharCode(65 + idx)}. {opt}
+               </button>
+            ))}
 
           {!user && (
             <p style={{ marginTop: 30, fontSize: '14px' }}>
