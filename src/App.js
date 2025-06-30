@@ -90,7 +90,8 @@ function App() {
     setTimeSpent(prev => [...prev, {
       section: filteredQuestions[index].section,
       level: filteredQuestions[index].level,
-      time: duration
+      time: duration,
+      correct
     }]);
 
     setTimeout(() => {
@@ -117,8 +118,20 @@ function App() {
   };
 
   const getFeedback = () => {
-    const matrix = getMatrix();
-    return `You did well in Maths Easy <10s, and struggled in GK Medium 20s+. Total score: ${score}/${filteredQuestions.length}`;
+    const correctBySection = {};
+    timeSpent.forEach(item => {
+      if (item.correct) {
+        correctBySection[item.section] = (correctBySection[item.section] || 0) + 1;
+      }
+    });
+
+    const strong = Object.entries(correctBySection).filter(([sec, val]) => val >= 10);
+    const weak = Object.entries(correctBySection).filter(([sec, val]) => val < 3);
+
+    const strongMsg = strong.length > 0 ? `You did well in ${strong.map(s => s[0]).join(", ")} by answering more than 10 correctly.` : "";
+    const weakMsg = weak.length > 0 ? `You need to improve in ${weak.map(s => s[0]).join(", ")} where less than 3 were correct.` : "";
+
+    return `${strongMsg} ${weakMsg} Total score: ${score}/${filteredQuestions.length}`;
   };
 
   if (filteredQuestions.length === 0) {
