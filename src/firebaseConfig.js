@@ -7,7 +7,7 @@ const firebaseConfig = {
   authDomain: "streakpeaked-auth.firebaseapp.com",
   databaseURL: "https://streakpeaked-auth-default-rtdb.firebaseio.com",
   projectId: "streakpeaked-auth",
-  storageBucket: "streakpeaked-auth.firebasestorage.app",
+  storageBucket: "streakpeaked-auth.appspot.com",
   messagingSenderId: "253188628591",
   appId: "1:253188628591:web:cf7965b311a86177d46d9a",
   measurementId: "G-NSZB6E7LF2"
