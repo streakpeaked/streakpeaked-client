@@ -45,7 +45,8 @@ function App() {
   useEffect(() => {
     const fetchQuestions = async () => {
       const snapshot = await getDocs(collection(db, "questions"));
-      const qList = snapshot.docs.map(doc => doc.data()).filter(q => !q.image);
+      let qList = snapshot.docs.map(doc => doc.data()).filter(q => !q.image);
+      qList = qList.sort(() => Math.random() - 0.5);  
       setQuestions(qList);
     };
     fetchQuestions();
