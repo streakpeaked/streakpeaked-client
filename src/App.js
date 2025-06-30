@@ -319,5 +319,5 @@ function App() {
     </div>
   );
 }
-
+console.log("Rendering App. Questions loaded:", filteredQuestions.length);
 export default App;
