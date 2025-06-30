@@ -1,0 +1,74 @@
+[
+  {
+    "question": "In a certain code language, \u2018BLEACHERS\u2019 is coded as \u201863\u2019 and \u2018ABACAS\u2019 is coded as \u201842\u2019. How will \u2018FIZZY\u2019 be coded in the same language?",
+    "options": [
+      "44",
+      "45",
+      "35",
+      "52"
+    ],
+    "answer": "52",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "How many squares are there in the figure shown below?",
+    "options": [
+      "11",
+      "14",
+      "12",
+      "13"
+    ],
+    "answer": "14",
+    "section": "Reasoning",
+    "level": "Easy"
+  },
+  {
+    "question": "Gangubai Hangal belonged to the ________.",
+    "options": [
+      "Gwalior gharana",
+      "Kirana gharana",
+      "Banaras gharana",
+      "Agra gharana"
+    ],
+    "answer": "Kirana gharana",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "What is 5 + 3?",
+    "options": [
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
+    "answer": "8",
+    "section": "Maths",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the INCORRECTLY spelt word.",
+    "options": [
+      "Possession",
+      "Unfourseen",
+      "Referred",
+      "Weather"
+    ],
+    "answer": "Unfourseen",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "The first Indian woman to hold the Under-20 World Wrestling Championship is _________.",
+    "options": [
+      "Antim Panghal",
+      "Pranati Nayak",
+      "Swati Sanjay",
+      "Hina Khalifa"
+    ],
+    "answer": "Antim Panghal",
+    "section": "GK",
+    "level": "Medium"
+  }
+]
