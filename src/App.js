@@ -176,31 +176,32 @@ function App() {
     setShowGPTChat(false);
   };
 
-  const getGPTFeedback = async () => {
-    const matrix = getMatrix();
-    const prompt = `Based on this SSC CGL test performance matrix:\n${JSON.stringify(matrix, null, 2)}\n\nGive a 2-line summary of strengths and weaknesses.`;
+const getGPTFeedback = async () => {
+  const matrix = getMatrix();
+  const prompt = `Based on this SSC CGL test performance matrix:\n${JSON.stringify(matrix, null, 2)}\n\nGive a 2-line summary of strengths and weaknesses.`;
 
-    try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: prompt }]
-        })
-      });
+  try {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
 
-      const data = await response.json();
-      console.log("GPT response:", data);
-      return data.choices?.[0]?.message?.content || "No feedback available.";
-    } catch (err) {
-      console.error("GPT error:", err);
-      return "No feedback available.";
-    }
-  };
+    const data = await response.json();
+    console.log("GPT raw response:", data);  // 👈 This line shows full output
+    return data.choices?.[0]?.message?.content || "No feedback available.";
+  } catch (err) {
+    console.error("GPT error:", err);
+    return "No feedback available.";
+  }
+};
+
 
   const handleGPTChat = async () => {
     const fullPrompt = `User just scored ${score}/${timeSpent.length} in SSC CGL test. ${getFeedback()}\nThey asked: ${chatInput}`;
