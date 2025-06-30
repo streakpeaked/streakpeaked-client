@@ -2,13 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db, auth, provider } from './firebaseConfig';
 import { signInWithPopup } from 'firebase/auth';
-import './App.css';
 import ChatSidebar from './ChatSidebar';
+import './App.css';
 
+let streakAudio;
 
 const playStreakMusic = () => {
-  const audio = new Audio('/music.mp3');
-  audio.play().catch((e) => console.log("Audio failed:", e));
+  if (!streakAudio) {
+    streakAudio = new Audio('/music.mp3');
+    streakAudio.loop = true;
+    streakAudio.play().catch((e) => console.log("Audio failed:", e));
+  }
+};
+
+const stopStreakMusic = () => {
+  if (streakAudio) {
+    streakAudio.pause();
+    streakAudio.currentTime = 0;
+    streakAudio = null;
+  }
 };
 
 function App() {
@@ -26,7 +38,6 @@ function App() {
   const [sectionFilter, setSectionFilter] = useState("All");
   const [testComplete, setTestComplete] = useState(false);
   const [user, setUser] = useState(null);
-  const [gptFeedback, setGptFeedback] = useState("");
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -51,6 +62,14 @@ function App() {
   }, [questions, difficultyFilter, sectionFilter]);
 
   useEffect(() => {
+    if (testComplete) playStreakMusic();
+  }, [testComplete]);
+
+  useEffect(() => {
+    return () => stopStreakMusic();
+  }, []);
+
+  useEffect(() => {
     if (testComplete) return;
     const timer = setInterval(() => {
       const sec = Math.floor((Date.now() - startTime) / 1000);
@@ -69,13 +88,6 @@ function App() {
     }, 1000);
     return () => clearInterval(timer);
   }, [startTime, testComplete]);
-
-  useEffect(() => {
-    if (testComplete) {
-      playStreakMusic();
-      if (user) getGPTFeedback().then(setGptFeedback);
-    }
-  }, [testComplete]);
 
   const speak = (msg) => {
     const utter = new SpeechSynthesisUtterance(msg);
@@ -127,31 +139,6 @@ function App() {
     return matrix;
   };
 
-  const getGPTFeedback = async () => {
-    const matrix = getMatrix();
-    const prompt = `Based on this SSC CGL test performance matrix:\n${JSON.stringify(matrix, null, 2)}\n\nGive a 2-line summary of strengths and weaknesses.`;
-
-    try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: prompt }]
-        })
-      });
-
-      const data = await response.json();
-      return data.choices?.[0]?.message?.content || "No feedback available.";
-    } catch (err) {
-      console.error("GPT error:", err);
-      return "ChatGPT feedback not available. Try again later.";
-    }
-  };
-
   const getFeedback = () => {
     const correctBySection = {};
     timeSpent.forEach(item => {
@@ -170,6 +157,7 @@ function App() {
   };
 
   const restartTest = () => {
+    stopStreakMusic();
     setIndex(0);
     setScore(0);
     setTimeSpent([]);
@@ -192,12 +180,6 @@ function App() {
           <p>Overall Score: {score}/{timeSpent.length}</p>
           <h4>Feedback:</h4>
           <p>{getFeedback()}</p>
-          {user && (
-            <>
-              <h4>ChatGPT Insights:</h4>
-              <p>{gptFeedback}</p>
-            </>
-          )}
           <h4>Score Matrix:</h4>
           <pre>{JSON.stringify(getMatrix(), null, 2)}</pre>
           <div style={{ marginTop: 20 }}>
