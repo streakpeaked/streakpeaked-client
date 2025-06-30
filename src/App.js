@@ -164,18 +164,27 @@ function App() {
   };
 
   const restartTest = () => {
-    stopStreakMusic();
-    setIndex(0);
-    setScore(0);
-    setTimeSpent([]);
-    setTestComplete(false);
-    setStartTime(Date.now());
-    setSeconds(0);
-    setGptFeedback("");
-    setChatInput("");
-    setChatResponse("");
-    setShowGPTChat(false);
-  };
+  stopStreakMusic();
+  setIndex(0);
+  setScore(0);
+  setTimeSpent([]);
+  setTestComplete(false);
+  setStartTime(Date.now());
+  setSeconds(0);
+  setGptFeedback("");
+  setChatInput("");
+  setChatResponse("");
+  setShowGPTChat(false);
+
+  // 🔀 Shuffle again and re-filter
+  const shuffled = [...questions].sort(() => Math.random() - 0.5);
+  const result = shuffled.filter(q => {
+    const matchSection = sectionFilter === "All" || q.section === sectionFilter;
+    const matchDifficulty = difficultyFilter === "All" || q.level === difficultyFilter;
+    return matchSection && matchDifficulty;
+  });
+  setFilteredQuestions(result);
+};
 
 const getGPTFeedback = async () => {
   const matrix = getMatrix();
