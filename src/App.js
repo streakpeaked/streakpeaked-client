@@ -19,7 +19,6 @@ function App() {
   const [startTime, setStartTime] = useState(Date.now());
   const [timeSpent, setTimeSpent] = useState([]);
   const [bgColor, setBgColor] = useState('#ADD8E6');
-  const [feedback, setFeedback] = useState('');
   const [seconds, setSeconds] = useState(0);
   const [difficultyFilter, setDifficultyFilter] = useState("All");
   const [sectionFilter, setSectionFilter] = useState("All");
@@ -69,9 +68,7 @@ function App() {
   }, [startTime, testComplete]);
 
   useEffect(() => {
-    if (testComplete) {
-      playStreakMusic();
-    }
+    if (testComplete) playStreakMusic();
   }, [testComplete]);
 
   const speak = (msg) => {
@@ -80,14 +77,10 @@ function App() {
   };
 
   const signInWithGoogle = () => {
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      setUser(result.user);
-    })
-    .catch((error) => {
-      console.log("Login error", error);
-    });
-    };
+    signInWithPopup(auth, provider)
+      .then((result) => setUser(result.user))
+      .catch((error) => console.log("Login error", error));
+  };
 
   const handleOption = (opt) => {
     if (testComplete) return;
@@ -108,7 +101,6 @@ function App() {
 
     setTimeout(() => {
       setSelected(null);
-
       if (!correct || index + 1 >= filteredQuestions.length) {
         setTestComplete(true);
       } else {
@@ -146,6 +138,15 @@ function App() {
     return `${strongMsg} ${weakMsg} Total score: ${score}/${timeSpent.length}`;
   };
 
+  const restartTest = () => {
+    setIndex(0);
+    setScore(0);
+    setTimeSpent([]);
+    setTestComplete(false);
+    setStartTime(Date.now());
+    setSeconds(0);
+  };
+
   if (filteredQuestions.length === 0) {
     return <div style={{ padding: 20 }}>Loading questions or no matching questions for selected filters.</div>;
   }
@@ -162,6 +163,14 @@ function App() {
           <p>{getFeedback()}</p>
           <h4>Score Matrix:</h4>
           <pre>{JSON.stringify(getMatrix(), null, 2)}</pre>
+          <div style={{ marginTop: 20 }}>
+            <button onClick={restartTest}>Restart Test</button>
+          </div>
+          {!user && (
+            <p style={{ marginTop: 10, fontSize: '14px' }}>
+              Want to chat with other users or save your performance? <button onClick={signInWithGoogle}>Login with Google</button>
+            </p>
+          )}
         </div>
       </div>
     );
@@ -169,14 +178,6 @@ function App() {
 
   const current = filteredQuestions[index];
 
-if (!user) {
-  return (
-    <div style={{ padding: 30, textAlign: 'center' }}>
-      <h2>Welcome to StreakPeaked</h2>
-      <button onClick={signInWithGoogle}>Login with Google</button>
-    </div>
-  );
-  }
   return (
     <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '40px' }}>
       <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: 'white', color: '#000', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.2)' }}>
@@ -227,6 +228,11 @@ if (!user) {
             {opt}
           </button>
         ))}
+        {!user && (
+          <p style={{ marginTop: 30, fontSize: '14px' }}>
+            Want to chat with others and save your history? <button onClick={signInWithGoogle}>Login with Google</button>
+          </p>
+        )}
       </div>
     </div>
   );
