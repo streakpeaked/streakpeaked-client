@@ -124,18 +124,17 @@ function App() {
   };
 
   const getMatrix = () => {
-  const matrix = {};
-  timeSpent.forEach(item => {
-    const band =
-      item.time < 10 ? '0-10s'
-      : item.time < 20 ? '10-20s'
-      : '20s+';
-    const key = `${item.section}_${item.level}_${band}`;
-    matrix[key] = (matrix[key] || 0) + 1;
-  });
-  return matrix;
-};
-
+    const matrix = {};
+    timeSpent.forEach(item => {
+      const band =
+        item.time < 10 ? '0-10s'
+        : item.time < 20 ? '10-20s'
+        : '20s+';
+      const key = `${item.section}_${item.level}_${band}`;
+      matrix[key] = (matrix[key] || 0) + 1;
+    });
+    return matrix;
+  };
 
   const restartTest = () => {
     stopStreakMusic();
@@ -190,7 +189,7 @@ function App() {
   return (
     <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '30px', fontFamily: 'Segoe UI, sans-serif' }}>
       <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-        <img src="/logo.png" alt="Logo" style={{ height: '60px', marginBottom: '10px' }} />
+        <img src="/logo192.png" alt="StreakPeaked Logo" style={{ height: '60px', marginBottom: '10px' }} />
         <h1 style={{ fontSize: '28px', color: '#1e3a8a' }}>StreakPeaked SSC CGL Practice</h1>
       </header>
 
@@ -198,6 +197,7 @@ function App() {
         <div style={{ flex: 1, maxWidth: '700px', backgroundColor: '#ffffff', color: '#000', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.1)' }}>
           <h2 style={{ fontSize: '22px', marginBottom: '10px' }}>{current.section} ({current.level})</h2>
           <p style={{ fontSize: '18px' }}>{current.question}</p>
+          <p style={{ fontWeight: 'bold', fontSize: '16px' }}>⏱️ Time: {seconds}s</p>
 
           <div style={{ marginBottom: 20, marginTop: 20 }}>
             <label>
