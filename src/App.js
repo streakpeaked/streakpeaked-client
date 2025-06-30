@@ -123,6 +123,16 @@ function App() {
     }, 1000);
   };
 
+  const getMatrix = () => {
+  const matrix = {};
+  timeSpent.forEach(item => {
+    const band = item.time < 10 ? '0-10s' : item.time < 20 ? '10-20s' : '20s+';
+    const key = `${item.section}_${item.level}_${band}`;
+    matrix[key] = (matrix[key] || 0) + 1;
+  });
+  return matrix;
+};
+
   const restartTest = () => {
     stopStreakMusic();
     setIndex(0);
