@@ -240,11 +240,11 @@ function App() {
   }
 
   if (!filteredQuestions.length) {
-  return <div style={{ padding: 20 }}>Loading questions or no matching filters...</div>;
-}
+    return <div style={{ padding: 20 }}>Loading questions or no matching filters...</div>;
+  }
 
-const current = filteredQuestions[index];
-
+  const current = filteredQuestions[index];
+  console.log("Rendering App. Questions loaded:", filteredQuestions.length);
 
   return (
     <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '30px', fontFamily: 'Segoe UI, sans-serif' }}>
@@ -324,5 +324,5 @@ const current = filteredQuestions[index];
     </div>
   );
 }
-console.log("Rendering App. Questions loaded:", filteredQuestions.length);
+
 export default App;
