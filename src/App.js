@@ -26,7 +26,6 @@ const stopStreakMusic = () => {
 function App() {
   const [questions, setQuestions] = useState([]);
   const [filteredQuestions, setFilteredQuestions] = useState([]);
-  const [mode, setMode] = useState('Practice');
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState(null);
@@ -38,6 +37,10 @@ function App() {
   const [sectionFilter, setSectionFilter] = useState("All");
   const [testComplete, setTestComplete] = useState(false);
   const [user, setUser] = useState(null);
+  const [gptFeedback, setGptFeedback] = useState("");
+  const [showGPTChat, setShowGPTChat] = useState(false);
+  const [chatInput, setChatInput] = useState("");
+  const [chatResponse, setChatResponse] = useState("");
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -62,7 +65,10 @@ function App() {
   }, [questions, difficultyFilter, sectionFilter]);
 
   useEffect(() => {
-    if (testComplete) playStreakMusic();
+    if (testComplete) {
+      playStreakMusic();
+      if (user) getGPTFeedback().then(setGptFeedback);
+    }
   }, [testComplete]);
 
   useEffect(() => {
@@ -164,6 +170,58 @@ function App() {
     setTestComplete(false);
     setStartTime(Date.now());
     setSeconds(0);
+    setGptFeedback("");
+    setChatInput("");
+    setChatResponse("");
+    setShowGPTChat(false);
+  };
+
+  const getGPTFeedback = async () => {
+    const matrix = getMatrix();
+    const prompt = `Based on this SSC CGL test performance matrix:\n${JSON.stringify(matrix, null, 2)}\n\nGive a 2-line summary of strengths and weaknesses.`;
+
+    try {
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",
+          messages: [{ role: "user", content: prompt }]
+        })
+      });
+
+      const data = await response.json();
+      console.log("GPT response:", data);
+      return data.choices?.[0]?.message?.content || "No feedback available.";
+    } catch (err) {
+      console.error("GPT error:", err);
+      return "No feedback available.";
+    }
+  };
+
+  const handleGPTChat = async () => {
+    const fullPrompt = `User just scored ${score}/${timeSpent.length} in SSC CGL test. ${getFeedback()}\nThey asked: ${chatInput}`;
+    try {
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",
+          messages: [{ role: "user", content: fullPrompt }]
+        })
+      });
+      const data = await response.json();
+      setChatResponse(data.choices?.[0]?.message?.content || "GPT didn't respond.");
+    } catch (err) {
+      console.error("ChatGPT error:", err);
+      setChatResponse("Error contacting GPT.");
+    }
   };
 
   if (filteredQuestions.length === 0) {
@@ -174,7 +232,7 @@ function App() {
     return (
       <div style={{ backgroundColor: '#111', color: 'white', minHeight: '100vh', padding: '40px' }}>
         <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: '#222', padding: '30px', borderRadius: '12px' }}>
-          <h2>Test Complete ({mode} Mode)</h2>
+          <h2>Test Complete</h2>
           <p>Streak Score: {score}</p>
           <p>Total Questions Attempted: {timeSpent.length}</p>
           <p>Overall Score: {score}/{timeSpent.length}</p>
@@ -182,6 +240,32 @@ function App() {
           <p>{getFeedback()}</p>
           <h4>Score Matrix:</h4>
           <pre>{JSON.stringify(getMatrix(), null, 2)}</pre>
+
+          {user && (
+            <>
+              <h4>Personalized Insights:</h4>
+              <p>{gptFeedback}</p>
+              {!showGPTChat && (
+                <button onClick={() => setShowGPTChat(true)}>
+                  Want to further discuss the results and your areas of improvement? Click here
+                </button>
+              )}
+              {showGPTChat && (
+                <div style={{ marginTop: 20 }}>
+                  <input
+                    type="text"
+                    placeholder="Ask ChatGPT about your performance..."
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    style={{ width: '100%', padding: '8px' }}
+                  />
+                  <button onClick={handleGPTChat} style={{ marginTop: '10px' }}>Ask GPT</button>
+                  <p style={{ marginTop: '10px' }}>{chatResponse}</p>
+                </div>
+              )}
+            </>
+          )}
+
           <div style={{ marginTop: 20 }}>
             <button onClick={restartTest}>Restart Test</button>
           </div>
@@ -200,10 +284,7 @@ function App() {
   return (
     <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '40px' }}>
       <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: 'white', color: '#000', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.2)' }}>
-        <h1>{mode} Mode | Timer: {seconds}s</h1>
-        <button onClick={() => setMode(mode === 'Practice' ? 'Test' : 'Practice')}>
-          Switch to {mode === 'Practice' ? 'Test' : 'Practice'} Mode
-        </button>
+        <h1>Timer: {seconds}s</h1>
 
         <div style={{ marginTop: 20, marginBottom: 20 }}>
           <label>
