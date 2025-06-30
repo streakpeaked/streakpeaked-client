@@ -124,13 +124,45 @@ function App() {
   };
 
   const getMatrix = () => {
+    const sections = ['GK', 'Maths', 'Reasoning', 'English'];
+    const levels = ['Easy', 'Medium', 'Hard'];
     const matrix = {};
+    sections.forEach(sec => {
+      matrix[sec] = { Easy: 0, Medium: 0, Hard: 0 };
+    });
     timeSpent.forEach(item => {
-      const band = item.time < 10 ? '0-10s' : item.time < 20 ? '10-20s' : '20s+';
-      const key = `${item.section}_${item.level}_${band}`;
-      matrix[key] = (matrix[key] || 0) + 1;
+      if (matrix[item.section] && matrix[item.section][item.level] !== undefined) {
+        matrix[item.section][item.level]++;
+      }
     });
     return matrix;
+  };
+
+  const renderMatrixTable = () => {
+    const matrix = getMatrix();
+    const levels = ['Easy', 'Medium', 'Hard'];
+    return (
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead>
+          <tr>
+            <th style={{ border: '1px solid #ccc', padding: '8px' }}>Section</th>
+            {levels.map(level => (
+              <th key={level} style={{ border: '1px solid #ccc', padding: '8px' }}>{level}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {Object.entries(matrix).map(([section, row]) => (
+            <tr key={section}>
+              <td style={{ border: '1px solid #ccc', padding: '8px' }}>{section}</td>
+              {levels.map(level => (
+                <td key={level} style={{ border: '1px solid #ccc', padding: '8px' }}>{row[level]}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
   };
 
   const getCustomFeedback = () => {
@@ -180,10 +212,6 @@ function App() {
     setFilteredQuestions(result);
   };
 
-  if (filteredQuestions.length === 0) {
-    return <div style={{ padding: 20 }}>Loading questions or no matching questions for selected filters.</div>;
-  }
-
   if (testComplete) {
     return (
       <div style={{ backgroundColor: '#f9fafb', minHeight: '100vh', padding: '30px', fontFamily: 'Segoe UI, sans-serif' }}>
@@ -197,7 +225,7 @@ function App() {
           <hr style={{ margin: '20px 0' }} />
           <div>
             <h3 style={{ color: '#2563eb' }}>📊 Score Matrix</h3>
-            <pre style={{ backgroundColor: '#f3f4f6', padding: '10px', borderRadius: '8px' }}>{JSON.stringify(getMatrix(), null, 2)}</pre>
+            {renderMatrixTable()}
           </div>
           <div style={{ marginTop: '20px' }}>
             <h3 style={{ color: '#2563eb' }}>💡 Feedback</h3>
@@ -216,15 +244,15 @@ function App() {
   return (
     <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '30px', fontFamily: 'Segoe UI, sans-serif' }}>
       <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-        <img src="/logo192.png" alt="Logo" style={{ height: '60px', marginBottom: '10px' }} />
+        <img src="/logo.png" alt="Logo" style={{ height: '60px', marginBottom: '10px' }} />
         <h1 style={{ fontSize: '28px', color: '#1e3a8a' }}>StreakPeaked SSC CGL Practice</h1>
+        <h3 style={{ fontSize: '18px', color: '#1e40af' }}>Timer: {seconds}s</h3>
       </header>
 
       <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
         <div style={{ flex: 1, maxWidth: '700px', backgroundColor: '#ffffff', color: '#000', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.1)' }}>
           <h2 style={{ fontSize: '22px', marginBottom: '10px' }}>{current.section} ({current.level})</h2>
           <p style={{ fontSize: '18px' }}>{current.question}</p>
-          <p style={{ fontSize: '14px', color: '#6b7280' }}>⏱️ Time: {seconds}s</p>
 
           <div style={{ marginBottom: 20, marginTop: 20 }}>
             <label>
