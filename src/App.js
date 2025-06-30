@@ -1,8 +1,7 @@
-import { auth, provider } from './firebaseConfig';
-import { signInWithPopup } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
-import db from './firebaseConfig';
+import { db, auth, provider } from './firebaseConfig';
+import { signInWithPopup } from 'firebase/auth';
 import './App.css';
 
 const playStreakMusic = () => {
