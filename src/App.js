@@ -3,6 +3,11 @@ import { collection, getDocs } from 'firebase/firestore';
 import db from './firebaseConfig';
 import './App.css';
 
+const playStreakMusic = () => {
+  const audio = new Audio('/music.mp3');
+  audio.play().catch((e) => console.log("Audio failed:", e));
+};
+
 function App() {
   const [questions, setQuestions] = useState([]);
   const [filteredQuestions, setFilteredQuestions] = useState([]);
@@ -17,11 +22,12 @@ function App() {
   const [seconds, setSeconds] = useState(0);
   const [difficultyFilter, setDifficultyFilter] = useState("All");
   const [sectionFilter, setSectionFilter] = useState("All");
+  const [testComplete, setTestComplete] = useState(false);
 
   useEffect(() => {
     const fetchQuestions = async () => {
       const snapshot = await getDocs(collection(db, "questions"));
-      const qList = snapshot.docs.map(doc => doc.data());
+      const qList = snapshot.docs.map(doc => doc.data()).filter(q => !q.image);
       setQuestions(qList);
     };
     fetchQuestions();
@@ -35,9 +41,13 @@ function App() {
     });
     setFilteredQuestions(result);
     setIndex(0);
+    setScore(0);
+    setTimeSpent([]);
+    setTestComplete(false);
   }, [questions, difficultyFilter, sectionFilter]);
 
   useEffect(() => {
+    if (testComplete) return;
     const timer = setInterval(() => {
       const sec = Math.floor((Date.now() - startTime) / 1000);
       setSeconds(sec);
@@ -54,7 +64,13 @@ function App() {
       }
     }, 1000);
     return () => clearInterval(timer);
-  }, [startTime]);
+  }, [startTime, testComplete]);
+
+  useEffect(() => {
+    if (testComplete) {
+      playStreakMusic();
+    }
+  }, [testComplete]);
 
   const speak = (msg) => {
     const utter = new SpeechSynthesisUtterance(msg);
@@ -62,14 +78,16 @@ function App() {
   };
 
   const handleOption = (opt) => {
+    if (testComplete) return;
+
     setSelected(opt);
     const endTime = Date.now();
     const duration = Math.floor((endTime - startTime) / 1000);
 
     const correct = opt === filteredQuestions[index].answer;
-    if (correct) setScore(score + 1);
+    if (correct) setScore(prev => prev + 1);
 
-    setTimeSpent([...timeSpent, {
+    setTimeSpent(prev => [...prev, {
       section: filteredQuestions[index].section,
       level: filteredQuestions[index].level,
       time: duration
@@ -77,9 +95,14 @@ function App() {
 
     setTimeout(() => {
       setSelected(null);
-      setIndex(index + 1);
-      setStartTime(Date.now());
-      setSeconds(0);
+
+      if (!correct || index + 1 >= filteredQuestions.length) {
+        setTestComplete(true);
+      } else {
+        setIndex(index + 1);
+        setStartTime(Date.now());
+        setSeconds(0);
+      }
     }, 1000);
   };
 
@@ -102,18 +125,17 @@ function App() {
     return <div style={{ padding: 20 }}>Loading questions or no matching questions for selected filters.</div>;
   }
 
-  if (index >= filteredQuestions.length) {
+  if (testComplete) {
     return (
-      <div style={{ padding: 20, background: '#111', color: 'white' }}>
-        <h2>Test Complete ({mode} Mode)</h2>
-        <p>Score: {score} / {filteredQuestions.length}</p>
-        <h4>Feedback:</h4>
-        <p>{getFeedback()}</p>
-        <h4>Score Matrix:</h4>
-        <pre>{JSON.stringify(getMatrix(), null, 2)}</pre>
-        <audio autoPlay>
-          <source src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Bayern_Munich_goal_song.ogg" type="audio/ogg" />
-        </audio>
+      <div style={{ backgroundColor: '#111', color: 'white', minHeight: '100vh', padding: '40px' }}>
+        <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: '#222', padding: '30px', borderRadius: '12px' }}>
+          <h2>Test Complete ({mode} Mode)</h2>
+          <p>Score: {score} / {filteredQuestions.length}</p>
+          <h4>Feedback:</h4>
+          <p>{getFeedback()}</p>
+          <h4>Score Matrix:</h4>
+          <pre>{JSON.stringify(getMatrix(), null, 2)}</pre>
+        </div>
       </div>
     );
   }
@@ -121,50 +143,56 @@ function App() {
   const current = filteredQuestions[index];
 
   return (
-    <div style={{ backgroundColor: bgColor, height: '100vh', color: 'white', padding: '20px' }}>
-      <h1>{mode} Mode | Timer: {seconds}s</h1>
-      <button onClick={() => setMode(mode === 'Practice' ? 'Test' : 'Practice')}>
-        Switch to {mode === 'Practice' ? 'Test' : 'Practice'} Mode
-      </button>
-
-      <div style={{ marginTop: 20, marginBottom: 20 }}>
-        <label>
-          Difficulty:
-          <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
-            <option value="All">All</option>
-            <option value="Easy">Easy</option>
-            <option value="Medium">Medium</option>
-            <option value="Hard">Hard</option>
-          </select>
-        </label>
-
-        <label style={{ marginLeft: 20 }}>
-          Section:
-          <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)}>
-            <option value="All">All</option>
-            <option value="Maths">Maths</option>
-            <option value="GK">GK</option>
-            <option value="Reasoning">Reasoning</option>
-            <option value="English">English</option>
-          </select>
-        </label>
-      </div>
-
-      <h2>{current.section} ({current.level})</h2>
-      <p>{current.question}</p>
-      {current.options.map((opt, idx) => (
-        <button
-          key={idx}
-          onClick={() => handleOption(opt)}
-          style={{
-            margin: 10,
-            padding: 10,
-            backgroundColor: selected === opt ? (opt === current.answer ? 'green' : 'red') : 'gray'
-          }}
-        >
-          {opt}
+    <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '40px' }}>
+      <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: 'white', color: '#000', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.2)' }}>
+        <h1>{mode} Mode | Timer: {seconds}s</h1>
+        <button onClick={() => setMode(mode === 'Practice' ? 'Test' : 'Practice')}>
+          Switch to {mode === 'Practice' ? 'Test' : 'Practice'} Mode
         </button>
-      ))}
+
+        <div style={{ marginTop: 20, marginBottom: 20 }}>
+          <label>
+            Difficulty:
+            <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
+              <option value="All">All</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+          </label>
+
+          <label style={{ marginLeft: 20 }}>
+            Section:
+            <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)}>
+              <option value="All">All</option>
+              <option value="Maths">Maths</option>
+              <option value="GK">GK</option>
+              <option value="Reasoning">Reasoning</option>
+              <option value="English">English</option>
+            </select>
+          </label>
+        </div>
+
+        <h2>{current.section} ({current.level})</h2>
+        <p>{current.question}</p>
+        {current.options.map((opt, idx) => (
+          <button
+            key={idx}
+            onClick={() => handleOption(opt)}
+            style={{
+              margin: 10,
+              padding: 10,
+              backgroundColor: selected === opt ? (opt === current.answer ? 'green' : 'red') : 'gray',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              minWidth: '60px'
+            }}
+          >
+            {opt}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
