@@ -12,18 +12,6 @@
     "level": "Medium"
   },
   {
-    "question": "How many squares are there in the figure shown below?",
-    "options": [
-      "11",
-      "14",
-      "12",
-      "13"
-    ],
-    "answer": "14",
-    "section": "Reasoning",
-    "level": "Easy"
-  },
-  {
     "question": "Gangubai Hangal belonged to the ________.",
     "options": [
       "Gwalior gharana",
@@ -33,18 +21,6 @@
     ],
     "answer": "Kirana gharana",
     "section": "GK",
-    "level": "Easy"
-  },
-  {
-    "question": "What is 5 + 3?",
-    "options": [
-      "6",
-      "7",
-      "8",
-      "9"
-    ],
-    "answer": "8",
-    "section": "Maths",
     "level": "Easy"
   },
   {
@@ -69,6 +45,2472 @@
     ],
     "answer": "Antim Panghal",
     "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "In a certain code language, FIGURE is coded as 'VSUGJW' and COPIED is coded as 'YMLSWX'. What will be the code for BLANKET?",
+    "options": ["ZPANQWH", "ZPMNQHW", "ZPANQHW", "ZPNAQWH"],
+    "answer": "ZPANQWH",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "'Simple' is related to 'Basic' in the same way as 'Difficult' is related to ' ’",
+    "options": ["Trivial", "Wrong", "Imaginary", "Complex"],
+    "answer": "Complex",
+    "section": "Reasoning",
+    "level": "Easy"
+  },
+  {
+    "question": "In a certain code language, 'A + B' means 'A is the son of B'; 'A # B' means 'A is the sister of B'; 'A x B' means 'A is the wife of B'; and, 'A @ B' means 'A is the father of B'. Based on the above, how is M related to T if 'M # N @ L x P + T'?",
+    "options": ["Son's wife's sister", "Son's wife's father's sister", "Son's wife's father", "Son's wife's father's mother"],
+    "answer": "Son's wife's father's sister",
+    "section": "Reasoning",
+    "level": "Hard"
+  },
+  {
+    "question": "What will come in place of the question mark (?) in the following equation, if '+' and '-' are interchanged and 'x' and '+' are interchanged? 229 + 41 + 502 ×2-44 =?",
+    "options": ["9281", "9812", "9218", "9182"],
+    "answer": "9182",
+    "section": "Reasoning",
+    "level": "Hard"
+  },
+  {
+    "question": "Which of the following terms will replace the question mark (?) in the given series? OPOR, NOPS, ?, LMRU, KLSV",
+    "options": ["MNQT", "MNTQ", "MNQP", "NMQT"],
+    "answer": "MNQT",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Which part of Indian Constitution deals with the election of the Vice President?",
+    "options": ["Part IV", "Part III", "Part VI", "Part V"],
+    "answer": "Part V",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "In which of the following games is the 'Baulk Line' used?",
+    "options": ["Kabaddi", "Badminton", "Tennis", "Kho-Kho"],
+    "answer": "Kabaddi",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "What is the economic justification for subsidies in the agriculture sector?",
+    "options": [
+      "It is mostly used to provide benefits for rich farmers.",
+      "It is a part of government expenditure in the service sector.",
+      "It is an incentive to provide the benefits of advanced technology and decrease the cost of production.",
+      "It is used to provide benefits for capital goods producers in agriculture."
+    ],
+    "answer": "It is an incentive to provide the benefits of advanced technology and decrease the cost of production.",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "The Environment (Protection) Act, 1986 empowers the to establish authorities charged with the mandate of preventing environmental pollution in all its forms.",
+    "options": ["State Government", "Central Government", "Supreme Court", "local municipalities"],
+    "answer": "Central Government",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following Articles and Parts of the Indian Constitution deal with the State Legislature?",
+    "options": [
+      "Articles 214 to 231 in Part VI",
+      "Articles 168 to 212 in Part VI",
+      "Articles 243 to 243-O in Part IX",
+      "Articles 79 to 122 in Part V"
+    ],
+    "answer": "Articles 168 to 212 in Part VI",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "A number whose fifth part increased by 5 is equal to its third part decreased by 7. Find half of the number.",
+    "options": ["45", "150", "80", "60"],
+    "answer": "80",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "If (48°+ k) is an acute angle and sin(48°+ k) = cos13°, what is the value of k(in °)?",
+    "options": ["17", "23", "29", "37"],
+    "answer": "29",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "If ₹1,875 becomes ₹2,625 in 4 years, what will ₹24,000 become at the end of 9 years at the same rate of interest, under simple interest?",
+    "options": ["₹45,600", "₹21,600", "₹34,800", "₹43,200"],
+    "answer": "₹45,600",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate ANTONYM to replace the word in brackets. The author's writing was so captivating that readers were [enthralled], while the other book left them completely uninterested.",
+    "options": ["interested", "agreement", "bored", "intrigued"],
+    "answer": "bored",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate ANTONYM of the underlined word in the given sentence. This library building is very high and has 25 floors.",
+    "options": ["Low", "Sturdy", "Hale", "Elevated"],
+    "answer": "Low",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate option to substitute the underlined segment in the given sentence. Ranveer never has the habit of making a beeline for his academic activities.",
+    "options": [
+      "behaving abnormally",
+      "selecting inconsiderately",
+      "going straight and quick",
+      "immediately responding to things"
+    ],
+    "answer": "going straight and quick",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option that expresses the given sentence in passive voice. Rohit did not slap Kunal.",
+    "options": [
+      "Kunal was not being slapped by Rohit.",
+      "Kunal had not been slapped by Rohit.",
+      "Kunal was not slapped by Rohit.",
+      "Kunal has not been slapped by Rohit."
+    ],
+    "answer": "Kunal was not slapped by Rohit.",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate meaning of the underlined idiom. The company understood that these small protests of employees regarding low wages were just the tip of the iceberg.",
+    "options": [
+      "A small, noticeable part of a problem, the total size of which is non-existent",
+      "A small, noticeable part of a problem, the total size of which is solvable",
+      "A large part of a problem which is really noticeable",
+      "A small, noticeable part of a problem, the total size of which is really much greater"
+    ],
+    "answer": "A small, noticeable part of a problem, the total size of which is really much greater",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "In a certain code language, 'WJSL' is coded as '25-12-21-14' and 'DUOH' is coded as '6-23-17-10'. What is the code for 'PFKR' in the given language?",
+    "options": ["20-10-14-21", "20-9-12-20", "19-9-12-19", "18-8-13-20"],
+    "answer": "18-8-13-20",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "The question contains pairs of words that are related to each other in a certain way. Three of the following four word pairs are alike as these have the same relationship and thus form a group. Which word pair is the one that DOES NOT belong to that group?",
+    "options": [
+      "Chess - 1 player in a team",
+      "Polo - 4 players in a team",
+      "Boxing - 1 player in a team",
+      "Football - 10 players in a team"
+    ],
+    "answer": "Football - 10 players in a team",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the combination of letters that when sequentially placed in the blanks of the given series will logically complete the series. ME_ICM_DIC_GDI_MHD_C",
+    "options": ["DEMAI", "DCFMI", "DFMBI", "DFMCI"],
+    "answer": "DFMCI",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "How many people like tea and coffee both?",
+    "options": ["43", "29", "21", "13"],
+    "answer": "21",
+    "section": "Reasoning",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the number from among the given options that can replace the question mark (?) in the following series. 45, 52, 63, 76, 93, ?",
+    "options": ["112", "122", "118", "116"],
+    "answer": "112",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Three of the following number-pairs are alike in some manner and hence form a group. Which number-pair does not belong to that group?",
+    "options": ["17-306", "21-462", "14-196", "12-156"],
+    "answer": "14-196",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "13 is related to 21 following certain logic. Following the same logic, 35 is related to 43. To which of the following numbers is 66 related, following the same logic?",
+    "options": ["71", "72", "74", "73"],
+    "answer": "74",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option that is related to the fifth letter-cluster in the same way as the second letter-cluster is related to the first letter-cluster and the fourth letter-cluster is related to the third letter-cluster. MSD: NHW :: OAE : LZV :: NIP :?",
+    "options": ["NSL", "MRK", "MQK", "NRL"],
+    "answer": "NSL",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "In a certain code language, 'A & B' means 'A is the brother of B', 'A x B' means 'A is the father of B', 'A ? B' means 'A is the mother of B' and 'A ! B' means 'A is the wife of B'. Which of the following means that W is the mother's mother of P?",
+    "options": [
+      "W ? R ! Y & O x P",
+      "W ? R x Y ! O & P",
+      "W & R ! Y x O ? P",
+      "W ! R x Y ? O & P"
+    ],
+    "answer": "W ! R x Y ? O & P",
+    "section": "Reasoning",
+    "level": "Hard"
+  },
+  {
+    "question": "Select the set in which the numbers are related in the same way as are the numbers of the given sets. (6, 31) (10, 91)",
+    "options": ["(8, 57)", "(12, 146)", "(7, 68)", "(9, 81)"],
+    "answer": "(8, 57)",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "How many people like either only spicy or only sweet as per the given Venn diagram?",
+    "options": ["110", "120", "135", "144"],
+    "answer": "120",
+    "section": "Reasoning",
+    "level": "Easy"
+  },
+  {
+    "question": "The position(s) of how many letters will remain unchanged if all the letters in the word 'LAUNDER' are arranged in English alphabetical order?",
+    "options": ["None", "One", "Two", "Three"],
+    "answer": "One",
+    "section": "Reasoning",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the option that is related to the fifth letter cluster in the same way as the second letter cluster is related to the first letter cluster and the fourth letter cluster is related to the third letter cluster. EXPENSE : EPXEESN :: FASHION : HSAFNOI :: FORTUNE : ?",
+    "options": ["TUNEFOR", "ROFNUTE", "ENUTROF", "TROFENU"],
+    "answer": "TROFENU",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "What will come in place of the question mark (?) in the following equation, if '+' and '-' are interchanged and 'x' and '+' are interchanged? 152 + 6 + 1617 x 7 - 77 = ?",
+    "options": ["587", "578", "758", "785"],
+    "answer": "758",
+    "section": "Reasoning",
+    "level": "Hard"
+  },
+  {
+    "question": "21 is related to 220 by certain logic. Following the same logic, 72 is related to 781. To which of the following is 27 related, following the same logic?",
+    "options": ["290", "286", "340", "316"],
+    "answer": "286",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "In a certain code language, 'cat dog monkey' is coded as '55 66 88'; 'camel cat donkey' is coded as '66 99 33' and 'dog goat tiger' is coded as '88 11 22'. How is 'monkey' coded in that language?",
+    "options": ["11", "66", "55", "88"],
+    "answer": "55",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option that represents the letters that, when sequentially placed from left to right in the blanks below, will complete the letter series. YRWIY_XI_R_IYRZ",
+    "options": ["XRYY", "IRZY", "IRYY", "IYYX"],
+    "answer": "IRYY",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Which two numbers (not digits) should be interchanged to make the given equation correct? 6 × 3 + 8 + 2 + 21 + 5 × 4 - 14 + 7 = 53",
+    "options": ["8 and 4", "3 and 5", "2 and 4", "21 and 14"],
+    "answer": "21 and 14",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Which famous experiment was done by Michael Faraday in 1831?",
+    "options": [
+      "Discovery of quantum magnetometers",
+      "Discovery of law of elasticity",
+      "Discovery of electromagnetic induction",
+      "Discovery of natural radioactivity"
+    ],
+    "answer": "Discovery of electromagnetic induction",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "The book 'Poverty and Un-British Rule in India' was written by ________.",
+    "options": ["MN Roy", "Dadabhai Naoroji", "Bipin Chandra Pal", "Lala Lajpat Rai"],
+    "answer": "Dadabhai Naoroji",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Who reconciled Dalton's atomic hypothesis with Gay-Lussac's results on the combination of volumes in 1811?",
+    "options": ["Robert Boyle", "Amadeo Avogadro", "Fred Hoyle", "Jacques Charles"],
+    "answer": "Amadeo Avogadro",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Who was the chief coordinator for the G20 summit hosted by India?",
+    "options": ["S Jaishankar", "Vijay Gokhale", "Vinay Kwatra", "Harsh Vardhan Shringla"],
+    "answer": "Harsh Vardhan Shringla",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "The number of ministers, including the Chief Minister, in a state shall NOT be less than:",
+    "options": ["11", "10", "13", "12"],
+    "answer": "12",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "Who among the following founded the Pala dynasty in 8th Century CE?",
+    "options": ["Dharmapala", "Ramapala", "Devapala", "Gopala"],
+    "answer": "Gopala",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Directive principles of State Policy were added to the Indian Constitution by the 42nd Constitutional Amendment Act of 1976. How many were added?",
+    "options": ["Two", "Three", "Five", "Four"],
+    "answer": "Four",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Who published the logistic equation model of population growth in 1838?",
+    "options": [
+      "Howard Thomas Odum",
+      "Alfred Russel Wallace",
+      "Pierre Francois Verhulst",
+      "George Evelyn Hutchinson"
+    ],
+    "answer": "Pierre Francois Verhulst",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Who assumed charge as the new Vice Chief of the Indian Navy on 31 July 2021?",
+    "options": ["Karambir Singh", "Ravneet Singh", "SN Ghormade", "Dinesh K Tripathi"],
+    "answer": "SN Ghormade",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which Act was passed by the British Parliament in the year 1773 AD to regulate the activities of the East India Company?",
+    "options": [
+      "Pitt's India Act",
+      "Indian Slavery Act",
+      "Age of Consent Act",
+      "Regulating Act"
+    ],
+    "answer": "Regulating Act",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Where was the first meeting of the Employment Working Group of G20 conducted?",
+    "options": ["Jaipur", "Jodhpur", "Lucknow", "Kolkata"],
+    "answer": "Jodhpur",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "As per the Census of India 2011, the increase in literacy rates for males and females, respectively, as compared to 2001 Census was:",
+    "options": ["3.88% and 13.79%", "5.88% and 12.79%", "6.88% and 11.79%", "4.88% and 10.79%"],
+    "answer": "6.88% and 11.79%",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "What is the salinity of the Dead Sea (per litre of water)?",
+    "options": ["440 grams", "240 grams", "340 grams", "390 grams"],
+    "answer": "340 grams",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Papanasam Ramayya Sivan was an Indian composer of which music style?",
+    "options": ["Qawwali", "Carnatic music", "Bhajan", "Folk music"],
+    "answer": "Carnatic music",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following is the first Indian woman Grandmaster in Chess?",
+    "options": ["Harika Dronavalli", "S Vijayalakshmi", "Tania Sachdev", "R Vaishali"],
+    "answer": "S Vijayalakshmi",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following is NOT a major climate control of a place?",
+    "options": ["Altitude", "Latitude", "Interior of the earth", "Ocean currents"],
+    "answer": "Interior of the earth",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "Who among the following is known as 'Captain Cool' in Indian Cricket?",
+    "options": ["Virat Kohli", "Mahendra Singh Dhoni", "Kapil Dev", "Sachin Tendulkar"],
+    "answer": "Mahendra Singh Dhoni",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "In which of the following states is the Chu-Faat dance performed?",
+    "options": ["Haryana", "Uttarakhand", "West Bengal", "Sikkim"],
+    "answer": "Sikkim",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "The longest part of the digestive canal in animals like lions, cows, and humans is known as the ________.",
+    "options": ["stomach", "large intestine", "oesophagus", "small intestine"],
+    "answer": "small intestine",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "The famous santoor player Pandit Shivkumar Sharma received the ________ in the year 1986.",
+    "options": [
+      "Maharashtra Gurav Puraskar",
+      "Sangeet Natak Akademi Award",
+      "Sanskriti Award",
+      "Kalidas Samman"
+    ],
+    "answer": "Sangeet Natak Akademi Award",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following is a festival primarily celebrated in the state of Odisha?",
+    "options": ["Baishagu", "Chhath", "Raja Parba", "Me-Dam-Me-Phi"],
+    "answer": "Raja Parba",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following best describes the difference between SHGs and MFIs?",
+    "options": [
+      "SHGs are non-profit organisations, while MFIs are for-profit organisations.",
+      "SHGs provide only credit, while MFIs provide a range of financial services.",
+      "SHGs are typically small, community-based organisations, while MFIs are larger and more formal institutions.",
+      "SHGs rely on government subsidies for funding, while MFIs rely on commercial sources of funding."
+    ],
+    "answer": "SHGs are typically small, community-based organisations, while MFIs are larger and more formal institutions.",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "The Aryans lived in the land known as 'Sapta Sindhu' (Land of the Seven Rivers). Which of the following was NOT a part of it?",
+    "options": ["Indus", "Shipra", "Ravi", "Jhelum"],
+    "answer": "Shipra",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "As per the Census of India 2011, the increase in literacy rates for males and females, respectively, as compared to 2001 Census was:",
+    "options": ["3.88% and 13.79%", "5.88% and 12.79%", "6.88% and 11.79%", "4.88% and 10.79%"],
+    "answer": "6.88% and 11.79%",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "What is the salinity of the Dead Sea (per litre of water)?",
+    "options": ["440 grams", "240 grams", "340 grams", "390 grams"],
+    "answer": "340 grams",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Papanasam Ramayya Sivan was an Indian composer of which music style?",
+    "options": ["Qawwali", "Carnatic music", "Bhajan", "Folk music"],
+    "answer": "Carnatic music",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following is the first Indian woman Grandmaster in Chess?",
+    "options": ["Harika Dronavalli", "S Vijayalakshmi", "Tania Sachdev", "R Vaishali"],
+    "answer": "S Vijayalakshmi",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following is NOT a major climate control of a place?",
+    "options": ["Altitude", "Latitude", "Interior of the earth", "Ocean currents"],
+    "answer": "Interior of the earth",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "Who among the following is known as 'Captain Cool' in Indian Cricket?",
+    "options": ["Virat Kohli", "Mahendra Singh Dhoni", "Kapil Dev", "Sachin Tendulkar"],
+    "answer": "Mahendra Singh Dhoni",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "In which of the following states is the Chu-Faat dance performed?",
+    "options": ["Haryana", "Uttarakhand", "West Bengal", "Sikkim"],
+    "answer": "Sikkim",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "The longest part of the digestive canal in animals like lions, cows, and humans is known as the ________.",
+    "options": ["stomach", "large intestine", "oesophagus", "small intestine"],
+    "answer": "small intestine",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "The famous santoor player Pandit Shivkumar Sharma received the ________ in the year 1986.",
+    "options": [
+      "Maharashtra Gurav Puraskar",
+      "Sangeet Natak Akademi Award",
+      "Sanskriti Award",
+      "Kalidas Samman"
+    ],
+    "answer": "Sangeet Natak Akademi Award",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following is a festival primarily celebrated in the state of Odisha?",
+    "options": ["Baishagu", "Chhath", "Raja Parba", "Me-Dam-Me-Phi"],
+    "answer": "Raja Parba",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following best describes the difference between SHGs and MFIs?",
+    "options": [
+      "SHGs are non-profit organisations, while MFIs are for-profit organisations.",
+      "SHGs provide only credit, while MFIs provide a range of financial services.",
+      "SHGs are typically small, community-based organisations, while MFIs are larger and more formal institutions.",
+      "SHGs rely on government subsidies for funding, while MFIs rely on commercial sources of funding."
+    ],
+    "answer": "SHGs are typically small, community-based organisations, while MFIs are larger and more formal institutions.",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "The Aryans lived in the land known as 'Sapta Sindhu' (Land of the Seven Rivers). Which of the following was NOT a part of it?",
+    "options": ["Indus", "Shipra", "Ravi", "Jhelum"],
+    "answer": "Shipra",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "If 3x + 2y = 10 and 2xy = 7, then find the value of 3x - 2y (if 3x - 2y > 0).",
+    "options": ["4", "10", "8", "6"],
+    "answer": "4",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "If each side of an equilateral triangle is 37√3 cm, then its altitude (in cm) is equal to:",
+    "options": ["37.5", "18.5", "60.5", "55.5"],
+    "answer": "55.5",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "In △PQR, if 4∠P = 5∠Q = 20∠R, then the value of ∠Q is:",
+    "options": ["72°", "36°", "90°", "45°"],
+    "answer": "36°",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "For what value of t is the value of sin²(t) half of the value of tan(t)?",
+    "options": ["60°", "45°", "30°", "22.5°"],
+    "answer": "45°",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "If tanA = 1/√10 and A is an acute angle, then the value of sinA + cosecA is:",
+    "options": ["√10 + 1", "√10 + 12", "√11 + 10", "π + 11"],
+    "answer": "√11 + 10",
+    "section": "Maths",
+    "level": "Hard"
+  },
+  {
+    "question": "Simplify the following expression: 0.07 × 0.28 = 0.04 + 0.64 - 1.64 = 0.04",
+    "options": ["38.56", "-39.87", "-46.48", "36.78"],
+    "answer": "-39.87",
+    "section": "Maths",
+    "level": "Hard"
+  },
+  {
+    "question": "Two pipes A and B can fill a tank in 20 and 30 hours, respectively. Both pipes are opened to fill the tank, but when the tank is one-third full, a leak develops through which one-fourth of the water supplied by both pipes goes out. Find the total time (in hours) taken to fill the tank.",
+    "options": ["14⅔", "14", "11⅖", "12⅓"],
+    "answer": "14⅔",
+    "section": "Maths",
+    "level": "Hard"
+  },
+  {
+    "question": "A boat covers a distance of 55 km downstream in 5 hours while it takes 11 hours to cover the same distance upstream. What is the speed of the boat?",
+    "options": ["8 km/h", "9 km/h", "11 km/h", "7 km/h"],
+    "answer": "8 km/h",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "The single discount equivalent to a series discount of 60%, 70% and 80% is:",
+    "options": ["97.6%", "70%", "85%", "95.5%"],
+    "answer": "97.6%",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "The number 4,29,714 is divisible by:",
+    "options": ["3 and 5", "6 and 5", "4 and 6", "3 and 6"],
+    "answer": "3 and 6",
+    "section": "Maths",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate meaning of the underlined idiom in the following sentence. Sejal visits the nearby temple off and on.",
+    "options": ["Periodically", "Constantly", "Continuously", "Regularly"],
+    "answer": "Periodically",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Parts of a sentence are given below in jumbled order. Select the option that arranges the parts in the correct sequence to form a meaningful sentence. (P) unlock their potential (Q) empowers individuals to (O) and shape their future (R) the power of education",
+    "options": ["QROP", "OPRQ", "RQPO", "RPOQ"],
+    "answer": "RQPO",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "The following sentence has been divided into four segments. Identify the segment that contains an error. Mr. Suman / asked me / to pack / my luggages.",
+    "options": ["asked me", "my luggages.", "to pack", "Mr. Suman"],
+    "answer": "my luggages.",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the option that can be used as a one-word substitute for the given group of words. A place to park aeroplanes",
+    "options": ["Hanger", "Depot", "Shed", "Hangar"],
+    "answer": "Hangar",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the option that expresses the following sentence in passive voice. The baker baked the cake.",
+    "options": [
+      "The cake was baked by the baker",
+      "The cake had been baked by the baker.",
+      "The baker has been baking the cake.",
+      "The cake has been baked by the baker."
+    ],
+    "answer": "The cake was baked by the baker",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate ANTONYM of the underlined word in the following sentence. The teammates made several jibes at the opponent team members during the interview.",
+    "options": ["Consolation", "Mockery", "Inspiration", "Contradict"],
+    "answer": "Contradict",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate option to substitute the underlined segment in the given sentence. Athens was suffering under the rule of a powerful small group that had no concern for the people's welfare.",
+    "options": ["a democracy", "an oligarchy", "a monarchy", "a missionary"],
+    "answer": "an oligarchy",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the correct spelling to fill in the blank. I often fail to remember someone's name ________.",
+    "options": ["accurately", "accuratially", "acusatively", "accurately"],
+    "answer": "accurately",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate option that can rectify the incorrectly spelt word in the following sentence. I doubt that these lifts can acommodate 100 people.",
+    "options": ["acommodate", "accommodatte", "accomodate", "accommodate"],
+    "answer": "accommodate",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate synonym of the given word. Dissipate",
+    "options": ["Glorious", "Malicious", "Haste", "Spend"],
+    "answer": "Spend",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the sentence that is expressed in passive voice.",
+    "options": [
+      "I prefer tea to coffee.",
+      "Children are participating in sand-art competition.",
+      "She sketches beautifully.",
+      "The consignment was delivered yesterday."
+    ],
+    "answer": "The consignment was delivered yesterday.",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate meaning of the underlined idiom. This year's budget is unlikely to pass as law since the president's proposed budgets typically face a jaundiced eye but this one has gotten even more scepticism.",
+    "options": ["Jealousy", "Confidence", "Resentment", "Good will"],
+    "answer": "Resentment",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate synonym of the given word. Dodge",
+    "options": ["Avoid", "Force", "Boarding", "Amount"],
+    "answer": "Avoid",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate ANTONYM of the underlined word in the given sentence. Her behaviour was so ostentatious that it attracted the attention of everyone in the room.",
+    "options": ["Attractive", "Restrained", "Gentle", "Repulsive"],
+    "answer": "Restrained",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate ANTONYM of the underlined word. Her remarks were relevant to the discussion.",
+    "options": ["Inappropriate", "Suitable", "Introductory", "Conclusive"],
+    "answer": "Inappropriate",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the option with the correct use of future tense.",
+    "options": [
+      "By next December, I will have been completed six years in this home.",
+      "By next December, I will be completed six years in this home.",
+      "By next December, I will have complete six years in this home.",
+      "By next December, I will have completed six years in this home."
+    ],
+    "answer": "By next December, I will have completed six years in this home.",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate option that can substitute the underlined words in the given sentence. Ranjith failed in all his exams as he had been addicted of social media.",
+    "options": [
+      "as he had been addicted at",
+      "as he had been addicted on",
+      "as he had been addicted in",
+      "as he had been addicted to"
+    ],
+    "answer": "as he had been addicted to",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate ANTONYM of the given word. Lethargic",
+    "options": ["Active", "Languid", "Moderate", "Angry"],
+    "answer": "Active",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the option that can be used as a one-word substitute for the given group of words. The evening time when the sun has just set and it is almost dark.",
+    "options": ["Dusk", "Night", "Dawn", "Day break"],
+    "answer": "Dusk",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate option to substitute the underlined segment in the given sentence. The cynical investors believed in every word the analysts said.",
+    "options": ["credulous", "distrustful", "persuasive", "credible"],
+    "answer": "credulous",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "The Human Development Index (HDI) is a summary ________ of average accomplishment in important areas of human development.",
+    "options": ["regiment", "assessment", "involvement", "collect"],
+    "answer": "assessment",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "The HDI includes living a long and healthy life, being informed and ________ a good quality of living.",
+    "options": ["segregating", "exaggerating", "including", "manifesting"],
+    "answer": "including",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "The HDI is the geometric mean of the normalised ________ for each dimension.",
+    "options": ["features", "contents", "indices", "glimpses"],
+    "answer": "indices",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "The health component is ________ by life expectancy at birth.",
+    "options": ["levitated", "escaped", "triggered", "measured"],
+    "answer": "measured",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "The education dimension is measured by the average number of years of schooling for individuals aged 25 and above, as well as the ________ number of years of schooling for school-age children.",
+    "options": ["accompanied", "hypnotised", "predicted", "expected"],
+    "answer": "expected",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "What will come in the place of the question mark (?) in the following equation, if '+' and '-' are interchanged and 'x' and '+' are interchanged? 304 × 19 -101 +23+5 =?",
+    "options": ["21", "12", "2", "6"],
+    "answer": "6",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "The same operation(s) are followed in all the given number pairs except one. Find that odd number pair.",
+    "options": ["56 : 9", "44 : 7", "68 : 11", "72 : 12"],
+    "answer": "68 : 11",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Three statements are given, followed by three conclusions numbered I, II and III. Assuming the statements to be true, decide which of the conclusions logically follow(s). Statements: Some rats are mouse. No mouse is a rodent. Some rats are kittens.",
+    "options": [
+      "Only conclusion III follows",
+      "Only conclusion II follows",
+      "Neither conclusion follows",
+      "Only conclusion I follows"
+    ],
+    "answer": "Only conclusion III follows",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Four letter-clusters have been given, out of which three are alike in some manner and one is different. Select the one that is different.",
+    "options": ["ONM", "BCD", "RST", "JKL"],
+    "answer": "ONM",
+    "section": "Reasoning",
+    "level": "Easy"
+  },
+  {
+    "question": "Which of the following numbers will replace the question mark (?) in the given series? 12, 25, 49, ?, 197, 395",
+    "options": ["100", "121", "99", "96"],
+    "answer": "96",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "All of the letters in the word 'JUNGLE' are arranged in alphabetical order. How many letters are there in the English alphabetical series between the letter which is second from the left end and the one which is third from the right end in the new letter-cluster thus formed?",
+    "options": ["Three", "Two", "Five", "Four"],
+    "answer": "Four",
+    "section": "Reasoning",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the option that is related to the fifth letter-cluster in the same way as the second letter-cluster is related to the first and the fourth to the third. OUR : NPTVQS :: BIG : ACHJFH :: FOR : ?",
+    "options": ["EGNPQS", "GENPRS", "EGNOQR", "GEPNSQ"],
+    "answer": "EGNOQR",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the word pair that best represents a similar relationship to the one expressed in the pair of words given below. Calcium : Osteomalacia",
+    "options": ["Stomach : Blindness", "Iron : Anaemia", "Heart : Cardiovascular", "Lungs : Tuberculosis"],
+    "answer": "Iron : Anaemia",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option in which the numbers share the same relationship as that shared by the given pair of numbers. 17 : 253 :: 19 : ?",
+    "options": ["289", "207", "400", "387"],
+    "answer": "289",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the set in which the numbers are related in the same way as are the numbers of the following set. (66, 57, 48) (94, 85, 76)",
+    "options": ["(85, 77, 64)", "(81, 72, 63)", "(98, 90, 83)", "(79, 70, 59)"],
+    "answer": "(81, 72, 63)",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "In a certain code language, BRING is coded as '7149182' and SMILE is coded as '51291319'. What will be the code for FORGIVE?",
+    "options": ["5229179156", "5228717156", "5219717166", "5229718156"],
+    "answer": "5229718156",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Two sets of numbers are given below. Which of the given options follows the same set of operations as in the given sets? 14 -196 -186 -172; 15 - 225 - 215 - 200",
+    "options": ["9-81-71-62", "3-9-19-14", "8-64-54-40", "6-36-26-22"],
+    "answer": "9-81-71-62",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option that represents the letters that, when sequentially placed from left to right in the blanks below, will complete the letter series. RF_GTR_VG_RFV_T_FVGT",
+    "options": ["VFTGR", "VFTGG", "VTTGR", "VFVGR"],
+    "answer": "VFTGR",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Who developed the theory of combustion as a chemical reaction with oxygen in the 18th century, that excluded phlogiston theory?",
+    "options": ["Antoine Lavoisier", "Robert Boyle", "Friedrich Wöhler", "Johann Becher"],
+    "answer": "Antoine Lavoisier",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "What do we mean by Allen's rule?",
+    "options": [
+      "Mammals from colder climates generally have shorter ears and limbs to minimise heat loss.",
+      "Desert lizards lack the physiological ability that mammals have to deal with the high temperatures of their habitat.",
+      "Some plants have no leaves - they are reduced to spines - and the photosynthetic function is taken over by the flattened stems.",
+      "The body compensates low oxygen availability by increasing red blood cell production, decreasing the binding affinity of haemoglobin and by increasing the breathing rate."
+    ],
+    "answer": "Mammals from colder climates generally have shorter ears and limbs to minimise heat loss.",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following schemes enables students mobility across Higher Education Institutions?",
+    "options": [
+      "National Educational Technology Forum",
+      "PM Umeed scheme",
+      "Structured Assessment for Analysing Learning Levels (SAFAL)",
+      "Academic Bank of Credits"
+    ],
+    "answer": "Academic Bank of Credits",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following Constitutions inspired the law-making process in India?",
+    "options": [
+      "Irish Constitution",
+      "British Constitution",
+      "US Constitution",
+      "Canadian Constitution"
+    ],
+    "answer": "British Constitution",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "What is the definition of microfinance?",
+    "options": [
+      "A microfinance institution is a company registered under the Companies Act, 1956, and engaged in the business of loans and advances and acquisition of shares/stocks/bonds/debentures/securities issued by the government.",
+      "Microfinance is a banking service provided to unemployed or low-income individuals or groups, who otherwise would have no other access to financial services.",
+      "A microfinance institution is a digital-only and mobile-first bank.",
+      "Microfinance refers to providing banking services to individuals living in rural areas."
+    ],
+    "answer": "Microfinance is a banking service provided to unemployed or low-income individuals or groups, who otherwise would have no other access to financial services.",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Ernest Rutherford used about how many atoms thick gold foil for alpha scattering experiments?",
+    "options": ["500 atoms", "1000 atoms", "900 atoms", "700 atoms"],
+    "answer": "1000 atoms",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "In May 2022, who was appointed as the Lieutenant Governor of Delhi?",
+    "options": [
+      "Kiran Bedi",
+      "Anil Baijal",
+      "Vijai Kapoor",
+      "Vinai Kumar Saxena"
+    ],
+    "answer": "Vinai Kumar Saxena",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "How many players are there on each side of a Kabaddi team in the field?",
+    "options": ["9", "7", "8", "10"],
+    "answer": "7",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "Which of the following events took place in the United Provinces in February, 1922?",
+    "options": [
+      "Quit India",
+      "Chauri Chaura",
+      "Khilafat Movement",
+      "Kakori Incident"
+    ],
+    "answer": "Chauri Chaura",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "In which state of India was the Neeru-Meeru programme introduced for construction of water harvesting structures?",
+    "options": ["Andhra Pradesh", "Rajasthan", "Uttar Pradesh", "Punjab"],
+    "answer": "Andhra Pradesh",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Lata Mangeshkar was honoured with the Bharat Ratna in the year:",
+    "options": ["2001", "2003", "2004", "2002"],
+    "answer": "2001",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "In which of the following districts of Rajasthan are the 'Barchans' found?",
+    "options": ["Udaipur", "Jaisalmer", "Bhilwara", "Alwar"],
+    "answer": "Jaisalmer",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following types of unemployment is found in India when people are employed for a certain period of a year in tourist resorts and various tourism-related activities in the mountain regions, but are unemployed in off-seasons?",
+    "options": [
+      "Seasonal unemployment",
+      "Under employment",
+      "Disguised unemployment",
+      "Cyclical unemployment"
+    ],
+    "answer": "Seasonal unemployment",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "When was the Jawaharlal Nehru Manipur Dance Academy established?",
+    "options": ["1951", "1953", "1954", "1952"],
+    "answer": "1954",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "'Poush Mela' is a unique festival celebrated in which of the following Indian states?",
+    "options": ["Uttar Pradesh", "Himachal Pradesh", "West Bengal", "Madhya Pradesh"],
+    "answer": "West Bengal",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "According to which of the following foreign travellers, people of Delhi used to write letters containing abuses to the Sultan, therefore, in order to punish them Sultan decided to shift the capital?",
+    "options": ["Isami", "Hasan Nizami", "Ibn Batuta", "Al Biruni"],
+    "answer": "Ibn Batuta",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "With reference to Morley-Minto Reforms of 1909, consider the following statements. a) They are also called the Indian Councils Act, 1909. b) They increased the strength of Legislative Councils. c) The right to separate electorate was given to the Muslims. Which of the above statements is/are correct?",
+    "options": [
+      "b, c",
+      "a, b, c",
+      "c, a",
+      "a, b"
+    ],
+    "answer": "a, b, c",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "How long will a sound wave take to travel 1.5 km, which has a frequency of 5 kHz and wavelength of 6 cm?",
+    "options": [
+      "2.5 seconds",
+      "50 seconds",
+      "5 seconds",
+      "25 seconds"
+    ],
+    "answer": "5 seconds",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which Article of the Constitution of India deals with the conduct of business of the Government of a state?",
+    "options": [
+      "Article 177",
+      "Article 167",
+      "Article 164",
+      "Article 166"
+    ],
+    "answer": "Article 166",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Hariprasad Chaurasia, an Indian flutist in the Hindustani classical tradition, was awarded with which of the following awards in 2000?",
+    "options": [
+      "Padma Shri",
+      "Padma Vibhushan",
+      "Bharat Ratna",
+      "Padma Bhushan"
+    ],
+    "answer": "Padma Vibhushan",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following terms is NOT related to cricket?",
+    "options": [
+      "Wide Ball",
+      "Wicket",
+      "No Ball",
+      "Deuce"
+    ],
+    "answer": "Deuce",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "Vasudeva I who issued coins in gold (dinars and quarter dinars) and copper (single denomination) was a king of which dynasty?",
+    "options": [
+      "Shunga",
+      "Vakataka",
+      "Shaka",
+      "Kushana"
+    ],
+    "answer": "Kushana",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following types of venation is found in grasses?",
+    "options": [
+      "Cubical venation",
+      "Radial venation",
+      "Rectangular venation",
+      "Parallel venation"
+    ],
+    "answer": "Parallel venation",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "Naman bought few apples for ₹720 from a shop. He negotiated the price and the shopkeeper reduced it by ₹2 per apple. Due to this Naman could buy four more apples than what he had bought earlier. How many apples did he originally buy?",
+    "options": ["48", "44", "36", "40"],
+    "answer": "36",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "The tank is filled by three pipes with different uniform flow rates. While the first two pipes are operating simultaneously, they fill the tank in the same duration that the third pipe takes to fill it alone. The second pipe can fill the tank 5 hours quicker than the first pipe, yet 4 hours slower than the third pipe. What is the time (in hours) needed for the first pipe to fill the tank?",
+    "options": ["18", "12", "9", "15"],
+    "answer": "15",
+    "section": "Maths",
+    "level": "Hard"
+  },
+  {
+    "question": "In a triangle ABC, if ∠A + ∠B + 2∠C = 120°, then the value of ∠A is:",
+    "options": ["20°", "40°", "60°", "30°"],
+    "answer": "30°",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "Sohan borrows a sum of ₹1,41,545 at the rate of 11% per annum simple interest. At the end of the first year, he repays ₹25,490 towards return of principal amount borrowed. If Sohan clears all pending dues at the end of the second year, including interest payment that accrued during the first year, how much does he pay (in ₹) at the end of the second year?",
+    "options": ["1,44,391", "1,36,453", "1,41,222", "1,37,407"],
+    "answer": "1,41,222",
+    "section": "Maths",
+    "level": "Hard"
+  },
+  {
+    "question": "Express sin 74° + tan 74° in terms of trigonometric ratios of angles between 0° and 45°.",
+    "options": [
+      "sec 16° + cot 16°",
+      "cosec 16° + sec 16°",
+      "cosec 16° + cot 16°",
+      "cos 16° + cot 16°"
+    ],
+    "answer": "cosec 16° + cot 16°",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "A cuboid of dimensions 50 cm, 150 cm, 175 cm can be divided into how many identical largest cubes?",
+    "options": ["75", "84", "85", "90"],
+    "answer": "84",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "If Ram purchases a fan, he gets 8% discount, however, if he purchases three fans he gets 6% on the first, 10% on the second and 12% on the third. If the price paid by Ram for three fans is ₹6,800, then what will be the marked price of each fan?",
+    "options": ["₹2,400", "₹2,500", "₹2,450", "₹2,550"],
+    "answer": "₹2,500",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "A boat can go 54 km upstream in 6 hours. If the speed of the stream is 4.8 km/h, then how much time (in hours) will the boat take to cover a distance of 279 km downstream?",
+    "options": ["20", "15", "18", "16"],
+    "answer": "15",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "P and Q are centres of two circles whose radii are 7 cm and 3 cm, respectively. If the direct common tangents to the circles meet PQ extended at A, then A divides PQ:",
+    "options": [
+      "externally in the ratio 3 : 7",
+      "internally in the ratio 3 : 7",
+      "externally in the ratio 7 : 3",
+      "internally in the ratio 7 : 3"
+    ],
+    "answer": "externally in the ratio 7 : 3",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "If the total exports of all companies together in the year 2013 is ₹300 lakh, then the profit/loss of all companies together in year 2013 is: (Assume: Profit = Exports - Imports)",
+    "options": [
+      "loss of ₹27 lakh",
+      "loss of ₹18 lakh",
+      "profit of ₹30 lakh",
+      "profit of ₹35 lakh"
+    ],
+    "answer": "profit of ₹35 lakh",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "Simplify the following expression: (3 + a)(30)(2 - 0.2)",
+    "options": ["27", "63", "81", "54"],
+    "answer": "54",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "If Saloni's monthly income is ₹75,000, how much money (in ₹) does she spend on Rent and Education?",
+    "options": ["42,150", "43,250", "40,150", "41,250"],
+    "answer": "41,250",
+    "section": "Maths",
+    "level": "Easy"
+  },
+  {
+    "question": "If x + 1/x = 3, then the value of 9x² + 1/x² - 1 is:",
+    "options": ["87", "81", "77", "79"],
+    "answer": "81",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "Find the gain percentage, given that Siddhi sold her scooter for ₹31902 gaining 1/5 of the selling price.",
+    "options": ["20%", "30%", "25%", "5%"],
+    "answer": "20%",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "A class of 30 students appeared in a test. The average score of 12 students is 62, and that of the rest is 74. What is the average score of the class?",
+    "options": ["70.2", "69.2", "68.2", "67.2"],
+    "answer": "69.2",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "If p sin A - cos A = 1, then p² - (1 + p²) cos A equals:",
+    "options": ["1", "-1", "2", "0"],
+    "answer": "1",
+    "section": "Maths",
+    "level": "Hard"
+  },
+  {
+    "question": "What is the ratio of the mean proportional of 1.21 and 0.09 with the mean proportional of 0.16 and 0.36?",
+    "options": ["11 : 8", "13 : 8", "13 : 12", "11 : 13"],
+    "answer": "11 : 13",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "Replace * by the smallest digit so that 723*56* is divisible by 6.",
+    "options": ["4", "3", "2", "1"],
+    "answer": "2",
+    "section": "Maths",
+    "level": "Easy"
+  },
+  {
+    "question": "Consider a triangle PQR, right angled at R, in which PQ = 29 units, QR = 21 units. Find the value of cos²θ - sin²θ.",
+    "options": ["21/841", "1", "20/841", "841"],
+    "answer": "20/841",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "In triangle ALMN, ∠L = 118° and LM = LN. Find ∠N.",
+    "options": ["42°", "31°", "65°", "62°"],
+    "answer": "31°",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "A woman spends 3/4 of her income. If her income increases by 18% and the expenditure increases by 24%, then the percentage increase in her savings will be:",
+    "options": ["6%", "3%", "5%", "4%"],
+    "answer": "6%",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "In triangle ABC, two medians AD and BE intersect at G at right angles. If AD = 12 cm and BE = 9 cm, then the length of AB is equal to:",
+    "options": ["14 cm", "16 cm", "12 cm", "10 cm"],
+    "answer": "10 cm",
+    "section": "Maths",
+    "level": "Hard"
+  },
+  {
+    "question": "Select the correctly spelt word to fill in the blank. All the chefs in the world are famous because of their ________ skills.",
+    "options": ["kulinary", "kolinary", "culinary", "colinary"],
+    "answer": "culinary",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the option that will improve the underlined part of the given sentence. When I saw him, I will ask him to return the book he borrowed.",
+    "options": ["shall see him", "have seen him", "had seen him", "see him"],
+    "answer": "had seen him",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate synonym of the given word. Paramount",
+    "options": ["inferior", "collateral", "supreme", "trivial"],
+    "answer": "supreme",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option that can be used as a one-word substitute for the given group of words. Failing to give proper care and attention",
+    "options": ["Lax", "Cautious", "Wild", "Provident"],
+    "answer": "Lax",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate antonym of the given word. Brittle",
+    "options": ["Crunchy", "Resilient", "Delicate", "Aloof"],
+    "answer": "Resilient",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option that can be used as a one-word substitute for the underlined group of words. Rohan is the one who opposes others, no matter what they tell him.",
+    "options": ["antagonist", "agonist", "anatomist", "protagonist"],
+    "answer": "antagonist",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option that expresses the given sentence in active voice. The letter was being typed by the secretary when the phone rang.",
+    "options": [
+      "The secretary will type the letter when the phone rings.",
+      "The secretary types the letter when the phone rings.",
+      "The secretary was typing the letter when the phone rang.",
+      "The secretary is typing the letter when the phone rings."
+    ],
+    "answer": "The secretary was typing the letter when the phone rang.",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate meaning of the given idiom. A dime a dozen",
+    "options": [
+      "Variety of amenities",
+      "Something common and not special",
+      "Very wealthy",
+      "A fair trade"
+    ],
+    "answer": "Something common and not special",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate synonym of the given word. Expertise",
+    "options": ["Proficiency", "Ignorance", "Clumsiness", "Lack"],
+    "answer": "Proficiency",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Identify the INCORRECTLY spelt word. I took out a water tumbler for a drink, but found the water in the metal container had frozen so I couldn't quanch my thirst.",
+    "options": ["A", "B", "C", "D"],
+    "answer": "C",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Arrange the parts in the correct sequence to form a meaningful sentence: (P) an open mind (Q) seek it with (O) for personal growth and development (R) knowledge is a powerful tool",
+    "options": ["PQRO", "ORPQ", "QROP", "ROQP"],
+    "answer": "ROQP",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate antonym of the underlined word in the given sentence. Success is not a destination, it's a journey.",
+    "options": ["Sensation", "Opulence", "Victory", "Failure"],
+    "answer": "Failure",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate synonym of the bold word in the following sentence. His eloquent speech always persuades people to work for their betterment.",
+    "options": ["Vague", "Inarticulate", "Articulate", "Short"],
+    "answer": "Articulate",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Arrange the sentences in the correct order to form a meaningful paragraph. A. A big fancy dress ball was arranged to celebrate their homecoming. B. It must have been a terrible shock for a young girl. C. They had been married a month, just home from their honeymoon. D. Just as the guests were starting to arrive, Charnley locked himself into his bedroom and shot himself.",
+    "options": ["BCDA", "ABCD", "BCAD", "DACB"],
+    "answer": "BCAD",
+    "section": "English",
+    "level": "Hard"
+  },
+  {
+    "question": "Select the option that expresses the given sentence in passive voice. He must deliver pizza.",
+    "options": [
+      "Pizza has to be delivered by him.",
+      "Pizza have to be delivered by him.",
+      "Pizza must be delivered by him.",
+      "Pizza can be delivered by him."
+    ],
+    "answer": "Pizza must be delivered by him.",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate option to fill in blank no.1: Now, we have Mr. X as the President of India. It has come as a surprise (1) Scheduled Tribes...",
+    "options": ["off", "in", "to", "at"],
+    "answer": "to",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate option to fill in blank no.2: ...Scheduled Tribes who are (2) the most marginalised groups of the country.",
+    "options": ["through", "therefore", "onto", "among"],
+    "answer": "among",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate option to fill in blank no.3: The Adivasis of India have been (3) socially, economically and culturally.",
+    "options": ["censored", "marginalised", "elevated", "uplifted"],
+    "answer": "marginalised",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate option to fill in blank no.4: ...they are still under (4) and suffering.",
+    "options": ["abundance", "forest", "river", "poverty"],
+    "answer": "poverty",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate option to fill in blank no.5: Therefore, the (5) a leader from a marginalised community or group does not indicate...",
+    "options": ["rejection of", "president of", "exclusion of", "elevation of"],
+    "answer": "elevation of",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the set in which the numbers are related in the same way as are the numbers of the following set. (121, 93, 214) (115, 87, 202)",
+    "options": ["(135, 117, 259)", "(110, 94, 224)", "(84, 99, 189)", "(97, 112, 209)"],
+    "answer": "(97, 112, 209)",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the word pair that best represents a similar relationship to the one expressed in the pair of words given below. Presence : Abundance",
+    "options": ["Nourish : Neglect", "Infinite : Cosmic", "Abstract : Concrete", "Concise : Verbose"],
+    "answer": "Infinite : Cosmic",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "What will come in the place of '?' in the following equation, if '+' and '-' are interchanged and 'x' and '+' are interchanged? 15 × 9 + 7 + 26 - 13 = ?",
+    "options": ["68", "72", "76", "84"],
+    "answer": "76",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "In a certain code language, 'A + B' means 'A is the mother of B'; 'A - B' means 'A is the brother of B'; 'A x B' means 'A is the wife of B'; and 'A + B' means 'A is the father of B'. Based on the above, how is 5 related to 3 if '5 - 2 x 4 + 3'?",
+    "options": ["Father's sister", "Mother's brother", "Father's brother", "Mother's sister"],
+    "answer": "Mother's brother",
+    "section": "Reasoning",
+    "level": "Hard"
+  },
+  {
+    "question": "62 is related to 79 following certain logic. Following the same logic, 98 is related to 119. To which of the following numbers is 14 related, following the same logic?",
+    "options": ["24", "23", "19", "21"],
+    "answer": "23",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following letter-clusters will replace the question mark (?) in the given series to make it logically complete? NUT, RYX, VCB, ZGF, ?",
+    "options": ["EKJ", "DKL", "EKL", "DKJ"],
+    "answer": "DKJ",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following numbers will replace the question marks (?) in the given series? 4, ?, ?, 49, 121, 169, 289",
+    "options": ["9, 16", "9, 25", "3, 9", "16, 25"],
+    "answer": "9, 25",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "All of the letters in the word 'WISDOM' are arranged in alphabetical order. How many letters are there in the English alphabetical series between the letter which is third from the left end and the one which is second from the right end in the new letter-cluster thus formed?",
+    "options": ["Three", "Six", "Five", "Two"],
+    "answer": "Five",
+    "section": "Reasoning",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the option that is related to the fifth term in the same way as the second term is related to the first term and the fourth term is related to the third term. SWEET : WSETE :: SALTY : ASLYT :: DRINK : ?",
+    "options": ["RDIKN", "ESJOL", "RDNIK", "DRIKN"],
+    "answer": "RDIKN",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "In a certain code language, 'make some more' is coded as 'pb gq st' and 'need more time' is coded as 'ru ek gq'. What is the code for 'more' in that language?",
+    "options": ["st", "ek", "gq", "pb"],
+    "answer": "gq",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "In a certain code language, 'VERY' is written as '6314' and 'VARY' is written as '1438'. How will 'A' be written in that language?",
+    "options": ["6", "8", "4", "1"],
+    "answer": "8",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Rudrasena II of which of the following dynasties married Prabhavatigupta, the daughter of Chandragupta II of the Gupta dynasty?",
+    "options": ["Pushyabhuti", "Vakataka", "Chalukya", "Pallava"],
+    "answer": "Vakataka",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Madhuri Barthwal, a folk singer and Padma Shri 2022 awardee, belongs to which of the following states of India?",
+    "options": ["Uttarakhand", "Himachal Pradesh", "Uttar Pradesh", "Maharashtra"],
+    "answer": "Uttarakhand",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following elements is a metalloid?",
+    "options": ["Iron", "Oxygen", "Sodium", "Silicon"],
+    "answer": "Silicon",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "Which country has the Republic feature of the Indian Constitution been borrowed from?",
+    "options": ["French Constitution", "Irish Constitution", "British Constitution", "Australian Constitution"],
+    "answer": "French Constitution",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following States has declared a social security scheme for registered newspaper hawkers in the State in 2021 considering the losses they faced during the pandemic and that they are a part of the unorganised sector?",
+    "options": ["Gujarat", "Maharashtra", "Odisha", "Tamil Nadu"],
+    "answer": "Odisha",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following is the main cause of land degradation in Jharkhand and Chhattisgarh?",
+    "options": ["Intensive use of manure", "Over-irrigation", "Deforestation due to mining", "Overgrazing"],
+    "answer": "Deforestation due to mining",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "As of 2021, which is the world's largest drainage basin with an area of about 70,00,000 km²?",
+    "options": ["Congo basin", "Amur basin", "Amazon basin", "Nile basin"],
+    "answer": "Amazon basin",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "National Sports University is situated in ________.",
+    "options": ["Mizoram", "Tripura", "Meghalaya", "Manipur"],
+    "answer": "Manipur",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "Which of the following characteristics is NOT of Aves?",
+    "options": [
+      "They have four-chambered heart.",
+      "They give birth to live young ones with some exceptions those lay eggs.",
+      "These are warm-blooded animals.",
+      "They breathe through the lungs"
+    ],
+    "answer": "They give birth to live young ones with some exceptions those lay eggs.",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "In which of the following states is the development of rail transport less, due to its geographical conditions?",
+    "options": ["Sikkim", "Haryana", "Bihar", "Uttar Pradesh"],
+    "answer": "Sikkim",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following books is INCORRECTLY paired with its respective author?",
+    "options": [
+      "Hind Swaraj - Mahatma Gandhi",
+      "Gitanjali - Rabindranath Tagore",
+      "The Discovery of India - Subhash Chandra Bose",
+      "Why I am an Atheist - Bhagat Singh"
+    ],
+    "answer": "The Discovery of India - Subhash Chandra Bose",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Who among the following was a poet who won Nobel Prize for literature in 1913?",
+    "options": [
+      "Aurobindo Ghose",
+      "Rudyard Kipling",
+      "Bankim Chandra Chattopadhyay",
+      "Rabindranath Tagore"
+    ],
+    "answer": "Rabindranath Tagore",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "In which year was the National Institute of Kathak Dance established?",
+    "options": ["1964", "1961", "1954", "1969"],
+    "answer": "1964",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "As for the year 2020-21, which of the following states had the lowest unemployment rate among persons aged 15 years and above?",
+    "options": ["Sikkim", "Madhya Pradesh", "Gujarat", "Chhattisgarh"],
+    "answer": "Chhattisgarh",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "When was the Indian Hockey Federation established?",
+    "options": ["1925", "1955", "1945", "1935"],
+    "answer": "1925",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which cell organelle is defined as the small round organelle that undergoes oxidation reaction to produce hydrogen peroxide?",
+    "options": ["Centrosome", "Vacuole", "Nucleus", "Peroxisomes"],
+    "answer": "Peroxisomes",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "The cause of a redox reaction is the:",
+    "options": [
+      "transfer of electrons between two reactants",
+      "transfer of electrons between two products",
+      "transfer of neutrons between two reactants",
+      "exchange of halogens between two reactants"
+    ],
+    "answer": "transfer of electrons between two reactants",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "'Sangken' is a festival celebrated in Arunachal Pradesh by people of which of the following religions?",
+    "options": ["Islam", "Buddhism", "Jainism", "Hinduism"],
+    "answer": "Buddhism",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which group of people will be benefited by the Mukhya Mantri Sukh Ashray Yojana approved by Himachal Pradesh?",
+    "options": [
+      "Students and teachers",
+      "Orphans, specially abled children, destitute women and senior citizens",
+      "Unemployed youth",
+      "Farmers and agricultural labourers"
+    ],
+    "answer": "Orphans, specially abled children, destitute women and senior citizens",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "What is the aim of the PM Ujjwala 2.0 Yojna launched in August 2021?",
+    "options": [
+      "Free LPG connections for commercial use",
+      "20 million LPG connections will be provided to the beneficiaries",
+      "10 million LPG connections will be provided to the beneficiaries",
+      "Free gas stove for BPL Households"
+    ],
+    "answer": "10 million LPG connections will be provided to the beneficiaries",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "MG Music Awards is presented annually by which of the following states?",
+    "options": ["Mizoram", "Nagaland", "Manipur", "Chhattisgarh"],
+    "answer": "Nagaland",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "If assets of a bank are greater than liabilities, it will be recorded as:",
+    "options": ["liabilities", "net worth", "reserves", "assets"],
+    "answer": "net worth",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following departments of Delhi Sultanate was reorganized by Balban?",
+    "options": ["Diwan-i-Ishtiaq", "Diwan-i-Arz", "Diwan-i-Risalat", "Diwan-i-Mustakhraj"],
+    "answer": "Diwan-i-Arz",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which digits should come in the place of * and #, respectively, if the 7-digit number 62684*# is divisible by both 8 and 5?",
+    "options": ["2 and 0", "4 and 0", "5 and 0", "0 and 5"],
+    "answer": "4 and 0",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "The area of a square is 16x² + 40x + 25 square units. Find the perimeter of the square.",
+    "options": ["3(10x+8)", "3(8x+10)", "2(10x+8)", "2(8x+10)"],
+    "answer": "2(8x+10)",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "The average of the squares of the first 45 natural numbers is:",
+    "options": ["698.67", "699.67", "697.67", "696.67"],
+    "answer": "697.67",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "A rectangular piece of paper is 50 cm long and 22 cm wide. If a cylinder is formed by rolling the paper along its breadth, then the volume of the cylinder is:",
+    "options": ["2,125 cm³", "1,925 cm³", "2,025 cm³", "1,825 cm³"],
+    "answer": "1,925 cm³",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "If x² + y² = 280 and xy = 120, then find the value of (x - y)/(x + y):",
+    "options": ["√13", "√15", "1", "√11"],
+    "answer": "√13",
+    "section": "Maths",
+    "level": "Hard"
+  },
+  {
+    "question": "The speed of a boat in still water is 18 km/h and the speed of the stream is 3 km/h. How much time (in hours) will it take to cover a distance of 105 km in downstream and in coming back?",
+    "options": ["12", "10", "15", "9 2/7"],
+    "answer": "12",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "Simple interest on a certain sum is one-fifth of the sum and the interest rate per cent per annum is 5 times the number of years. If the rate of interest increases by 3%, then how much will the simple interest (in ₹) be on ₹5,600 for 6 years?",
+    "options": ["₹4668", "₹4168", "₹4268", "₹4368"],
+    "answer": "₹4368",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "A bronze article having a marked price of ₹1,000 is sold during a festive season sale after three successive discounts of 20%, 30% and 10%. What will be the amount (in ₹) to be paid by a customer if she buys the article during the festival season?",
+    "options": ["₹508", "₹564", "₹504", "₹496"],
+    "answer": "₹504",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "Pipes P and Q can completely fill a water tank in 10 hours and 15 hours, respectively. A pipe R can empty a tank filled completely with water in 12 hours. Initially, the tank is empty and only pipes P and Q are opened at 6 a.m. and pipe R is also opened at 9 a.m. By what time will the tank be completely filled?",
+    "options": ["1 p.m.", "2 p.m.", "11 a.m.", "3 p.m."],
+    "answer": "2 p.m.",
+    "section": "Maths",
+    "level": "Hard"
+  },
+  {
+    "question": "For what value of k will the lines 2x + 7ky - 8 = 0 and x + y - 9 = 0 have no solution?",
+    "options": ["7", "9/7", "8", "2"],
+    "answer": "9/7",
+    "section": "Maths",
+    "level": "Hard"
+  },
+  {
+    "question": "The radii of two circles are 5 cm and 10 cm and the distance between their centres is 17 cm. Find the length of the transverse common tangent.",
+    "options": ["9 cm", "8 cm", "6 cm", "7.5 cm"],
+    "answer": "8 cm",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option that can be used as a one-word substitute for the given group of words. Fear of closed spaces",
+    "options": ["Photophobia", "Optophobia", "Agoraphobia", "Claustrophobia"],
+    "answer": "Claustrophobia",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the option that expresses the given sentence in passive voice. Historians tell us how this country was divided into three.",
+    "options": [
+      "We are told by historians how this country has been divided into three.",
+      "We are told by historians how this country divided into three.",
+      "We are told by historians how this country was divided into three.",
+      "We have been told by historians how this country was divided into three."
+    ],
+    "answer": "We are told by historians how this country was divided into three.",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the correctly spelt word to fill in the blank. The transistors are used as the main ________, which are built into computer chips.",
+    "options": ["components", "cumponents", "kamponents", "kumponents"],
+    "answer": "components",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Parts of a sentence are given below in jumbled order. Select the option that arranges the parts in the correct sequence to form a meaningful sentence. (P) technology has revolutionised (Q) and it has transformed the way (O) every aspect of our lives (R) we communicate and connect",
+    "options": ["RPQO", "RPOQ", "POQR", "ORQP"],
+    "answer": "POQR",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate meaning of the given idiom. Care a hang",
+    "options": [
+      "Hanging clothes to dry",
+      "Putting an outfit on a hanger",
+      "Caring too much",
+      "Showing no interest"
+    ],
+    "answer": "Showing no interest",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option that expresses the given sentence in passive voice. The company will launch the new product next month, and they are already promoting it through various marketing channels.",
+    "options": [
+      "The new product will be launched by the company next month, and it is already being promoted through various marketing channels.",
+      "The new product were been launched by the company next month, and it already was promoting through various marketing channels.",
+      "The new product was launched by the company next month, and it is already promoted through various marketing channels.",
+      "The new product will have been launched by the company next month, and it was already being promoted through various marketing channels."
+    ],
+    "answer": "The new product will be launched by the company next month, and it is already being promoted through various marketing channels.",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate antonym of the given word. Mechanical",
+    "options": ["Surrogate", "Automatised", "Yielding", "Manual"],
+    "answer": "Manual",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate meaning of the underlined word. Solomon's reputation as an accountant is taintless.",
+    "options": ["flawed", "faultless", "dubious", "inconsistent"],
+    "answer": "faultless",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "The following sentence has been divided into four segments. Identify the segment that contains a grammatical error. My sister, Juliet, / got married / as her / was 23.",
+    "options": [
+      "My sister, Juliet,",
+      "got married",
+      "as her",
+      "was 23."
+    ],
+    "answer": "as her",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate synonym of the given word. Evaluate",
+    "options": ["Misjudge", "Assess", "Unity", "Misquote"],
+    "answer": "Assess",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate synonym of the bracketed word in the following sentence to fill in the blank. The media, these days, constructs (misleading) narratives on politics and celebrities to increase the viewership.",
+    "options": ["sincere", "true", "candid", "mendacious"],
+    "answer": "mendacious",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate option to substitute the underlined segment in the given sentence. To tell others secret information only for enjoyment is not a good practice.",
+    "options": ["spill the words", "spill the cat", "spill the onions", "spill the beans"],
+    "answer": "spill the beans",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate option to fill in the blank. The group of travellers were wonderstruck by the ________.",
+    "options": ["wait", "white", "wide", "weight"],
+    "answer": "weight",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option that can substitute/replace the bracketed word correctly and complete the sentence. They could (always) stay in, or go for a walk.",
+    "options": ["had better", "not only", "either", "neither"],
+    "answer": "either",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the word which means the same as the group of words given. Choice between two unsatisfactory alternatives",
+    "options": ["Dilemma", "Problem", "Confusion", "Difficulty"],
+    "answer": "Dilemma",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate option to fill in blank number 1. As a result of Covid-19, the quick (1) to digital training has exposed the hazards of student disengagement...",
+    "options": ["end", "transition", "set", "stagnation"],
+    "answer": "transition",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate option to fill in blank number 2. ...the resulting consequences of lower student performance across (2) courses.",
+    "options": ["numerous", "fewer", "particular", "limit"],
+    "answer": "numerous",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate option to fill in blank number 3. The latest (3) has altered the education of millions of people around the world.",
+    "options": ["local", "endemic", "epidemic", "pandemic"],
+    "answer": "pandemic",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate option to fill in blank number 4. ...around the world were forced to (4) their studies.",
+    "options": ["suspend", "resume", "reopened", "carry on"],
+    "answer": "suspend",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate option to fill in blank number 5. Children, (5) basic, core learning... was weak to begin with...",
+    "options": ["which", "whose", "whom", "who"],
+    "answer": "whose",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Six letters S, T, M, P, R and C are written on different faces of a dice. Two positions of this dice are shown. Find the letter on the face opposite to M.",
+    "options": ["R", "P", "C", "S"],
+    "answer": "P",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "'Blossom' is related to 'Wither' in the same way as 'Stagnate' is related to:",
+    "options": ["Stand", "Rest", "Languish", "Flow"],
+    "answer": "Flow",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Which two signs should be interchanged to make the following equation correct? 18 - 23 × 455 + 7 + 28 = 377",
+    "options": ["+ and ×", "- and ×", "- and +", "+ and -"],
+    "answer": "- and ×",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "What will come in place of the question mark (?) in the following equation if '+' and '-' are interchanged and '×' and '+' are interchanged? 4 - 12 + 3 + 12 × 6 = ?",
+    "options": ["13", "46", "11", "22"],
+    "answer": "22",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "The position of how many letters will remain unchanged if each of the letters in the word 'PRANKED' is arranged in the English alphabetical order?",
+    "options": ["One", "Three", "None", "Two"],
+    "answer": "Two",
+    "section": "Reasoning",
+    "level": "Easy"
+  },
+  {
+    "question": "10 is related to 15 following certain logic. Following the same logic, 42 is related to 63. To which of the following numbers is 22 related, following the same logic?",
+    "options": ["28", "30", "33", "31"],
+    "answer": "33",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option that is related to the third word in the same way as the second word is related to the first word. Temerity : Shyness :: Pique : ?",
+    "options": ["Resentment", "Anger", "Delight", "Offence"],
+    "answer": "Delight",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option that represents the letters that when placed from left to right in the blanks below will complete the given letter series. LMBA_HOLMBAC_OLM_ACHOL_BACHOL_",
+    "options": ["CHMBM", "CMHBM", "CHBMM", "CHMMB"],
+    "answer": "CHBMM",
+    "section": "Reasoning",
+    "level": "Hard"
+  },
+  {
+    "question": "Select the set in which the numbers are related in the same way as are the numbers of the following set. (7, 9, 48) (6, 8, 42)",
+    "options": ["(8, 10, 47)", "(9, 11, 56)", "(11, 13, 72)", "(10, 12, 54)"],
+    "answer": "(11, 13, 72)",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Three of the following four options are alike in a certain way and thus form a group. Which is the option that does NOT belong to that group? (2-4-8), (2-2-4), (3-2-5), (1-3-3)",
+    "options": ["2-4-8", "2-2-4", "3-2-5", "1-3-3"],
+    "answer": "3-2-5",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Read the given statements and conclusions carefully. Statements: Some boxes are cartons. All cartons are papers. Some cartons are utensils. Conclusion I: No box is a utensil. Conclusion II: Some papers are utensils.",
+    "options": [
+      "Both conclusions I and II follow",
+      "Neither conclusion I nor II follows",
+      "Only conclusion II follows",
+      "Only conclusion I follows"
+    ],
+    "answer": "Only conclusion II follows",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "In a certain code language, 'sit on chair' is coded as 'sk mi cn' and 'the chair broke' is coded as 'gm fr mi'. How is 'chair' coded in the given language?",
+    "options": ["sk", "cn", "mi", "gm"],
+    "answer": "mi",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Which letter-cluster will replace the question mark (?) to complete the given series? ZVRN, VSPM, RPNL, ?, JJJJ",
+    "options": ["RMLN", "RNLL", "RNLK", "NMLK"],
+    "answer": "RNLK",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the number from among the given options that can replace the question mark (?) in the following series. 23, 27, 43, 79, 143, ?",
+    "options": ["240", "243", "250", "200"],
+    "answer": "243",
+    "section": "Reasoning",
+    "level": "Medium"
+  },
+  {
+    "question": "In a certain code language, A # B means A is the sister of B. A @ B means A is the son of B. A & B means A is the wife of B. A % B means A is the father of B. How is Q related to R if P & Q % L # R & K?",
+    "options": ["Sister", "Wife", "Father", "Mother"],
+    "answer": "Mother",
+    "section": "Reasoning",
+    "level": "Hard"
+  },
+  {
+    "question": "Which of the following places is related to Gandhi's Satyagraha of the year 1917?",
+    "options": ["Kheda", "Ahmedabad", "Champaran", "Bardoli"],
+    "answer": "Champaran",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which Five-Year Plan primarily focused on the 'Garibi Hatao' initiative?",
+    "options": [
+      "Sixth Five-Year Plan",
+      "Fourth Five-Year Plan",
+      "Fifth Five-Year Plan",
+      "Third Five-Year Plan"
+    ],
+    "answer": "Fifth Five-Year Plan",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "After the death of Humayun, the 13-year-old Akbar was coronated in 1556 at Kalanaur in:",
+    "options": ["Rajasthan", "Gujarat", "Bengal", "Punjab"],
+    "answer": "Punjab",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following statements is INCORRECT about the Directive Principles of State Policy?",
+    "options": [
+      "They promote welfare of individuals. Hence, they are personal and individualistic.",
+      "These have moral and political sanctions.",
+      "They aim at establishing social and economic democracy in the country.",
+      "They are positive, as they require the State to do certain things."
+    ],
+    "answer": "They promote welfare of individuals. Hence, they are personal and individualistic.",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following is NOT correct with regards to the history of calculating National Income (NI) in India?",
+    "options": [
+      "First attempt to compute NI was made by Dadabhai Naoroji.",
+      "First official attempt to compute NI was made by PC Mahalanobis.",
+      "Dadabhai Naoroji divided the Indian economy into two parts: primary sector and secondary sector.",
+      "First scientific method to compute NI was used by Dr VKRV Rao."
+    ],
+    "answer": "Dadabhai Naoroji divided the Indian economy into two parts: primary sector and secondary sector.",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which government honoured Pandit Anindo Chatterjee with the Banga Vibhushan Award in 2022?",
+    "options": ["Assam", "Tripura", "West Bengal", "Jharkhand"],
+    "answer": "West Bengal",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Who was appointed as India's 28th Controller General of Accounts (CGA) in March 2023?",
+    "options": ["Arun Goel", "Praveen Sharma", "Vikram Devdutt", "SS Dubey"],
+    "answer": "SS Dubey",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "The Parliament passed the Marine Aids to Navigation Bill, 2021 to repeal and replace which of the following Acts?",
+    "options": [
+      "The Dangerous Machines (Regulation) Act, 1983",
+      "The Personal Injuries (Emergency Provisions) Act, 1962",
+      "The Lighthouse Act, 1927",
+      "The Dourine Act, 1910"
+    ],
+    "answer": "The Lighthouse Act, 1927",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following was the mascot of the FIH Men's Hockey World Cup – 2023?",
+    "options": ["Jitu", "Bheema", "Olly", "Asha"],
+    "answer": "Olly",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "Which Governor-General of British India helped Raja Ram Mohan Roy legally abolish the sati practice?",
+    "options": [
+      "Lord Ripon",
+      "Lord Curzon",
+      "Lord Cornwallis",
+      "Lord William Bentinck"
+    ],
+    "answer": "Lord William Bentinck",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following festivals is celebrated as the birth anniversary of Guru Nanak Dev?",
+    "options": ["Hola Mohalla", "Baisakhi", "Gurpurab", "Chappar Mela"],
+    "answer": "Gurpurab",
+    "section": "GK",
+    "level": "Easy"
+  },
+  {
+    "question": "Which of the following is in geographical proximity to Sri Lanka?",
+    "options": [
+      "Only Karaikal",
+      "Karaikal and Yanam",
+      "Mahe",
+      "Only Yanam"
+    ],
+    "answer": "Only Karaikal",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following places is the Tansen Music Festival organised by?",
+    "options": [
+      "Maharashtra Government",
+      "Madhya Pradesh Government",
+      "Rajasthan Government",
+      "Uttar Pradesh Government"
+    ],
+    "answer": "Madhya Pradesh Government",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following is NOT affected by the climate of a place?",
+    "options": ["Relief", "Type of soil", "Location", "Distance from the sea"],
+    "answer": "Type of soil",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "Hubbardia heptaneuron, which has become endangered, is a species of which of the following?",
+    "options": ["Grass", "Bamboo", "Tiger", "Crane"],
+    "answer": "Grass",
+    "section": "GK",
+    "level": "Medium"
+  },
+  {
+    "question": "The ages of two friends, Ram and Ravi, differ by 7 years. Ram's mother Mayadevi is three times as old as Ram, and Ravi is four times as old as his brother Soham. The ages of Mayadevi and Soham differ by 65 years. Find the age of Mayadevi (in years).",
+    "options": ["69", "36", "85", "45"],
+    "answer": "69",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "By applying which of the following criteria can two triangles NOT be proved congruent?",
+    "options": ["angle-side-angle", "angle-angle-angle", "side-side-side", "side-angle-side"],
+    "answer": "angle-angle-angle",
+    "section": "Maths",
+    "level": "Easy"
+  },
+  {
+    "question": "Two circles of radii 18 cm and 12 cm touch each other externally. Find the length (in cm) of their direct common tangent.",
+    "options": ["15√6", "10√6", "12√6", "18√6"],
+    "answer": "12√6",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "Kiran lent ₹4,000 to two persons such that one part of it at the rate of 8% per annum and the remaining part at the rate of 10% per annum. He got an annual simple interest of ₹352. Then the sum lent at 10% is:",
+    "options": ["₹1,800", "₹2,200", "₹2,400", "₹1,600"],
+    "answer": "₹2,400",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "X, Y, and Z are three points on a plane with XY = 11 cm, YZ = 13 cm, and XZ = 24 cm. The number of circles that travel through points X, Y, and Z is:",
+    "options": ["0", "2", "1", "3"],
+    "answer": "0",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "If a + 1/a = 12, then find the value of a² + 1/a².",
+    "options": ["144", "146", "142", "140"],
+    "answer": "142",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "The side of an equilateral triangle is 28 cm. Taking each vertex as the centre, a circle is described with a radius equal to half the length of the side of the triangle. Find the area of that part of the triangle which is not included in the circles (use π = 22/7 and √3 = 1.73).",
+    "options": ["30.89 cm²", "38.08 cm²", "31.08 cm²", "39.08 cm²"],
+    "answer": "31.08 cm²",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "A money bag contains one rupee, five rupee and ten rupee coins in the ratio of 3 : 5 : 7 respectively. If the total amount in the bag is ₹980, then find the number of coins of ₹10.",
+    "options": ["69", "70", "71", "68"],
+    "answer": "70",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "Which of the following is the largest 5-digit number divisible by 47?",
+    "options": ["99999", "98888", "99969", "10000"],
+    "answer": "99969",
+    "section": "Maths",
+    "level": "Easy"
+  },
+  {
+    "question": "If a right circular cone of height 24 cm has a volume of 1232 cm³, then the total surface area of the cone is (use π = 22/7):",
+    "options": ["806 cm²", "704 cm²", "904 cm²", "608 cm²"],
+    "answer": "704 cm²",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "Let 0° < t < 90°. Then which of the followings is true?",
+    "options": [
+      "sin(t) ≠ cos(t) when t = 45°",
+      "sin(t) > cos(t) when t < 45°",
+      "sin(t) < cos(t) when t < 45°",
+      "sin(t) < cos(t) when t > 45°"
+    ],
+    "answer": "sin(t) < cos(t) when t < 45°",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "Ramesh purchased some items from a dealer on 19 November 2019. The bill generated was for ₹5,480. He had also purchased some items on 10 November 2019 having the bill value of ₹9,800. He cleared both the bills this time and paid the total amount in cash. If the dealer gives a scheme of 2% discount on the payments done within 10 days and 5% for the payments made in cash at the time of purchase, then find the amount paid by Ramesh on 19 November 2019.",
+    "options": ["₹14,850", "₹14,810", "₹14,890", "₹14,950"],
+    "answer": "₹14,810",
+    "section": "Maths",
+    "level": "Hard"
+  },
+  {
+    "question": "Find the gain percentage, given that Priya sold her scooter for ₹42,564 gaining 1/5 of the selling price.",
+    "options": ["30%", "20%", "15%", "40%"],
+    "answer": "20%",
+    "section": "Maths",
+    "level": "Medium"
+  },
+  {
+    "question": "If the sum of three numbers is 18 and the sum of their squares is 36, then find the difference between the sum of their cubes and three times their product.",
+    "options": ["1449", "-1944", "-1494", "4149"],
+    "answer": "-1944",
+    "section": "Maths",
+    "level": "Hard"
+  },
+  {
+    "question": "Select the most appropriate meaning of the given idiom. On the ball",
+    "options": [
+      "Unaware of any changes or developments and lazy to react to them",
+      "Aware of any changes or developments but slow to react to them",
+      "Aware of any changes or developments and quick to react to them",
+      "Aware of any changes or developments but doing nothing"
+    ],
+    "answer": "Aware of any changes or developments and quick to react to them",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option that can be used as a one-word substitute for the given group of words. A person who sells and arranges cut flowers.",
+    "options": ["Horticulturist", "Botanist", "Gardener", "Florist"],
+    "answer": "Florist",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate synonym of the underlined word. He was trembling with fear.",
+    "options": ["Shivering", "Weeping", "Running", "Intrepid"],
+    "answer": "Shivering",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate synonym of the bold word in the following sentence. He tried to alleviate the sufferings of his neighbours.",
+    "options": ["Swell", "Add", "Intensify", "Relieve"],
+    "answer": "Relieve",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate antonym of the underlined word. She was elated about her promotion, but her colleague felt quite disheartened.",
+    "options": ["cheerful", "proud", "discouraged", "delighted"],
+    "answer": "discouraged",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the option that expresses the given sentence in active voice. The contract was grabbed by the biggest telecom company in India.",
+    "options": [
+      "The biggest telecom company in India grabbed the contract.",
+      "The biggest telecom company in India grabs the contract.",
+      "The biggest telecom company in India will grab the contract.",
+      "The biggest telecom company in India has grabbed the contract."
+    ],
+    "answer": "The biggest telecom company in India grabbed the contract.",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the most appropriate idiom to fill in the blank. I'm ______ about whether to accept the job offer or continue freelancing. Both options have their advantages.",
+    "options": ["on the fence", "cutting corners", "left out in cold", "up in arms"],
+    "answer": "on the fence",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the correctly spelt word.",
+    "options": ["Conscensus", "Entrepreneurship", "Collaegue", "Bizzaire"],
+    "answer": "Entrepreneurship",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the option that expresses the given sentence in active voice. By whom was grammar taught to you?",
+    "options": [
+      "Did he teach you grammar?",
+      "Who had taught you grammar?",
+      "You were taught grammar by whom?",
+      "Who taught you grammar?"
+    ],
+    "answer": "Who taught you grammar?",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option that can be used as a one-word substitute for the given group of words. A place where fruit trees are grown",
+    "options": ["Orchard", "Garden", "Quay", "Museum"],
+    "answer": "Orchard",
+    "section": "English",
+    "level": "Easy"
+  },
+  {
+    "question": "Select the option that can be used as a one-word substitute for the given group of words. A government by the officials",
+    "options": ["Autocracy", "Bureaucracy", "Monarchy", "Plutocracy"],
+    "answer": "Bureaucracy",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate synonym of the word 'Equivocal'.",
+    "options": ["Clear", "Ambiguous", "Representative", "Balanced"],
+    "answer": "Ambiguous",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the most appropriate option to substitute the underlined segment in the given sentence. I have been living in Hyderabad since I am born.",
+    "options": ["since I have born", "since I will be born", "since I born", "since I was born"],
+    "answer": "since I was born",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "The following sentence has been split into four segments. Identify the segment that contains a grammatical error. Renewable energy / sources like solar and wind power / will replaced traditional fossil fuels / and help reduce carbon emissions.",
+    "options": [
+      "Renewable energy",
+      "sources like solar and wind power",
+      "will replaced traditional fossil fuels",
+      "and help reduce carbon emissions"
+    ],
+    "answer": "will replaced traditional fossil fuels",
+    "section": "English",
+    "level": "Medium"
+  },
+  {
+    "question": "Select the option that can be used as a one-word substitute for the given group of words. A small group of people who spend their time together and do not welcome other people into that group",
+    "options": ["Squad", "Clique", "Employees", "Lobby"],
+    "answer": "Clique",
+    "section": "English",
     "level": "Medium"
   }
 ]
