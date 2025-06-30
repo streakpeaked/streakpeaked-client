@@ -1,0 +1,39 @@
+.chat-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: #222;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  box-shadow: -2px 0 6px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.chat-message {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.chat-input {
+  display: flex;
+  gap: 5px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 6px;
+}
+
+.chat-input button {
+  padding: 6px 10px;
+}

@@ -3,6 +3,8 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db, auth, provider } from './firebaseConfig';
 import { signInWithPopup } from 'firebase/auth';
 import './App.css';
+import ChatSidebar from './ChatSidebar';
+
 
 const playStreakMusic = () => {
   const audio = new Audio('/music.mp3');
@@ -269,6 +271,7 @@ function App() {
           </p>
         )}
       </div>
+      {user && <ChatSidebar user={user} />}
     </div>
   );
 }
