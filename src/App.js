@@ -131,7 +131,7 @@ function App() {
     const strongMsg = strong.length > 0 ? `You did well in ${strong.map(s => s[0]).join(", ")} by answering more than 10 correctly.` : "";
     const weakMsg = weak.length > 0 ? `You need to improve in ${weak.map(s => s[0]).join(", ")} where less than 3 were correct.` : "";
 
-    return `${strongMsg} ${weakMsg} Total score: ${score}/${filteredQuestions.length}`;
+    return `${strongMsg} ${weakMsg} Total score: ${score}/${timeSpent.length}`;
   };
 
   if (filteredQuestions.length === 0) {
@@ -145,6 +145,7 @@ function App() {
           <h2>Test Complete ({mode} Mode)</h2>
           <p>Streak Score: {score}</p>
           <p>Total Questions Attempted: {timeSpent.length}</p>
+          <p>Overall Score: {score}/{timeSpent.length}</p>
           <h4>Feedback:</h4>
           <p>{getFeedback()}</p>
           <h4>Score Matrix:</h4>
