@@ -126,14 +126,41 @@ function App() {
   const getMatrix = () => {
     const matrix = {};
     timeSpent.forEach(item => {
-      const band =
-        item.time < 10 ? '0-10s'
-        : item.time < 20 ? '10-20s'
-        : '20s+';
+      const band = item.time < 10 ? '0-10s' : item.time < 20 ? '10-20s' : '20s+';
       const key = `${item.section}_${item.level}_${band}`;
       matrix[key] = (matrix[key] || 0) + 1;
     });
     return matrix;
+  };
+
+  const getCustomFeedback = () => {
+    let baseFeedback = "";
+    if (score < 10) {
+      baseFeedback = "Your streak score is very low, not even crossing 10. Hope you got a reality check. Now buckle up and grind till you make this streak above 20.";
+    } else if (score < 20) {
+      baseFeedback = "Your streak score is decent but not crossing 20. Hope you don't want to take things lightly. Check where you went wrong and improve the streak over 30.";
+    } else if (score < 40) {
+      baseFeedback = "You are doing well! Keep the game tight, take streak beyond 40 now. Don't be lazy like CAT.";
+    } else {
+      baseFeedback = "You are right there, dark horse! Nail it, then ace it and rock it. Hit consistent 100+ streak now. madMODEon!";
+    }
+
+    const sectionCorrect = {};
+    timeSpent.forEach(item => {
+      if (item.correct) {
+        sectionCorrect[item.section] = (sectionCorrect[item.section] || 0) + 1;
+      }
+    });
+
+    const strongSections = Object.entries(sectionCorrect)
+      .filter(([section, correct]) => correct >= 10)
+      .map(([section]) => section);
+
+    const strengthMsg = strongSections.length > 0
+      ? `\nYour ${strongSections.join(", ")} section${strongSections.length > 1 ? 's are' : ' is'} your strength. Keep it tight and double drill on other weak sections!`
+      : "";
+
+    return baseFeedback + strengthMsg;
   };
 
   const restartTest = () => {
@@ -174,7 +201,7 @@ function App() {
           </div>
           <div style={{ marginTop: '20px' }}>
             <h3 style={{ color: '#2563eb' }}>💡 Feedback</h3>
-            <p>{`You're doing well! Keep practicing and improve time across all sections.`}</p>
+            <p>{getCustomFeedback()}</p>
           </div>
           <div style={{ textAlign: 'center', marginTop: '30px' }}>
             <button onClick={restartTest} style={{ backgroundColor: '#10b981', color: 'white', padding: '12px 24px', fontSize: '16px', borderRadius: '8px', cursor: 'pointer', transition: 'all 0.3s ease' }}>🔁 Retake Test</button>
@@ -189,7 +216,7 @@ function App() {
   return (
     <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '30px', fontFamily: 'Segoe UI, sans-serif' }}>
       <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-        <img src="/logo192.png" alt="StreakPeaked Logo" style={{ height: '60px', marginBottom: '10px' }} />
+        <img src="/logo192.png" alt="Logo" style={{ height: '60px', marginBottom: '10px' }} />
         <h1 style={{ fontSize: '28px', color: '#1e3a8a' }}>StreakPeaked SSC CGL Practice</h1>
       </header>
 
@@ -197,7 +224,7 @@ function App() {
         <div style={{ flex: 1, maxWidth: '700px', backgroundColor: '#ffffff', color: '#000', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.1)' }}>
           <h2 style={{ fontSize: '22px', marginBottom: '10px' }}>{current.section} ({current.level})</h2>
           <p style={{ fontSize: '18px' }}>{current.question}</p>
-          <p style={{ fontWeight: 'bold', fontSize: '16px' }}>⏱️ Time: {seconds}s</p>
+          <p style={{ fontSize: '14px', color: '#6b7280' }}>⏱️ Time: {seconds}s</p>
 
           <div style={{ marginBottom: 20, marginTop: 20 }}>
             <label>
