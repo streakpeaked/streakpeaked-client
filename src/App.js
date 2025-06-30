@@ -1,3 +1,5 @@
+import { auth, provider } from './firebaseConfig';
+import { signInWithPopup } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import db from './firebaseConfig';
@@ -23,6 +25,7 @@ function App() {
   const [difficultyFilter, setDifficultyFilter] = useState("All");
   const [sectionFilter, setSectionFilter] = useState("All");
   const [testComplete, setTestComplete] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -76,6 +79,16 @@ function App() {
     const utter = new SpeechSynthesisUtterance(msg);
     window.speechSynthesis.speak(utter);
   };
+
+  const signInWithGoogle = () => {
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      setUser(result.user);
+    })
+    .catch((error) => {
+      console.log("Login error", error);
+    });
+    };
 
   const handleOption = (opt) => {
     if (testComplete) return;
@@ -157,6 +170,14 @@ function App() {
 
   const current = filteredQuestions[index];
 
+if (!user) {
+  return (
+    <div style={{ padding: 30, textAlign: 'center' }}>
+      <h2>Welcome to StreakPeaked</h2>
+      <button onClick={signInWithGoogle}>Login with Google</button>
+    </div>
+  );
+  }
   return (
     <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '40px' }}>
       <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: 'white', color: '#000', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.2)' }}>
