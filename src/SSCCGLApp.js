@@ -136,9 +136,9 @@ function SSCCGLApp({ user, setUser }) {
     const matrix = getMatrix();
     const levels = ['Easy', 'Medium', 'Hard'];
     return (
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
         <thead>
-          <tr>
+          <tr style={{ backgroundColor: '#e5e7eb' }}>
             <th style={{ border: '1px solid #ccc', padding: '8px' }}>Section</th>
             {levels.map(level => (
               <th key={level} style={{ border: '1px solid #ccc', padding: '8px' }}>{level}</th>
@@ -206,23 +206,27 @@ function SSCCGLApp({ user, setUser }) {
     setFilteredQuestions(result);
   };
 
-  if (!filteredQuestions.length) {
-    return <div style={{ padding: 20 }}>Loading questions or no matching filters...</div>;
-  }
+  const Header = () => (
+    <header style={{ backgroundColor: '#16a34a', color: 'white', padding: '16px', textAlign: 'center', borderRadius: '8px' }}>
+      <h1 style={{ margin: 0, fontSize: '24px' }}>StreakPeaked SSC CGL Practice</h1>
+      <button onClick={() => navigate('/')} style={{ marginTop: 8, backgroundColor: 'white', color: '#16a34a', padding: '6px 12px', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>
+        ← Back to Home
+      </button>
+    </header>
+  );
 
-  const current = filteredQuestions[index];
+  const Footer = () => (
+    <footer style={{ backgroundColor: '#1f2937', color: 'white', padding: '12px', textAlign: 'center', marginTop: 30, borderRadius: '6px' }}>
+      <p>© 2025 StreakPeaked | Contact: support@streakpeaked.io | Gurgaon, India</p>
+    </footer>
+  );
 
   return (
-    <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '30px', fontFamily: 'Segoe UI, sans-serif' }}>
-      <header style={{ textAlign: 'center', marginBottom: '20px' }}>
-        <img src="/logo.png" alt="Logo" style={{ height: '60px' }} />
-        <h1 style={{ fontSize: '28px', color: '#1e3a8a' }}>StreakPeaked SSC CGL Practice</h1>
-        <h3 style={{ fontSize: '18px', color: '#1e40af' }}>Timer: {seconds}s</h3>
-        <button onClick={() => navigate('/')} style={{ marginTop: '10px', backgroundColor: '#1d4ed8', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>🔙 Back to Homepage</button>
-      </header>
+    <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '20px', fontFamily: 'Segoe UI, sans-serif' }}>
+      <Header />
 
       {testComplete ? (
-        <div style={{ maxWidth: '800px', margin: 'auto', backgroundColor: 'white', borderRadius: '12px', padding: '40px', boxShadow: '0 0 15px rgba(0,0,0,0.1)' }}>
+        <div style={{ maxWidth: '800px', margin: '40px auto', backgroundColor: 'white', borderRadius: '12px', padding: '40px', boxShadow: '0 0 15px rgba(0,0,0,0.1)' }}>
           <h1 style={{ fontSize: '32px', color: '#1e3a8a' }}>🎓 Test Summary</h1>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', margin: '20px 0' }}>
             <div><strong>Streak Score:</strong> {score}</div>
@@ -238,8 +242,9 @@ function SSCCGLApp({ user, setUser }) {
           </div>
         </div>
       ) : (
-        <>
-          <div style={{ marginBottom: 20, marginTop: 20, textAlign: 'center' }}>
+        <div style={{ maxWidth: '800px', margin: '30px auto', backgroundColor: '#ffffff', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.1)' }}>
+          <h2 style={{ fontSize: '20px' }}>Timer: {seconds}s</h2>
+          <div style={{ marginBottom: 20 }}>
             <label>
               Difficulty:
               <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
@@ -261,39 +266,37 @@ function SSCCGLApp({ user, setUser }) {
             </label>
           </div>
 
-          <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: '#ffffff', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.1)' }}>
-            <h2 style={{ fontSize: '22px', marginBottom: '10px' }}>{current.section} ({current.level})</h2>
-            <p style={{ fontSize: '18px' }}>{current.question}</p>
+          <h3>{current.section} ({current.level})</h3>
+          <p>{current.question}</p>
 
-            {current.options.map((opt, idx) => (
-              <button
-                key={idx}
-                onClick={() => handleOption(opt)}
-                style={{
-                  margin: '10px 0',
-                  padding: '10px 16px',
-                  backgroundColor: selected === opt ? (opt === current.answer ? '#16a34a' : '#dc2626') : '#3b82f6',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  width: '100%',
-                  textAlign: 'left'
-                }}
-              >
-                {String.fromCharCode(65 + idx)}. {opt}
-              </button>
-            ))}
+          {current.options.map((opt, idx) => (
+            <button
+              key={idx}
+              onClick={() => handleOption(opt)}
+              style={{
+                margin: '10px 0',
+                padding: '10px 16px',
+                backgroundColor: selected === opt ? (opt === current.answer ? '#16a34a' : '#dc2626') : '#3b82f6',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                width: '100%',
+                textAlign: 'left'
+              }}
+            >
+              {String.fromCharCode(65 + idx)}. {opt}
+            </button>
+          ))}
 
-            {!user && (
-              <p style={{ marginTop: 30, fontSize: '14px' }}>
-                Want to chat with others and save your history? <strong>Login from homepage</strong>
-              </p>
-            )}
-          </div>
+          {!user && (
+            <p style={{ marginTop: 30, fontSize: '14px' }}>
+              Want to chat with others and save your history? <strong>Please login from homepage</strong>
+            </p>
+          )}
 
           {user && showChat && (
-            <div style={{ maxWidth: '700px', margin: '20px auto', backgroundColor: '#f3f4f6', borderRadius: '12px', padding: '20px', boxShadow: '0 0 8px rgba(0,0,0,0.1)' }}>
+            <div style={{ marginTop: 30 }}>
               <ChatSidebar user={user} />
             </div>
           )}
@@ -305,8 +308,10 @@ function SSCCGLApp({ user, setUser }) {
               </button>
             </div>
           )}
-        </>
+        </div>
       )}
+
+      <Footer />
     </div>
   );
 }
