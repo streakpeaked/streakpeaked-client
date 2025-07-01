@@ -23,7 +23,7 @@ const stopStreakMusic = () => {
   }
 };
 
-function SSCGLApp({ onBack }) {
+function SSCCGLApp({ onBack }) {
   const [questions, setQuestions] = useState([]);
   const [filteredQuestions, setFilteredQuestions] = useState([]);
   const [index, setIndex] = useState(0);
@@ -194,4 +194,4 @@ function SSCGLApp({ onBack }) {
   );
 }
 
-export default SSCGLApp;
+export default SSCCGLApp;
