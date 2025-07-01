@@ -1,17 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import SSCCGLApp from './SSCCGLApp';
+import { auth, provider } from './firebaseConfig';
+import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 import './App.css';
 
-const HomePage = () => {
+const HomePage = ({ user, setUser }) => {
   const navigate = useNavigate();
+
+  const handleLogin = () => {
+    signInWithPopup(auth, provider)
+      .then(result => setUser(result.user))
+      .catch(err => console.log("Login error", err));
+  };
 
   return (
     <div style={{ fontFamily: 'Segoe UI, sans-serif', backgroundColor: '#f0fdf4', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <header style={{ backgroundColor: '#16a34a', color: 'white', padding: '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1 style={{ margin: 0 }}>StreakPeaked</h1>
         <nav>
-          <button style={navBtnStyle}>Login</button>
+          {user ? (
+            <p style={{ margin: 0 }}>Welcome, {user.displayName}</p>
+          ) : (
+            <button style={navBtnStyle} onClick={handleLogin}>Login</button>
+          )}
         </nav>
       </header>
 
@@ -79,11 +91,20 @@ const navBtnStyle = {
 };
 
 function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (u) => {
+      if (u) setUser(u);
+    });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/ssc-cgl" element={<SSCCGLApp />} />
+        <Route path="/" element={<HomePage user={user} setUser={setUser} />} />
+        <Route path="/ssc-cgl" element={<SSCCGLApp user={user} setUser={setUser} />} />
       </Routes>
     </Router>
   );
