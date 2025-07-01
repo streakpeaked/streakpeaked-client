@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 import ChatSidebar from './ChatSidebar';
+import { useNavigate } from 'react-router-dom';
 import './App.css';
 
 let streakAudio;
@@ -36,6 +37,7 @@ function SSCCGLApp({ user, setUser }) {
   const [sectionFilter, setSectionFilter] = useState("All");
   const [testComplete, setTestComplete] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -204,22 +206,35 @@ function SSCCGLApp({ user, setUser }) {
     setFilteredQuestions(result);
   };
 
-  if (!filteredQuestions.length) {
-    return <div style={{ padding: 20 }}>Loading questions or no matching filters...</div>;
-  }
-
   const current = filteredQuestions[index];
 
   return (
-    <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '30px', fontFamily: 'Segoe UI, sans-serif' }}>
-      <header style={{ backgroundColor: '#16a34a', color: 'white', padding: '20px 40px', textAlign: 'center' }}>
-        <h1 style={{ margin: 0 }}>StreakPeaked SSC CGL Practice</h1>
+    <div style={{ backgroundColor: bgColor, minHeight: '100vh', fontFamily: 'Segoe UI, sans-serif' }}>
+      <header style={{ backgroundColor: '#16a34a', color: 'white', padding: '15px 30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1 style={{ margin: 0, fontSize: '22px' }}>StreakPeaked</h1>
+        <button onClick={() => navigate('/')} style={{ backgroundColor: 'white', color: '#16a34a', padding: '6px 12px', borderRadius: '6px', border: 'none', cursor: 'pointer' }}>Back to Home</button>
       </header>
-      <div style={{ maxWidth: '800px', margin: 'auto', paddingTop: '20px' }}>
-        {!testComplete ? (
+
+      <main style={{ padding: '30px 20px' }}>
+        {testComplete ? (
+          <div style={{ maxWidth: '800px', margin: 'auto', backgroundColor: 'white', borderRadius: '12px', padding: '40px', boxShadow: '0 0 15px rgba(0,0,0,0.1)' }}>
+            <h1 style={{ fontSize: '32px', color: '#1e3a8a' }}>🎓 Test Summary</h1>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', margin: '20px 0' }}>
+              <div><strong>Streak Score:</strong> {score}</div>
+              <div><strong>Questions Attempted:</strong> {timeSpent.length}</div>
+              <div><strong>Accuracy:</strong> {((score / timeSpent.length) * 100).toFixed(1)}%</div>
+            </div>
+            <h3 style={{ color: '#2563eb' }}>📊 Score Matrix</h3>
+            {renderMatrixTable()}
+            <h3 style={{ color: '#2563eb', marginTop: '20px' }}>💡 Feedback</h3>
+            <p>{getCustomFeedback()}</p>
+            <div style={{ textAlign: 'center', marginTop: '30px' }}>
+              <button onClick={restartTest} style={{ backgroundColor: '#10b981', color: 'white', padding: '12px 24px', fontSize: '16px', borderRadius: '8px', cursor: 'pointer' }}>🔁 Retake Test</button>
+            </div>
+          </div>
+        ) : (
           <>
-            <h3 style={{ fontSize: '18px', color: '#1e40af', textAlign: 'center' }}>Timer: {seconds}s</h3>
-            <div style={{ marginBottom: 20, textAlign: 'center' }}>
+            <div style={{ marginBottom: 20, marginTop: 20, textAlign: 'center' }}>
               <label>
                 Difficulty:
                 <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
@@ -240,34 +255,37 @@ function SSCCGLApp({ user, setUser }) {
                 </select>
               </label>
             </div>
-            <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 0 10px rgba(0,0,0,0.05)' }}>
-              <h2>{current.section} ({current.level})</h2>
-              <p>{current.question}</p>
+
+            <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: '#ffffff', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.1)' }}>
+              <h2 style={{ fontSize: '22px', marginBottom: '10px' }}>{current.section} ({current.level})</h2>
+              <p style={{ fontSize: '18px' }}>{current.question}</p>
+
               {current.options.map((opt, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleOption(opt)}
                   style={{
-                    display: 'block',
-                    width: '100%',
-                    marginBottom: '10px',
-                    padding: '12px',
+                    margin: '10px 0',
+                    padding: '10px 16px',
                     backgroundColor: selected === opt ? (opt === current.answer ? '#16a34a' : '#dc2626') : '#3b82f6',
                     color: 'white',
                     border: 'none',
                     borderRadius: '6px',
                     cursor: 'pointer',
+                    width: '100%',
                     textAlign: 'left'
                   }}
                 >
                   {String.fromCharCode(65 + idx)}. {opt}
                 </button>
               ))}
+
               {user && showChat && (
-                <div style={{ marginTop: 20 }}>
+                <div style={{ marginTop: '30px' }}>
                   <ChatSidebar user={user} />
                 </div>
               )}
+
               {user && (
                 <div style={{ textAlign: 'center', marginTop: 20 }}>
                   <button onClick={() => setShowChat(!showChat)} style={{ padding: '10px 20px', fontSize: '14px', backgroundColor: '#1e40af', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
@@ -277,25 +295,10 @@ function SSCCGLApp({ user, setUser }) {
               )}
             </div>
           </>
-        ) : (
-          <div style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 0 15px rgba(0,0,0,0.1)' }}>
-            <h1 style={{ fontSize: '32px', color: '#1e3a8a' }}>🎓 Test Summary</h1>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', margin: '20px 0' }}>
-              <div><strong>Streak Score:</strong> {score}</div>
-              <div><strong>Questions Attempted:</strong> {timeSpent.length}</div>
-              <div><strong>Accuracy:</strong> {((score / timeSpent.length) * 100).toFixed(1)}%</div>
-            </div>
-            <h3 style={{ color: '#2563eb' }}>📊 Score Matrix</h3>
-            {renderMatrixTable()}
-            <h3 style={{ color: '#2563eb', marginTop: '20px' }}>💡 Feedback</h3>
-            <p>{getCustomFeedback()}</p>
-            <div style={{ textAlign: 'center', marginTop: '30px' }}>
-              <button onClick={restartTest} style={{ backgroundColor: '#10b981', color: 'white', padding: '12px 24px', fontSize: '16px', borderRadius: '8px', cursor: 'pointer' }}>🔁 Retake Test</button>
-            </div>
-          </div>
         )}
-      </div>
-      <footer style={{ backgroundColor: '#1f2937', color: 'white', padding: '20px', textAlign: 'center', marginTop: '40px' }}>
+      </main>
+
+      <footer style={{ backgroundColor: '#1f2937', color: 'white', padding: '20px 40px', textAlign: 'center', marginTop: '40px' }}>
         <p>© 2025 StreakPeaked | Contact: support@streakpeaked.io | Gurgaon, India</p>
       </footer>
     </div>
