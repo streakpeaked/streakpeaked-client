@@ -1,3 +1,4 @@
+// SSCCGLApp.js
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from './firebaseConfig';
@@ -24,6 +25,7 @@ const stopStreakMusic = () => {
 };
 
 function SSCCGLApp({ user, setUser }) {
+  const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [filteredQuestions, setFilteredQuestions] = useState([]);
   const [index, setIndex] = useState(0);
@@ -37,7 +39,6 @@ function SSCCGLApp({ user, setUser }) {
   const [sectionFilter, setSectionFilter] = useState("All");
   const [testComplete, setTestComplete] = useState(false);
   const [showChat, setShowChat] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -206,18 +207,22 @@ function SSCCGLApp({ user, setUser }) {
     setFilteredQuestions(result);
   };
 
+  if (!filteredQuestions.length) return <div style={{ padding: 20 }}>Loading...</div>;
   const current = filteredQuestions[index];
 
   return (
     <div style={{ backgroundColor: bgColor, minHeight: '100vh', fontFamily: 'Segoe UI, sans-serif' }}>
       <header style={{ backgroundColor: '#16a34a', color: 'white', padding: '15px 30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ margin: 0, fontSize: '22px' }}>StreakPeaked</h1>
-        <button onClick={() => navigate('/')} style={{ backgroundColor: 'white', color: '#16a34a', padding: '6px 12px', borderRadius: '6px', border: 'none', cursor: 'pointer' }}>Back to Home</button>
+        <h1 style={{ margin: 0 }}>StreakPeaked</h1>
+        <button onClick={() => navigate('/')} style={{ backgroundColor: 'white', color: '#16a34a', padding: '8px 16px', borderRadius: '6px', border: 'none', cursor: 'pointer' }}>⬅ Back to Home</button>
       </header>
 
-      <main style={{ padding: '30px 20px' }}>
+      <div style={{ padding: 30 }}>
+        <h2 style={{ color: '#1e3a8a', marginBottom: 10 }}>StreakPeaked SSC CGL Practice</h2>
+        <h3 style={{ fontSize: '18px', color: '#1e40af' }}>Timer: {seconds}s</h3>
+
         {testComplete ? (
-          <div style={{ maxWidth: '800px', margin: 'auto', backgroundColor: 'white', borderRadius: '12px', padding: '40px', boxShadow: '0 0 15px rgba(0,0,0,0.1)' }}>
+          <div style={{ marginTop: 30, backgroundColor: '#ffffff', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.1)' }}>
             <h1 style={{ fontSize: '32px', color: '#1e3a8a' }}>🎓 Test Summary</h1>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', margin: '20px 0' }}>
               <div><strong>Streak Score:</strong> {score}</div>
@@ -234,7 +239,7 @@ function SSCCGLApp({ user, setUser }) {
           </div>
         ) : (
           <>
-            <div style={{ marginBottom: 20, marginTop: 20, textAlign: 'center' }}>
+            <div style={{ marginBottom: 20, marginTop: 20 }}>
               <label>
                 Difficulty:
                 <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
@@ -280,25 +285,31 @@ function SSCCGLApp({ user, setUser }) {
                 </button>
               ))}
 
-              {user && showChat && (
-                <div style={{ marginTop: '30px' }}>
-                  <ChatSidebar user={user} />
-                </div>
-              )}
-
-              {user && (
-                <div style={{ textAlign: 'center', marginTop: 20 }}>
-                  <button onClick={() => setShowChat(!showChat)} style={{ padding: '10px 20px', fontSize: '14px', backgroundColor: '#1e40af', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
-                    {showChat ? 'Hide Chat' : 'Show Chat'}
-                  </button>
-                </div>
+              {!user && (
+                <p style={{ marginTop: 30, fontSize: '14px' }}>
+                  Want to chat with others and save your history? <button onClick={() => alert('Please login from homepage')}>Login with Google</button>
+                </p>
               )}
             </div>
+
+            {user && showChat && (
+              <div style={{ maxWidth: '700px', margin: '20px auto', backgroundColor: '#f3f4f6', borderRadius: '12px', padding: '20px', boxShadow: '0 0 8px rgba(0,0,0,0.1)' }}>
+                <ChatSidebar user={user} />
+              </div>
+            )}
+
+            {user && (
+              <div style={{ textAlign: 'center', marginTop: 20 }}>
+                <button onClick={() => setShowChat(!showChat)} style={{ padding: '10px 20px', fontSize: '14px', backgroundColor: '#1e40af', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
+                  {showChat ? 'Hide Chat' : 'Show Chat'}
+                </button>
+              </div>
+            )}
           </>
         )}
-      </main>
+      </div>
 
-      <footer style={{ backgroundColor: '#1f2937', color: 'white', padding: '20px 40px', textAlign: 'center', marginTop: '40px' }}>
+      <footer style={{ backgroundColor: '#1f2937', color: 'white', padding: '20px 40px', textAlign: 'center' }}>
         <p>© 2025 StreakPeaked | Contact: support@streakpeaked.io | Gurgaon, India</p>
       </footer>
     </div>
