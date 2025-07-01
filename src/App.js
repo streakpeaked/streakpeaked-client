@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import SSCGLApp from './SSCGLApp';
+import SSCCGLApp from './SSCCGLApp';
 import './App.css';
 
 function App() {
   const [selectedExam, setSelectedExam] = useState(null);
 
   if (selectedExam === 'SSC CGL') {
-    return <SSCGLApp onBack={() => setSelectedExam(null)} />;
+    return <SSCCGLApp onBack={() => setSelectedExam(null)} />;
   }
 
   return (
