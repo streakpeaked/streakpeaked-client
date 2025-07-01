@@ -23,7 +23,7 @@ const stopStreakMusic = () => {
   }
 };
 
-function SSCCGLApp({ onBack }) {
+function SSCCGLApp() {
   const [questions, setQuestions] = useState([]);
   const [filteredQuestions, setFilteredQuestions] = useState([]);
   const [index, setIndex] = useState(0);
@@ -72,6 +72,17 @@ function SSCCGLApp({ onBack }) {
     const timer = setInterval(() => {
       const sec = Math.floor((Date.now() - startTime) / 1000);
       setSeconds(sec);
+      if (sec < 10) setBgColor('#f0f8ff');
+      else if (sec < 20) setBgColor('#dbeafe');
+      else if (sec < 30) setBgColor('#e5e7eb');
+      else if (sec < 40) setBgColor('#fcd34d');
+      else if (sec < 50) setBgColor('#f87171');
+      else {
+        const blink = sec % 2 === 0;
+        setBgColor(blink ? '#ef4444' : '#000');
+        if (sec === 51) speak("You may wanna skip this question");
+        if (sec === 56) speak("It's eating your time");
+      }
     }, 1000);
     return () => clearInterval(timer);
   }, [startTime, testComplete]);
@@ -112,6 +123,78 @@ function SSCCGLApp({ onBack }) {
     }, 1000);
   };
 
+  const getMatrix = () => {
+    const sections = ['GK', 'Maths', 'Reasoning', 'English'];
+    const levels = ['Easy', 'Medium', 'Hard'];
+    const matrix = {};
+    sections.forEach(sec => {
+      matrix[sec] = { Easy: 0, Medium: 0, Hard: 0 };
+    });
+    timeSpent.forEach(item => {
+      if (matrix[item.section] && matrix[item.section][item.level] !== undefined) {
+        matrix[item.section][item.level]++;
+      }
+    });
+    return matrix;
+  };
+
+  const renderMatrixTable = () => {
+    const matrix = getMatrix();
+    const levels = ['Easy', 'Medium', 'Hard'];
+    return (
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead>
+          <tr>
+            <th style={{ border: '1px solid #ccc', padding: '8px' }}>Section</th>
+            {levels.map(level => (
+              <th key={level} style={{ border: '1px solid #ccc', padding: '8px' }}>{level}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {Object.entries(matrix).map(([section, row]) => (
+            <tr key={section}>
+              <td style={{ border: '1px solid #ccc', padding: '8px' }}>{section}</td>
+              {levels.map(level => (
+                <td key={level} style={{ border: '1px solid #ccc', padding: '8px' }}>{row[level]}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
+
+  const getCustomFeedback = () => {
+    let baseFeedback = "";
+    if (score < 10) {
+      baseFeedback = "Your streak score is very low, not even crossing 10. Hope you got a reality check. Now buckle up and grind till you make this streak above 20.";
+    } else if (score < 20) {
+      baseFeedback = "Your streak score is decent but not crossing 20. Hope you don't want to take things lightly. Check where you went wrong and improve the streak over 30.";
+    } else if (score < 40) {
+      baseFeedback = "You are doing well! Keep the game tight, take streak beyond 40 now. Don't be lazy like CAT.";
+    } else {
+      baseFeedback = "You are right there, dark horse! Nail it, then ace it and rock it. Hit consistent 100+ streak now. madMODEon!";
+    }
+
+    const sectionCorrect = {};
+    timeSpent.forEach(item => {
+      if (item.correct) {
+        sectionCorrect[item.section] = (sectionCorrect[item.section] || 0) + 1;
+      }
+    });
+
+    const strongSections = Object.entries(sectionCorrect)
+      .filter(([section, correct]) => correct >= 10)
+      .map(([section]) => section);
+
+    const strengthMsg = strongSections.length > 0
+      ? `\nYour ${strongSections.join(", ")} section${strongSections.length > 1 ? 's are' : ' is'} your strength. Keep it tight and double drill on other weak sections!`
+      : "";
+
+    return baseFeedback + strengthMsg;
+  };
+
   const restartTest = () => {
     stopStreakMusic();
     setIndex(0);
@@ -129,67 +212,100 @@ function SSCCGLApp({ onBack }) {
     setFilteredQuestions(result);
   };
 
-  const current = filteredQuestions[index];
-
-  if (testComplete) {
-    return (
-      <div className="score-screen">
-        <h1>🎓 Test Complete</h1>
-        <p>Streak Score: {score}</p>
-        <p>Questions Attempted: {timeSpent.length}</p>
-        <p>Accuracy: {((score / timeSpent.length) * 100).toFixed(1)}%</p>
-        <button onClick={restartTest}>🔁 Retake Test</button>
-        <button onClick={onBack} style={{ marginLeft: '10px' }}>🏠 Back to Homepage</button>
-      </div>
-    );
-  }
-
-  if (!filteredQuestions.length) {
-    return <div style={{ padding: 20 }}>Loading questions...</div>;
-  }
-
   return (
-    <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '30px' }}>
+    <div style={{ backgroundColor: bgColor, minHeight: '100vh', padding: '30px', fontFamily: 'Segoe UI, sans-serif' }}>
       <header style={{ textAlign: 'center', marginBottom: '20px' }}>
-        <h1>StreakPeaked SSC CGL Practice</h1>
-        <h3>Timer: {seconds}s</h3>
+        <img src="/logo.png" alt="Logo" style={{ height: '60px' }} />
+        <h1 style={{ fontSize: '28px', color: '#1e3a8a' }}>StreakPeaked SSC CGL Practice</h1>
+        <h3 style={{ fontSize: '18px', color: '#1e40af' }}>Timer: {seconds}s</h3>
       </header>
 
-      <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
-        <div style={{ flex: 1, maxWidth: '700px', backgroundColor: '#ffffff', padding: '30px', borderRadius: '12px' }}>
-          <h2>{current.section} ({current.level})</h2>
-          <p>{current.question}</p>
-
-          {current.options.map((opt, idx) => (
-            <button
-              key={idx}
-              onClick={() => handleOption(opt)}
-              style={{
-                margin: '10px 0',
-                padding: '10px 16px',
-                width: '100%',
-                textAlign: 'left',
-                backgroundColor: selected === opt ? (opt === current.answer ? '#16a34a' : '#dc2626') : '#3b82f6',
-                color: 'white',
-                border: 'none',
-                borderRadius: '6px'
-              }}
-            >
-              {String.fromCharCode(65 + idx)}. {opt}
-            </button>
-          ))}
-
-          <div style={{ marginTop: 20 }}>
-            <button onClick={onBack}>🏠 Back to Homepage</button>
+      {testComplete ? (
+        <div style={{ maxWidth: '800px', margin: 'auto', backgroundColor: 'white', borderRadius: '12px', padding: '40px', boxShadow: '0 0 15px rgba(0,0,0,0.1)' }}>
+          <h1 style={{ fontSize: '32px', color: '#1e3a8a' }}>🎓 Test Summary</h1>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', margin: '20px 0' }}>
+            <div><strong>Streak Score:</strong> {score}</div>
+            <div><strong>Questions Attempted:</strong> {timeSpent.length}</div>
+            <div><strong>Accuracy:</strong> {((score / timeSpent.length) * 100).toFixed(1)}%</div>
+          </div>
+          <h3 style={{ color: '#2563eb' }}>📊 Score Matrix</h3>
+          {renderMatrixTable()}
+          <h3 style={{ color: '#2563eb', marginTop: '20px' }}>💡 Feedback</h3>
+          <p>{getCustomFeedback()}</p>
+          <div style={{ textAlign: 'center', marginTop: '30px' }}>
+            <button onClick={restartTest} style={{ backgroundColor: '#10b981', color: 'white', padding: '12px 24px', fontSize: '16px', borderRadius: '8px', cursor: 'pointer' }}>🔁 Retake Test</button>
           </div>
         </div>
-
-        {user && showChat && (
-          <div style={{ width: '300px' }}>
-            <ChatSidebar user={user} />
+      ) : (
+        <>
+          <div style={{ marginBottom: 20, marginTop: 20, textAlign: 'center' }}>
+            <label>
+              Difficulty:
+              <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
+                <option value="All">All</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </label>
+            <label style={{ marginLeft: 20 }}>
+              Section:
+              <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)}>
+                <option value="All">All</option>
+                <option value="Maths">Maths</option>
+                <option value="GK">GK</option>
+                <option value="Reasoning">Reasoning</option>
+                <option value="English">English</option>
+              </select>
+            </label>
           </div>
-        )}
-      </div>
+
+          <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: '#ffffff', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.1)' }}>
+            <h2 style={{ fontSize: '22px', marginBottom: '10px' }}>{filteredQuestions[index].section} ({filteredQuestions[index].level})</h2>
+            <p style={{ fontSize: '18px' }}>{filteredQuestions[index].question}</p>
+
+            {filteredQuestions[index].options.map((opt, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleOption(opt)}
+                style={{
+                  margin: '10px 0',
+                  padding: '10px 16px',
+                  backgroundColor: selected === opt ? (opt === filteredQuestions[index].answer ? '#16a34a' : '#dc2626') : '#3b82f6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  width: '100%',
+                  textAlign: 'left'
+                }}
+              >
+                {String.fromCharCode(65 + idx)}. {opt}
+              </button>
+            ))}
+
+            {!user && (
+              <p style={{ marginTop: 30, fontSize: '14px' }}>
+                Want to chat with others and save your history? <button onClick={signInWithGoogle}>Login with Google</button>
+              </p>
+            )}
+          </div>
+
+          {user && showChat && (
+            <div style={{ maxWidth: '700px', margin: '20px auto', backgroundColor: '#f3f4f6', borderRadius: '12px', padding: '20px', boxShadow: '0 0 8px rgba(0,0,0,0.1)' }}>
+              <ChatSidebar user={user} />
+            </div>
+          )}
+
+          {user && (
+            <div style={{ textAlign: 'center', marginTop: 20 }}>
+              <button onClick={() => setShowChat(!showChat)} style={{ padding: '10px 20px', fontSize: '14px', backgroundColor: '#1e40af', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
+                {showChat ? 'Hide Chat' : 'Show Chat'}
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
