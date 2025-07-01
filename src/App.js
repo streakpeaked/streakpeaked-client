@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import SSCCGLApp from './SSCCGLApp';
 import { auth, provider } from './firebaseConfig';
-import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
+import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
 import './App.css';
 
 const HomePage = ({ user, setUser }) => {
@@ -11,7 +11,11 @@ const HomePage = ({ user, setUser }) => {
   const handleLogin = () => {
     signInWithPopup(auth, provider)
       .then(result => setUser(result.user))
-      .catch(err => console.log("Login error", err));
+      .catch(err => console.error("Login error:", err));
+  };
+
+  const handleLogout = () => {
+    signOut(auth).then(() => setUser(null));
   };
 
   return (
@@ -20,9 +24,12 @@ const HomePage = ({ user, setUser }) => {
         <h1 style={{ margin: 0 }}>StreakPeaked</h1>
         <nav>
           {user ? (
-            <p style={{ margin: 0 }}>Welcome, {user.displayName}</p>
+            <>
+              <span style={{ marginRight: 10 }}>Welcome, {user.displayName}</span>
+              <button onClick={handleLogout} style={navBtnStyle}>Logout</button>
+            </>
           ) : (
-            <button style={navBtnStyle} onClick={handleLogin}>Login</button>
+            <button onClick={handleLogin} style={navBtnStyle}>Login with Google</button>
           )}
         </nav>
       </header>
@@ -94,8 +101,8 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (u) => {
-      if (u) setUser(u);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser || null);
     });
     return () => unsubscribe();
   }, []);
