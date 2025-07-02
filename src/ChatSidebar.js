@@ -1,7 +1,7 @@
 // ChatSidebar.js
 import React, { useEffect, useState, useRef } from 'react';
 import { db } from './firebaseConfig';
-import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, doc, updateDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import Picker from 'emoji-picker-react';
 import { FaMicrophone, FaRegSmile } from 'react-icons/fa';
 import './ChatSidebar.css';
@@ -57,6 +57,20 @@ function ChatSidebar({ user }) {
     recognition.start();
   };
 
+  const handleReact = async (msgId, emoji) => {
+    const msgDocRef = doc(db, 'chats', msgId);
+    const msg = messages.find(m => m.id === msgId);
+    if (!msg) return;
+    const currentReactions = msg.reactions || {};
+    const userReactions = currentReactions[user.uid] || [];
+    const updatedReactions = userReactions.includes(emoji)
+      ? userReactions.filter(e => e !== emoji)
+      : [...userReactions, emoji];
+    await updateDoc(msgDocRef, {
+      reactions: { ...currentReactions, [user.uid]: updatedReactions }
+    });
+  };
+
   const groupByDate = msgs => {
     const grouped = {};
     msgs.forEach(msg => {
@@ -86,6 +100,7 @@ function ChatSidebar({ user }) {
               boxShadow: '0 0 4px rgba(0,0,0,0.1)',
               position: 'relative'
             };
+            const allReactions = Object.values(msg.reactions || {}).flat();
             return (
               <div key={msg.id} style={{ display: 'flex', flexDirection: 'column', alignItems: isCurrentUser ? 'flex-end' : 'flex-start', marginBottom: 10 }}>
                 <div style={bubbleStyle}>
@@ -95,7 +110,16 @@ function ChatSidebar({ user }) {
                     </div>
                   )}
                   <div style={{ fontSize: '14px' }}>{msg.text}</div>
-                  <div style={{ fontSize: '10px', textAlign: 'right', marginTop: 4, color: '#4b5563' }}>{msg.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                  <div style={{ fontSize: '12px', textAlign: 'right', marginTop: 4, color: '#4b5563' }}>{msg.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                  <div style={{ display: 'flex', gap: '4px', marginTop: 4 }}>
+                    <button onClick={() => setReplyTo(msg)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>↩️</button>
+                    <button onClick={() => handleReact(msg.id, '❤️')} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>❤️</button>
+                    <button onClick={() => handleReact(msg.id, '😂')} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>😂</button>
+                    <button onClick={() => handleReact(msg.id, '👍')} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>👍</button>
+                  </div>
+                  {allReactions.length > 0 && (
+                    <div style={{ fontSize: '12px', marginTop: '4px', color: '#111827' }}>{allReactions.join(' ')}</div>
+                  )}
                 </div>
               </div>
             );
