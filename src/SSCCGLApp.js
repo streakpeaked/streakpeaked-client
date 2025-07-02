@@ -226,7 +226,68 @@ function SSCCGLApp({ user }) {
         <h3 style={{ color: '#1e40af' }}>Timer: {seconds}s</h3>
       </div>
 
-      {testComplete ? (
+      <div style={{ marginBottom: 20, marginTop: 20, textAlign: 'center' }}>
+        <label>
+          Difficulty:
+          <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
+            <option value="All">All</option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+          </select>
+        </label>
+        <label style={{ marginLeft: 20 }}>
+          Section:
+          <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)}>
+            <option value="All">All</option>
+            <option value="Maths">Maths</option>
+            <option value="GK">GK</option>
+            <option value="Reasoning">Reasoning</option>
+            <option value="English">English</option>
+          </select>
+        </label>
+      </div>
+
+      <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: '#ffffff', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.1)' }}>
+        <h2 style={{ fontSize: '22px', marginBottom: '10px' }}>{current.section} ({current.level})</h2>
+        <p style={{ fontSize: '18px' }}>{current.question}</p>
+
+        {current.options.map((opt, idx) => (
+          <button
+            key={idx}
+            onClick={() => handleOption(opt)}
+            style={{
+              margin: '10px 0',
+              padding: '10px 16px',
+              backgroundColor: selected === opt ? (opt === current.answer ? '#16a34a' : '#dc2626') : '#3b82f6',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              width: '100%',
+              textAlign: 'left'
+            }}
+          >
+            {String.fromCharCode(65 + idx)}. {opt}
+          </button>
+        ))}
+
+        {user && (
+          <div style={{ textAlign: 'center', marginTop: 20 }}>
+            <button onClick={() => setShowChat(!showChat)} style={{ padding: '10px 20px', fontSize: '14px', backgroundColor: '#1e40af', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
+              {showChat ? 'Hide Chat' : 'Show Chat'}
+            </button>
+          </div>
+        )}
+      </div>
+
+      {user && showChat && (
+        <div style={{ maxWidth: '700px', margin: '20px auto' }}>
+          <ChatSidebar user={user} />
+        </div>
+      )}
+
+      {testComplete && (
         <div style={{ maxWidth: '800px', margin: 'auto', backgroundColor: 'white', borderRadius: '12px', padding: '40px', boxShadow: '0 0 15px rgba(0,0,0,0.1)' }}>
           <h1 style={{ fontSize: '32px', color: '#1e3a8a' }}>🎓 Test Summary</h1>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', margin: '20px 0' }}>
@@ -242,69 +303,6 @@ function SSCCGLApp({ user }) {
             <button onClick={restartTest} style={{ backgroundColor: '#10b981', color: 'white', padding: '12px 24px', fontSize: '16px', borderRadius: '8px', cursor: 'pointer' }}>🔁 Retake Test</button>
           </div>
         </div>
-      ) : (
-        <>
-          <div style={{ marginBottom: 20, marginTop: 20, textAlign: 'center' }}>
-            <label>
-              Difficulty:
-              <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
-                <option value="All">All</option>
-                <option value="Easy">Easy</option>
-                <option value="Medium">Medium</option>
-                <option value="Hard">Hard</option>
-              </select>
-            </label>
-            <label style={{ marginLeft: 20 }}>
-              Section:
-              <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)}>
-                <option value="All">All</option>
-                <option value="Maths">Maths</option>
-                <option value="GK">GK</option>
-                <option value="Reasoning">Reasoning</option>
-                <option value="English">English</option>
-              </select>
-            </label>
-          </div>
-
-          <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: '#ffffff', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.1)' }}>
-            <h2 style={{ fontSize: '22px', marginBottom: '10px' }}>{current.section} ({current.level})</h2>
-            <p style={{ fontSize: '18px' }}>{current.question}</p>
-
-            {current.options.map((opt, idx) => (
-              <button
-                key={idx}
-                onClick={() => handleOption(opt)}
-                style={{
-                  margin: '10px 0',
-                  padding: '10px 16px',
-                  backgroundColor: selected === opt ? (opt === current.answer ? '#16a34a' : '#dc2626') : '#3b82f6',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  width: '100%',
-                  textAlign: 'left'
-                }}
-              >
-                {String.fromCharCode(65 + idx)}. {opt}
-              </button>
-            ))}
-
-            {user && (
-              <div style={{ textAlign: 'center', marginTop: 20 }}>
-                <button onClick={() => setShowChat(!showChat)} style={{ padding: '10px 20px', fontSize: '14px', backgroundColor: '#1e40af', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
-                  {showChat ? 'Hide Chat' : 'Show Chat'}
-                </button>
-              </div>
-            )}
-          </div>
-
-          {user && showChat && (
-            <div style={{ maxWidth: '700px', margin: '20px auto' }}>
-              <ChatSidebar user={user} />
-            </div>
-          )}
-        </>
       )}
 
       <footer style={{ backgroundColor: '#1f2937', color: 'white', padding: '20px 40px', textAlign: 'center', marginTop: 40 }}>
