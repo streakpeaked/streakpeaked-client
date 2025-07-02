@@ -201,6 +201,34 @@ function SSCCGLApp({ user }) {
         </div>
       )}
 
+      const renderMatrixTable = () => {
+  const matrix = getMatrix();
+  const levels = ['Easy', 'Medium', 'Hard'];
+  return (
+    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <thead>
+        <tr>
+          <th style={{ border: '1px solid #ccc', padding: '8px' }}>Section</th>
+          {levels.map(level => (
+            <th key={level} style={{ border: '1px solid #ccc', padding: '8px' }}>{level}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {Object.entries(matrix).map(([section, row]) => (
+          <tr key={section}>
+            <td style={{ border: '1px solid #ccc', padding: '8px' }}>{section}</td>
+            {levels.map(level => (
+              <td key={level} style={{ border: '1px solid #ccc', padding: '8px' }}>{row[level]}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
+
+
       {testComplete ? (
         <div style={{ maxWidth: '800px', margin: 'auto', backgroundColor: 'white', borderRadius: '12px', padding: '40px', boxShadow: '0 0 15px rgba(0,0,0,0.1)' }}>
           <h1 style={{ fontSize: '32px', color: '#1e3a8a' }}>🎓 Test Summary</h1>
