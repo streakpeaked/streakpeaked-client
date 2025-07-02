@@ -209,6 +209,18 @@ function SSCCGLApp({ user }) {
 
   const current = filteredQuestions[index];
 
+  if (!current) {
+  return (
+    <div style={{ textAlign: 'center', padding: 40 }}>
+      <h2>No questions available for the selected filters.</h2>
+      <button onClick={() => navigate('/')} style={{ marginTop: 20, backgroundColor: '#1d4ed8', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+        🔙 Back to Homepage
+      </button>
+    </div>
+  );
+}
+
+
   return (
     <div style={{ backgroundColor: bgColor, minHeight: '100vh', fontFamily: 'Segoe UI, sans-serif' }}>
       <header style={{ backgroundColor: '#16a34a', color: 'white', padding: '20px 40px', display: 'flex', justifyContent: 'space-between' }}>
