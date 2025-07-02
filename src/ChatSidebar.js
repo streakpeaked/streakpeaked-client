@@ -1,7 +1,7 @@
 // ChatSidebar.js
 import React, { useEffect, useState, useRef } from 'react';
 import { db } from './firebaseConfig';
-import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import Picker from 'emoji-picker-react';
 import { FaMicrophone, FaRegSmile } from 'react-icons/fa';
 import './ChatSidebar.css';
@@ -57,19 +57,6 @@ function ChatSidebar({ user }) {
     recognition.start();
   };
 
-  const toggleReaction = async (msgId, emoji) => {
-    const msgDocRef = doc(db, 'chats', msgId);
-    const msg = messages.find(m => m.id === msgId);
-    const reactions = { ...msg.reactions };
-    const userReactions = reactions[user.uid] || [];
-    if (userReactions.includes(emoji)) {
-      reactions[user.uid] = userReactions.filter(e => e !== emoji);
-    } else {
-      reactions[user.uid] = [...userReactions, emoji];
-    }
-    await updateDoc(msgDocRef, { reactions });
-  };
-
   const groupByDate = msgs => {
     const grouped = {};
     msgs.forEach(msg => {
@@ -91,34 +78,36 @@ function ChatSidebar({ user }) {
             const isCurrentUser = msg.uid === user.uid;
             const bubbleStyle = {
               backgroundColor: isCurrentUser ? '#dcf8c6' : '#ffffff',
-              padding: '10px 15px',
+              padding: '8px 12px',
               borderRadius: '8px',
               margin: '4px 0',
               maxWidth: '70%',
               alignSelf: isCurrentUser ? 'flex-end' : 'flex-start',
               boxShadow: '0 0 4px rgba(0,0,0,0.1)',
-              position: 'relative'
+              position: 'relative',
+              fontSize: '14px'
             };
-            const reactions = Object.entries(msg.reactions || {}).flatMap(([uid, emojis]) => emojis.map(e => `${e}`));
+            const emojiSize = {
+              fontSize: '14px',
+              display: 'inline-block',
+              marginRight: '4px'
+            };
             return (
-              <div key={msg.id} style={{ display: 'flex', flexDirection: 'column', alignItems: isCurrentUser ? 'flex-end' : 'flex-start', marginBottom: 10 }}>
-                <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: 2 }}>{msg.name}</div>
+              <div key={msg.id} style={{ display: 'flex', flexDirection: 'column', alignItems: isCurrentUser ? 'flex-end' : 'flex-start', marginBottom: 8 }}>
+                <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '2px' }}>{msg.name}</div>
                 <div style={bubbleStyle}>
                   {msg.replyTo && (
                     <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: 5, borderLeft: '2px solid #9ca3af', paddingLeft: 6 }}>
                       Replying to: {messages.find(m => m.id === msg.replyTo)?.text || 'Unknown'}
                     </div>
                   )}
-                  <div style={{ fontSize: '14px' }}>{msg.text}</div>
-                  <div style={{ fontSize: '10px', textAlign: 'right', marginTop: 4, color: '#4b5563' }}>{msg.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-                  <div style={{ marginTop: 4, display: 'flex', gap: 6 }}>
-                    {["❤️", "😂", "👍"].map(emoji => (
-                      <button key={emoji} onClick={() => toggleReaction(msg.id, emoji)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>{emoji}</button>
+                  <div>{msg.text}</div>
+                  <div style={{ display: 'flex', gap: '6px', marginTop: 4 }}>
+                    {(msg.reactions && Object.values(msg.reactions).flat()).map((emoji, i) => (
+                      <span key={i} style={emojiSize}>{emoji}</span>
                     ))}
                   </div>
-                  {reactions.length > 0 && (
-                    <div style={{ marginTop: 4, fontSize: '12px' }}>{[...new Set(reactions)].join(' ')}</div>
-                  )}
+                  <div style={{ fontSize: '10px', textAlign: 'right', marginTop: 4, color: '#4b5563' }}>{msg.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                 </div>
               </div>
             );
