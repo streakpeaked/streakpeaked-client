@@ -1,5 +1,5 @@
 // SSCCGLApp.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 import ChatSidebar from './ChatSidebar';
@@ -24,7 +24,7 @@ const stopStreakMusic = () => {
   }
 };
 
-function SSCCGLApp({ user, setUser }) {
+function SSCCGLApp({ user }) {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [filteredQuestions, setFilteredQuestions] = useState([]);
@@ -207,96 +207,82 @@ function SSCCGLApp({ user, setUser }) {
     setFilteredQuestions(result);
   };
 
-  if (!filteredQuestions.length) return <div style={{ padding: 20 }}>Loading...</div>;
   const current = filteredQuestions[index];
 
   return (
     <div style={{ backgroundColor: bgColor, minHeight: '100vh', fontFamily: 'Segoe UI, sans-serif' }}>
-      <header style={{ backgroundColor: '#16a34a', color: 'white', padding: '15px 30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ margin: 0 }}>StreakPeaked</h1>
-        <button onClick={() => navigate('/')} style={{ backgroundColor: 'white', color: '#16a34a', padding: '8px 16px', borderRadius: '6px', border: 'none', cursor: 'pointer' }}>⬅ Back to Home</button>
+      <header style={{ backgroundColor: '#16a34a', color: 'white', padding: '20px 40px', display: 'flex', justifyContent: 'space-between' }}>
+        <h1>StreakPeaked SSC CGL Practice</h1>
+        <button onClick={() => navigate('/')} style={{ backgroundColor: '#fef08a', padding: '8px 16px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}>🔙 Back to Homepage</button>
       </header>
 
-      <div style={{ padding: 30 }}>
-        <h2 style={{ color: '#1e3a8a', marginBottom: 10 }}>StreakPeaked SSC CGL Practice</h2>
-        <h3 style={{ fontSize: '18px', color: '#1e40af' }}>Timer: {seconds}s</h3>
+      <div style={{ textAlign: 'center', padding: 10 }}>
+        <h3 style={{ color: '#1e40af' }}>Timer: {seconds}s</h3>
+      </div>
 
-        {testComplete ? (
-          <div style={{ marginTop: 30, backgroundColor: '#ffffff', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.1)' }}>
-            <h1 style={{ fontSize: '32px', color: '#1e3a8a' }}>🎓 Test Summary</h1>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', margin: '20px 0' }}>
-              <div><strong>Streak Score:</strong> {score}</div>
-              <div><strong>Questions Attempted:</strong> {timeSpent.length}</div>
-              <div><strong>Accuracy:</strong> {((score / timeSpent.length) * 100).toFixed(1)}%</div>
-            </div>
-            <h3 style={{ color: '#2563eb' }}>📊 Score Matrix</h3>
-            {renderMatrixTable()}
-            <h3 style={{ color: '#2563eb', marginTop: '20px' }}>💡 Feedback</h3>
-            <p>{getCustomFeedback()}</p>
-            <div style={{ textAlign: 'center', marginTop: '30px' }}>
-              <button onClick={restartTest} style={{ backgroundColor: '#10b981', color: 'white', padding: '12px 24px', fontSize: '16px', borderRadius: '8px', cursor: 'pointer' }}>🔁 Retake Test</button>
-            </div>
+      {testComplete ? (
+        <div style={{ maxWidth: '800px', margin: 'auto', backgroundColor: 'white', borderRadius: '12px', padding: '40px', boxShadow: '0 0 15px rgba(0,0,0,0.1)' }}>
+          <h1 style={{ fontSize: '32px', color: '#1e3a8a' }}>🎓 Test Summary</h1>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', margin: '20px 0' }}>
+            <div><strong>Streak Score:</strong> {score}</div>
+            <div><strong>Questions Attempted:</strong> {timeSpent.length}</div>
+            <div><strong>Accuracy:</strong> {((score / timeSpent.length) * 100).toFixed(1)}%</div>
           </div>
-        ) : (
-          <>
-            <div style={{ marginBottom: 20, marginTop: 20 }}>
-              <label>
-                Difficulty:
-                <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
-                  <option value="All">All</option>
-                  <option value="Easy">Easy</option>
-                  <option value="Medium">Medium</option>
-                  <option value="Hard">Hard</option>
-                </select>
-              </label>
-              <label style={{ marginLeft: 20 }}>
-                Section:
-                <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)}>
-                  <option value="All">All</option>
-                  <option value="Maths">Maths</option>
-                  <option value="GK">GK</option>
-                  <option value="Reasoning">Reasoning</option>
-                  <option value="English">English</option>
-                </select>
-              </label>
-            </div>
+          <h3 style={{ color: '#2563eb' }}>📊 Score Matrix</h3>
+          {renderMatrixTable()}
+          <h3 style={{ color: '#2563eb', marginTop: '20px' }}>💡 Feedback</h3>
+          <p>{getCustomFeedback()}</p>
+          <div style={{ textAlign: 'center', marginTop: '30px' }}>
+            <button onClick={restartTest} style={{ backgroundColor: '#10b981', color: 'white', padding: '12px 24px', fontSize: '16px', borderRadius: '8px', cursor: 'pointer' }}>🔁 Retake Test</button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div style={{ marginBottom: 20, marginTop: 20, textAlign: 'center' }}>
+            <label>
+              Difficulty:
+              <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
+                <option value="All">All</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </label>
+            <label style={{ marginLeft: 20 }}>
+              Section:
+              <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)}>
+                <option value="All">All</option>
+                <option value="Maths">Maths</option>
+                <option value="GK">GK</option>
+                <option value="Reasoning">Reasoning</option>
+                <option value="English">English</option>
+              </select>
+            </label>
+          </div>
 
-            <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: '#ffffff', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.1)' }}>
-              <h2 style={{ fontSize: '22px', marginBottom: '10px' }}>{current.section} ({current.level})</h2>
-              <p style={{ fontSize: '18px' }}>{current.question}</p>
+          <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: '#ffffff', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.1)' }}>
+            <h2 style={{ fontSize: '22px', marginBottom: '10px' }}>{current.section} ({current.level})</h2>
+            <p style={{ fontSize: '18px' }}>{current.question}</p>
 
-              {current.options.map((opt, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => handleOption(opt)}
-                  style={{
-                    margin: '10px 0',
-                    padding: '10px 16px',
-                    backgroundColor: selected === opt ? (opt === current.answer ? '#16a34a' : '#dc2626') : '#3b82f6',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    width: '100%',
-                    textAlign: 'left'
-                  }}
-                >
-                  {String.fromCharCode(65 + idx)}. {opt}
-                </button>
-              ))}
-
-              {!user && (
-                <p style={{ marginTop: 30, fontSize: '14px' }}>
-                  Want to chat with others and save your history? <button onClick={() => alert('Please login from homepage')}>Login with Google</button>
-                </p>
-              )}
-            </div>
-
-            {user && showChat && (
-              <div style={{ maxWidth: '700px', margin: '20px auto', backgroundColor: '#f3f4f6', borderRadius: '12px', padding: '20px', boxShadow: '0 0 8px rgba(0,0,0,0.1)' }}>
-                <ChatSidebar user={user} />
-              </div>
-            )}
+            {current.options.map((opt, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleOption(opt)}
+                style={{
+                  margin: '10px 0',
+                  padding: '10px 16px',
+                  backgroundColor: selected === opt ? (opt === current.answer ? '#16a34a' : '#dc2626') : '#3b82f6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  width: '100%',
+                  textAlign: 'left'
+                }}
+              >
+                {String.fromCharCode(65 + idx)}. {opt}
+              </button>
+            ))}
 
             {user && (
               <div style={{ textAlign: 'center', marginTop: 20 }}>
@@ -305,11 +291,17 @@ function SSCCGLApp({ user, setUser }) {
                 </button>
               </div>
             )}
-          </>
-        )}
-      </div>
+          </div>
 
-      <footer style={{ backgroundColor: '#1f2937', color: 'white', padding: '20px 40px', textAlign: 'center' }}>
+          {user && showChat && (
+            <div style={{ maxWidth: '700px', margin: '20px auto' }}>
+              <ChatSidebar user={user} />
+            </div>
+          )}
+        </>
+      )}
+
+      <footer style={{ backgroundColor: '#1f2937', color: 'white', padding: '20px 40px', textAlign: 'center', marginTop: 40 }}>
         <p>© 2025 StreakPeaked | Contact: support@streakpeaked.io | Gurgaon, India</p>
       </footer>
     </div>
