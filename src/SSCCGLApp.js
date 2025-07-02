@@ -133,6 +133,33 @@ function SSCCGLApp({ user }) {
     return matrix;
   };
 
+  const renderMatrixTable = () => {
+    const matrix = getMatrix();
+    const levels = ['Easy', 'Medium', 'Hard'];
+    return (
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead>
+          <tr>
+            <th style={{ border: '1px solid #ccc', padding: '8px' }}>Section</th>
+            {levels.map(level => (
+              <th key={level} style={{ border: '1px solid #ccc', padding: '8px' }}>{level}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {Object.entries(matrix).map(([section, row]) => (
+            <tr key={section}>
+              <td style={{ border: '1px solid #ccc', padding: '8px' }}>{section}</td>
+              {levels.map(level => (
+                <td key={level} style={{ border: '1px solid #ccc', padding: '8px' }}>{row[level]}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
+
   const getCustomFeedback = () => {
     let baseFeedback = "";
     if (score < 10) baseFeedback = "Your streak score is very low, not even crossing 10. Hope you got a reality check. Now buckle up and grind till you make this streak above 20.";
@@ -200,34 +227,6 @@ function SSCCGLApp({ user }) {
           <h3 style={{ color: '#1e40af' }}>Timer: {seconds}s</h3>
         </div>
       )}
-
-      const renderMatrixTable = () => {
-  const matrix = getMatrix();
-  const levels = ['Easy', 'Medium', 'Hard'];
-  return (
-    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-      <thead>
-        <tr>
-          <th style={{ border: '1px solid #ccc', padding: '8px' }}>Section</th>
-          {levels.map(level => (
-            <th key={level} style={{ border: '1px solid #ccc', padding: '8px' }}>{level}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {Object.entries(matrix).map(([section, row]) => (
-          <tr key={section}>
-            <td style={{ border: '1px solid #ccc', padding: '8px' }}>{section}</td>
-            {levels.map(level => (
-              <td key={level} style={{ border: '1px solid #ccc', padding: '8px' }}>{row[level]}</td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-};
-
 
       {testComplete ? (
         <div style={{ maxWidth: '800px', margin: 'auto', backgroundColor: 'white', borderRadius: '12px', padding: '40px', boxShadow: '0 0 15px rgba(0,0,0,0.1)' }}>
