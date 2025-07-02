@@ -133,44 +133,12 @@ function SSCCGLApp({ user }) {
     return matrix;
   };
 
-  const renderMatrixTable = () => {
-    const matrix = getMatrix();
-    const levels = ['Easy', 'Medium', 'Hard'];
-    return (
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            <th style={{ border: '1px solid #ccc', padding: '8px' }}>Section</th>
-            {levels.map(level => (
-              <th key={level} style={{ border: '1px solid #ccc', padding: '8px' }}>{level}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {Object.entries(matrix).map(([section, row]) => (
-            <tr key={section}>
-              <td style={{ border: '1px solid #ccc', padding: '8px' }}>{section}</td>
-              {levels.map(level => (
-                <td key={level} style={{ border: '1px solid #ccc', padding: '8px' }}>{row[level]}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  };
-
   const getCustomFeedback = () => {
     let baseFeedback = "";
-    if (score < 10) {
-      baseFeedback = "Your streak score is very low, not even crossing 10. Hope you got a reality check. Now buckle up and grind till you make this streak above 20.";
-    } else if (score < 20) {
-      baseFeedback = "Your streak score is decent but not crossing 20. Hope you don't want to take things lightly. Check where you went wrong and improve the streak over 30.";
-    } else if (score < 40) {
-      baseFeedback = "You are doing well! Keep the game tight, take streak beyond 40 now. Don't be lazy like CAT.";
-    } else {
-      baseFeedback = "You are right there, dark horse! Nail it, then ace it and rock it. Hit consistent 100+ streak now. madMODEon!";
-    }
+    if (score < 10) baseFeedback = "Your streak score is very low, not even crossing 10. Hope you got a reality check. Now buckle up and grind till you make this streak above 20.";
+    else if (score < 20) baseFeedback = "Your streak score is decent but not crossing 20. Hope you don't want to take things lightly. Check where you went wrong and improve the streak over 30.";
+    else if (score < 40) baseFeedback = "You are doing well! Keep the game tight, take streak beyond 40 now. Don't be lazy like CAT.";
+    else baseFeedback = "You are right there, dark horse! Nail it, then ace it and rock it. Hit consistent 100+ streak now. madMODEon!";
 
     const sectionCorrect = {};
     timeSpent.forEach(item => {
@@ -223,9 +191,9 @@ function SSCCGLApp({ user }) {
 
   return (
     <div style={{ backgroundColor: bgColor, minHeight: '100vh', fontFamily: 'Segoe UI, sans-serif' }}>
-      <header style={{ backgroundColor: '#16a34a', color: 'white', padding: '20px 40px', display: 'flex', justifyContent: 'space-between' }}>
-        <h1>StreakPeaked SSC CGL Practice</h1>
-        <button onClick={() => navigate('/')} style={{ backgroundColor: '#fef08a', padding: '8px 16px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}>🔙 Back to Homepage</button>
+      <header style={{ backgroundColor: '#16a34a', color: 'white', padding: '16px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1 style={{ fontSize: '24px', margin: 0 }}>StreakPeaked SSC CGL Practice</h1>
+        <button onClick={() => navigate('/')} style={{ backgroundColor: '#2563eb', color: 'white', padding: '8px 12px', borderRadius: '6px', border: 'none', cursor: 'pointer', fontSize: '14px' }}>⬅ Back to Homepage</button>
       </header>
 
       <div style={{ textAlign: 'center', padding: 10 }}>
