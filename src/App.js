@@ -5,6 +5,7 @@ import SSCCGLApp from './SSCCGLApp';
 import { auth, provider } from './firebaseConfig';
 import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
 import './App.css';
+import ChatSidebar from './ChatSidebar';
 
 const HomePage = ({ user, setUser }) => {
   const navigate = useNavigate();
