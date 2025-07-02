@@ -12,7 +12,6 @@ function ChatSidebar({ user }) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [replyTo, setReplyTo] = useState(null);
   const chatEndRef = useRef(null);
-  const recognitionRef = useRef(null);
 
   useEffect(() => {
     const q = query(collection(db, 'chats'), orderBy('timestamp'));
@@ -56,63 +55,48 @@ function ChatSidebar({ user }) {
       setNewMessage(prev => prev + event.results[0][0].transcript);
     };
     recognition.start();
-    recognitionRef.current = recognition;
   };
 
-  const handleReact = async (msgId, emoji) => {
-    const msgRef = collection(db, 'chats');
-    const msgDoc = messages.find(msg => msg.id === msgId);
-    const currentReactions = msgDoc.reactions || {};
-    const userReactions = currentReactions[user.uid] || [];
-    const updatedUserReactions = userReactions.includes(emoji)
-      ? userReactions.filter(e => e !== emoji)
-      : [...userReactions, emoji];
-    const updatedReactions = { ...currentReactions, [user.uid]: updatedUserReactions };
-    await addDoc(collection(db, 'chats'), {
-      ...msgDoc,
-      reactions: updatedReactions
-    });
+  const formatTime = (date) => {
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  const groupByDate = msgs => {
-    const grouped = {};
-    msgs.forEach(msg => {
-      const date = msg.timestamp?.toDate().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-      if (!grouped[date]) grouped[date] = [];
-      grouped[date].push(msg);
-    });
-    return grouped;
+  const formatDate = (date) => {
+    return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
   };
 
-  const groupedMessages = groupByDate(messages);
+  const groupedByDate = messages.reduce((acc, msg) => {
+    const date = msg.timestamp?.toDate();
+    const dateKey = formatDate(date);
+    if (!acc[dateKey]) acc[dateKey] = [];
+    acc[dateKey].push(msg);
+    return acc;
+  }, {});
 
   return (
-    <div className="chat-sidebar">
-      <div className="chat-messages">
-        {Object.entries(groupedMessages).map(([date, msgs]) => (
+    <div className="chat-container">
+      <div className="chat-body">
+        {Object.entries(groupedByDate).map(([date, msgs]) => (
           <div key={date}>
             <div className="date-divider">{date}</div>
             {msgs.map(msg => (
-              <div key={msg.id} className="chat-bubble">
-                <div className="chat-header">
-                  <img src={msg.photo} alt="avatar" className="chat-avatar" />
+              <div key={msg.id} className={`chat-message ${msg.uid === user.uid ? 'own' : ''}`}>
+                <div className="msg-header">
+                  <img src={msg.photo} alt="avatar" className="avatar" />
                   <strong>{msg.name}</strong>
-                  <span className="timestamp">{msg.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  <span className="time">{formatTime(msg.timestamp?.toDate())}</span>
                 </div>
                 {msg.replyTo && (
-                  <div className="chat-reply">
-                    Replying to: {messages.find(m => m.id === msg.replyTo)?.text || 'Unknown'}
+                  <div className="reply-block">
+                    <small>Replying to: {messages.find(m => m.id === msg.replyTo)?.text || '...'}</small>
                   </div>
                 )}
-                <div className="chat-content">{msg.text}</div>
-                <div className="chat-actions">
-                  <button onClick={() => setReplyTo(msg)} className="reply-btn">↩️</button>
-                  <button onClick={() => handleReact(msg.id, '❤️')}>❤️</button>
-                  <button onClick={() => handleReact(msg.id, '😂')}>😂</button>
-                  <button onClick={() => handleReact(msg.id, '👍')}>👍</button>
-                  <div className="chat-reactions">
-                    {Object.values(msg.reactions || {}).flat().map((emoji, i) => <span key={i}>{emoji}</span>)}
-                  </div>
+                <div className="msg-text">{msg.text}</div>
+                <div className="msg-actions">
+                  <span className="emoji-react" onClick={() => setReplyTo(msg)}>↩️</span>
+                  <span className="emoji-react">❤️</span>
+                  <span className="emoji-react">😂</span>
+                  <span className="emoji-react">👍</span>
                 </div>
               </div>
             ))}
@@ -129,9 +113,9 @@ function ChatSidebar({ user }) {
       )}
 
       <div className="chat-input">
-        <button onClick={() => setShowEmojiPicker(!showEmojiPicker)}><FaRegSmile /></button>
+        <button onClick={() => setShowEmojiPicker(!showEmojiPicker)} className="icon-btn"><FaRegSmile /></button>
         {showEmojiPicker && (
-          <div className="emoji-picker-container">
+          <div className="emoji-box">
             <Picker onEmojiClick={handleEmojiClick} height={300} width={250} />
           </div>
         )}
@@ -142,7 +126,7 @@ function ChatSidebar({ user }) {
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
         />
-        <button onClick={toggleVoiceInput}><FaMicrophone /></button>
+        <button onClick={toggleVoiceInput} className="icon-btn"><FaMicrophone /></button>
         <button onClick={sendMessage}>Send</button>
       </div>
     </div>
