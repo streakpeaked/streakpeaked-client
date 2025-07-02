@@ -57,77 +57,77 @@ function ChatSidebar({ user }) {
     recognition.start();
   };
 
-  const formatTime = (date) => {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const groupByDate = msgs => {
+    const grouped = {};
+    msgs.forEach(msg => {
+      const date = msg.timestamp?.toDate().toDateString();
+      if (!grouped[date]) grouped[date] = [];
+      grouped[date].push(msg);
+    });
+    return grouped;
   };
 
-  const formatDate = (date) => {
-    return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-  };
-
-  const groupedByDate = messages.reduce((acc, msg) => {
-    const date = msg.timestamp?.toDate();
-    const dateKey = formatDate(date);
-    if (!acc[dateKey]) acc[dateKey] = [];
-    acc[dateKey].push(msg);
-    return acc;
-  }, {});
+  const groupedMessages = groupByDate(messages);
 
   return (
-    <div className="chat-container">
-      <div className="chat-body">
-        {Object.entries(groupedByDate).map(([date, msgs]) => (
-          <div key={date}>
-            <div className="date-divider">{date}</div>
-            {msgs.map(msg => (
-              <div key={msg.id} className={`chat-message ${msg.uid === user.uid ? 'own' : ''}`}>
-                <div className="msg-header">
-                  <img src={msg.photo} alt="avatar" className="avatar" />
-                  <strong>{msg.name}</strong>
-                  <span className="time">{formatTime(msg.timestamp?.toDate())}</span>
-                </div>
-                {msg.replyTo && (
-                  <div className="reply-block">
-                    <small>Replying to: {messages.find(m => m.id === msg.replyTo)?.text || '...'}</small>
-                  </div>
-                )}
-                <div className="msg-text">{msg.text}</div>
-                <div className="msg-actions">
-                  <span className="emoji-react" onClick={() => setReplyTo(msg)}>↩️</span>
-                  <span className="emoji-react">❤️</span>
-                  <span className="emoji-react">😂</span>
-                  <span className="emoji-react">👍</span>
+    <div style={{ backgroundColor: '#e5f6ff', borderRadius: '12px', padding: '10px', maxHeight: '600px', overflowY: 'auto', fontFamily: 'Segoe UI, sans-serif' }}>
+      {Object.entries(groupedMessages).map(([date, msgs]) => (
+        <div key={date}>
+          <div style={{ textAlign: 'center', color: '#6b7280', margin: '12px 0', fontSize: '14px' }}>{date}</div>
+          {msgs.map(msg => {
+            const isCurrentUser = msg.uid === user.uid;
+            const bubbleStyle = {
+              backgroundColor: isCurrentUser ? '#dcf8c6' : '#ffffff',
+              padding: '10px 15px',
+              borderRadius: '8px',
+              margin: '4px 0',
+              maxWidth: '70%',
+              alignSelf: isCurrentUser ? 'flex-end' : 'flex-start',
+              boxShadow: '0 0 4px rgba(0,0,0,0.1)',
+              position: 'relative'
+            };
+            return (
+              <div key={msg.id} style={{ display: 'flex', flexDirection: 'column', alignItems: isCurrentUser ? 'flex-end' : 'flex-start', marginBottom: 10 }}>
+                <div style={bubbleStyle}>
+                  {msg.replyTo && (
+                    <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: 5, borderLeft: '2px solid #9ca3af', paddingLeft: 6 }}>
+                      Replying to: {messages.find(m => m.id === msg.replyTo)?.text || 'Unknown'}
+                    </div>
+                  )}
+                  <div style={{ fontSize: '14px' }}>{msg.text}</div>
+                  <div style={{ fontSize: '10px', textAlign: 'right', marginTop: 4, color: '#4b5563' }}>{msg.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                 </div>
               </div>
-            ))}
-          </div>
-        ))}
-        <div ref={chatEndRef} />
-      </div>
+            );
+          })}
+        </div>
+      ))}
+      <div ref={chatEndRef} />
 
       {replyTo && (
-        <div className="reply-preview">
+        <div style={{ backgroundColor: '#fef9c3', padding: '8px', borderRadius: '6px', marginBottom: '8px' }}>
           Replying to: {replyTo.text}
-          <button onClick={() => setReplyTo(null)}>❌</button>
+          <button onClick={() => setReplyTo(null)} style={{ marginLeft: 10, background: 'none', border: 'none', color: '#dc2626' }}>❌</button>
         </div>
       )}
 
-      <div className="chat-input">
-        <button onClick={() => setShowEmojiPicker(!showEmojiPicker)} className="icon-btn"><FaRegSmile /></button>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: 10 }}>
+        <button onClick={() => setShowEmojiPicker(!showEmojiPicker)} style={{ background: 'none', border: 'none', fontSize: '18px' }}><FaRegSmile /></button>
         {showEmojiPicker && (
-          <div className="emoji-box">
+          <div style={{ position: 'absolute', bottom: '70px', zIndex: 100 }}>
             <Picker onEmojiClick={handleEmojiClick} height={300} width={250} />
           </div>
         )}
         <input
           type="text"
-          placeholder="Type your message..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+          placeholder="Type your message..."
+          style={{ flex: 1, padding: '10px 12px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '14px' }}
         />
-        <button onClick={toggleVoiceInput} className="icon-btn"><FaMicrophone /></button>
-        <button onClick={sendMessage}>Send</button>
+        <button onClick={toggleVoiceInput} style={{ background: 'none', border: 'none', fontSize: '18px' }}><FaMicrophone /></button>
+        <button onClick={sendMessage} style={{ backgroundColor: '#2563eb', color: 'white', padding: '8px 14px', border: 'none', borderRadius: '6px' }}>Send</button>
       </div>
     </div>
   );
