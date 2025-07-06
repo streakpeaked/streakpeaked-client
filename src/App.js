@@ -6,6 +6,7 @@ import SSCCGLApp from './components/SSCCGLApp';
 import ChatSidebar from './components/ChatSidebar';
 import UserProfile from './components/UserProfile';
 import PerformanceTracker from './components/PerformanceTracker';
+import questionsData from './ssc_cgl_questions_with_filters.json';
 import './App.css';
 
 function App() {
@@ -13,6 +14,8 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [chatOpen, setChatOpen] = useState(false);
   const [userScores, setUserScores] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -20,8 +23,8 @@ function App() {
       if (currentUser) {
         loadUserScores(currentUser.uid);
       }
+      setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
@@ -33,6 +36,7 @@ function App() {
       }
     } catch (error) {
       console.error('Error loading user scores:', error);
+      setError('Failed to load user scores');
     }
   };
 
@@ -43,14 +47,13 @@ function App() {
         timestamp: new Date().toISOString(),
         userId: user.uid
       };
-      
       const updatedScores = [...userScores, newScore];
       setUserScores(updatedScores);
-      
       try {
         localStorage.setItem(`scores_${user.uid}`, JSON.stringify(updatedScores));
       } catch (error) {
         console.error('Error saving user score:', error);
+        setError('Failed to save user score');
       }
     }
   };
@@ -63,52 +66,82 @@ function App() {
       setChatOpen(false);
     } catch (error) {
       console.error('Error signing out:', error);
+      setError('Failed to sign out');
     }
   };
 
   const renderCurrentPage = () => {
-    switch (currentPage) {
-      case 'ssc-cgl':
-        return (
-          <SSCCGLApp
-            user={user}
-            onBackHome={() => setCurrentPage('home')}
-            onScoreSubmit={saveUserScore}
-          />
-        );
-      case 'profile':
-        return (
-          <UserProfile
-            user={user}
-            onBackHome={() => setCurrentPage('home')}
-            onViewPerformance={() => setCurrentPage('performance')}
-          />
-        );
-      case 'performance':
-        return (
-          <PerformanceTracker
-            user={user}
-            scores={userScores}
-            onBackHome={() => setCurrentPage('home')}
-            onBackProfile={() => setCurrentPage('profile')}
-          />
-        );
-      default:
-        return (
-          <LandingPage
-            user={user}
-            onExamSelect={(exam) => setCurrentPage(exam)}
-            onProfileClick={() => setCurrentPage('profile')}
-            onLogout={handleLogout}
-          />
-        );
+    try {
+      switch (currentPage) {
+        case 'ssc-cgl':
+          return (
+            <SSCCGLApp
+              user={user}
+              onBackHome={() => setCurrentPage('home')}
+              onScoreSubmit={saveUserScore}
+              questions={questionsData}
+            />
+          );
+        case 'profile':
+          return (
+            <UserProfile
+              user={user}
+              onBackHome={() => setCurrentPage('home')}
+              onViewPerformance={() => setCurrentPage('performance')}
+            />
+          );
+        case 'performance':
+          return (
+            <PerformanceTracker
+              user={user}
+              scores={userScores}
+              onBackHome={() => setCurrentPage('home')}
+              onBackProfile={() => setCurrentPage('profile')}
+            />
+          );
+        default:
+          return (
+            <LandingPage
+              user={user}
+              onExamSelect={(exam) => setCurrentPage(exam)}
+              onProfileClick={() => setCurrentPage('profile')}
+              onLogout={handleLogout}
+            />
+          );
+      }
+    } catch (error) {
+      console.error('Error rendering page:', error);
+      return (
+        <div className="error-container">
+          <h2>Something went wrong</h2>
+          <p>{error?.message || 'An unexpected error occurred'}</p>
+          <button onClick={() => setCurrentPage('home')}>Go Home</button>
+        </div>
+      );
     }
   };
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner">Loading...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <h2>Error</h2>
+        <p>{error}</p>
+        <button onClick={() => setError(null)}>Try Again</button>
+      </div>
+    );
+  }
 
   return (
     <div className="App">
       {renderCurrentPage()}
-      
       {user && currentPage !== 'home' && (
         <ChatSidebar
           isOpen={chatOpen}

@@ -3,7 +3,7 @@ import './SSCCGLApp.css';
 import ChatSidebar from './ChatSidebar';
 import { saveUserScore } from '../firebaseConfig';
 
-const SSCCGLApp = ({ user, onBackToHome, questions }) => {
+const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState('');
   const [showResult, setShowResult] = useState(false);
@@ -35,7 +35,9 @@ const SSCCGLApp = ({ user, onBackToHome, questions }) => {
   const sections = ['All', 'General Knowledge', 'Mathematics', 'Reasoning', 'English'];
 
   useEffect(() => {
-    filterQuestions();
+    if (questions && questions.length > 0) {
+      filterQuestions();
+    }
   }, [difficulty, section, questions]);
 
   useEffect(() => {
@@ -57,6 +59,11 @@ const SSCCGLApp = ({ user, onBackToHome, questions }) => {
   }, []);
 
   const filterQuestions = () => {
+    if (!questions || questions.length === 0) {
+      setFilteredQuestions([]);
+      return;
+    }
+
     let filtered = [...questions];
 
     if (difficulty !== 'All') {
@@ -187,12 +194,55 @@ const SSCCGLApp = ({ user, onBackToHome, questions }) => {
     setShowChat(!showChat);
   };
 
-  if (filteredQuestions.length === 0) {
+  // Show loading if no questions or still loading
+  if (!questions || questions.length === 0) {
     return (
       <div className="ssc-cgl-app">
         <div className="loading-container">
           <div className="loading-spinner"></div>
           <p>Loading questions...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show message if no filtered questions
+  if (filteredQuestions.length === 0) {
+    return (
+      <div className="ssc-cgl-app">
+        <div className="app-header">
+          <button className="back-home-btn" onClick={onBackHome}>
+            🏠 Back to Home
+          </button>
+          <h1 className="app-title">SSC CGL Streak Test</h1>
+        </div>
+        <div className="no-questions-container">
+          <h2>No questions found for the selected filters</h2>
+          <p>Try changing the difficulty or section filters</p>
+          <div className="filters-section">
+            <div className="filter-group">
+              <label>Difficulty:</label>
+              <select 
+                value={difficulty} 
+                onChange={(e) => setDifficulty(e.target.value)}
+              >
+                {difficulties.map(diff => (
+                  <option key={diff} value={diff}>{diff}</option>
+                ))}
+              </select>
+            </div>
+            <div className="filter-group">
+              <label>Section:</label>
+              <select 
+                value={section} 
+                onChange={(e) => setSection(e.target.value)}
+              >
+                {sections.map(sec => (
+                  <option key={sec} value={sec}>{sec}</option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -206,7 +256,7 @@ const SSCCGLApp = ({ user, onBackToHome, questions }) => {
         </audio>
         
         <div className="result-header">
-          <button className="back-home-btn" onClick={onBackToHome}>
+          <button className="back-home-btn" onClick={onBackHome}>
             🏠 Back to Home
           </button>
           <h1 className="result-title">Test Results</h1>
@@ -269,7 +319,7 @@ const SSCCGLApp = ({ user, onBackToHome, questions }) => {
             <button className="restart-btn" onClick={restartTest}>
               🔄 Take Test Again
             </button>
-            <button className="home-btn" onClick={onBackToHome}>
+            <button className="home-btn" onClick={onBackHome}>
               🏠 Back to Home
             </button>
           </div>
@@ -284,7 +334,7 @@ const SSCCGLApp = ({ user, onBackToHome, questions }) => {
       style={{ backgroundColor: backgroundColors[backgroundColorIndex] }}
     >
       <div className="app-header">
-        <button className="back-home-btn" onClick={onBackToHome}>
+        <button className="back-home-btn" onClick={onBackHome}>
           🏠 Back to Home
         </button>
         <h1 className="app-title">SSC CGL Streak Test</h1>
