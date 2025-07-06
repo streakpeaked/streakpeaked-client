@@ -1,18 +1,334 @@
-import { collection, addDoc } from 'firebase/firestore';
+// SSCCGLApp.js
+import React, { useEffect, useState, useRef } from 'react';
+import { collection, getDocs, addDoc } from 'firebase/firestore'; // <--- addDoc imported here!
 import { db } from './firebaseConfig';
+import ChatSidebar from './ChatSidebar';
+import { useNavigate } from 'react-router-dom';
+import './App.css';
 
-// ... inside your component, after test is complete
-useEffect(() => {
-  if (testComplete && user) {
-    // Save result to Firestore
-    addDoc(collection(db, 'results'), {
-      uid: user.uid,
-      exam: 'SSC CGL',
-      streakScore: score,
-      avgTime: timeSpent.length > 0 ? (timeSpent.reduce((a, b) => a + b.time, 0) / timeSpent.length) : 0,
-      timestamp: Date.now(),
-      details: timeSpent
-    });
+let streakAudio;
+
+const playStreakMusic = () => {
+  if (!streakAudio) {
+    streakAudio = new Audio('/music.mp3');
+    streakAudio.loop = true;
+    streakAudio.play().catch((e) => console.log("Audio failed:", e));
   }
-  // eslint-disable-next-line
-}, [testComplete]);
+};
+
+const stopStreakMusic = () => {
+  if (streakAudio) {
+    streakAudio.pause();
+    streakAudio.currentTime = 0;
+    streakAudio = null;
+  }
+};
+
+function SSCCGLApp({ user }) {
+  const navigate = useNavigate();
+  const [questions, setQuestions] = useState([]);
+  const [filteredQuestions, setFilteredQuestions] = useState([]);
+  const [index, setIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [startTime, setStartTime] = useState(Date.now());
+  const [timeSpent, setTimeSpent] = useState([]);
+  const [bgColor, setBgColor] = useState('#f0f8ff');
+  const [seconds, setSeconds] = useState(0);
+  const [difficultyFilter, setDifficultyFilter] = useState("All");
+  const [sectionFilter, setSectionFilter] = useState("All");
+  const [testComplete, setTestComplete] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      const snapshot = await getDocs(collection(db, "questions"));
+      let qList = snapshot.docs.map(doc => doc.data()).filter(q => !q.image);
+      qList = qList.sort(() => Math.random() - 0.5);
+      setQuestions(qList);
+    };
+    fetchQuestions();
+  }, []);
+
+  useEffect(() => {
+    const result = questions.filter(q => {
+      const matchSection = sectionFilter === "All" || q.section === sectionFilter;
+      const matchDifficulty = difficultyFilter === "All" || q.level === difficultyFilter;
+      return matchSection && matchDifficulty;
+    });
+    setFilteredQuestions(result);
+    setIndex(0);
+    setScore(0);
+    setTimeSpent([]);
+    setTestComplete(false);
+  }, [questions, difficultyFilter, sectionFilter]);
+
+  useEffect(() => {
+    if (testComplete) playStreakMusic();
+    return () => stopStreakMusic();
+  }, [testComplete]);
+
+  useEffect(() => {
+    if (testComplete) return;
+    const timer = setInterval(() => {
+      const sec = Math.floor((Date.now() - startTime) / 1000);
+      setSeconds(sec);
+      if (sec < 10) setBgColor('#f0f8ff');
+      else if (sec < 20) setBgColor('#dbeafe');
+      else if (sec < 30) setBgColor('#e5e7eb');
+      else if (sec < 40) setBgColor('#fcd34d');
+      else if (sec < 50) setBgColor('#f87171');
+      else {
+        const blink = sec % 2 === 0;
+        setBgColor(blink ? '#ef4444' : '#000');
+        if (sec === 51) speak("You may wanna skip this question");
+        if (sec === 56) speak("It's eating your time");
+      }
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [startTime, testComplete]);
+
+  // ---- ADD THIS useEffect TO SAVE RESULTS TO FIRESTORE ----
+  useEffect(() => {
+    if (testComplete && user) {
+      addDoc(collection(db, 'results'), {
+        uid: user.uid,
+        exam: 'SSC CGL',
+        streakScore: score,
+        avgTime: timeSpent.length > 0 ? (timeSpent.reduce((a, b) => a + b.time, 0) / timeSpent.length) : 0,
+        timestamp: Date.now(),
+        details: timeSpent
+      });
+    }
+    // eslint-disable-next-line
+  }, [testComplete]);
+  // --------------------------------------------------------
+
+  const speak = (msg) => {
+    const utter = new SpeechSynthesisUtterance(msg);
+    window.speechSynthesis.speak(utter);
+  };
+
+  const handleOption = (opt) => {
+    if (testComplete) return;
+    setSelected(opt);
+    const endTime = Date.now();
+    const duration = Math.floor((endTime - startTime) / 1000);
+    const correct = opt === filteredQuestions[index].answer;
+    if (correct) setScore(prev => prev + 1);
+    setTimeSpent(prev => [...prev, {
+      section: filteredQuestions[index].section,
+      level: filteredQuestions[index].level,
+      time: duration,
+      correct
+    }]);
+    setTimeout(() => {
+      setSelected(null);
+      if (!correct || index + 1 >= filteredQuestions.length) {
+        setTestComplete(true);
+      } else {
+        setIndex(index + 1);
+        setStartTime(Date.now());
+        setSeconds(0);
+      }
+    }, 1000);
+  };
+
+  const getMatrix = () => {
+    const sections = ['GK', 'Maths', 'Reasoning', 'English'];
+    const levels = ['Easy', 'Medium', 'Hard'];
+    const matrix = {};
+    sections.forEach(sec => {
+      matrix[sec] = { Easy: 0, Medium: 0, Hard: 0 };
+    });
+    timeSpent.forEach(item => {
+      if (matrix[item.section] && matrix[item.section][item.level] !== undefined) {
+        matrix[item.section][item.level]++;
+      }
+    });
+    return matrix;
+  };
+
+  const renderMatrixTable = () => {
+    const matrix = getMatrix();
+    const levels = ['Easy', 'Medium', 'Hard'];
+    return (
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead>
+          <tr>
+            <th style={{ border: '1px solid #ccc', padding: '8px' }}>Section</th>
+            {levels.map(level => (
+              <th key={level} style={{ border: '1px solid #ccc', padding: '8px' }}>{level}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {Object.entries(matrix).map(([section, row]) => (
+            <tr key={section}>
+              <td style={{ border: '1px solid #ccc', padding: '8px' }}>{section}</td>
+              {levels.map(level => (
+                <td key={level} style={{ border: '1px solid #ccc', padding: '8px' }}>{row[level]}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
+
+  const getCustomFeedback = () => {
+    let baseFeedback = "";
+    if (score < 10) baseFeedback = "Your streak score is very low, not even crossing 10. Hope you got a reality check. Now buckle up and grind till you make this streak above 20.";
+    else if (score < 20) baseFeedback = "Your streak score is decent but not crossing 20. Hope you don't want to take things lightly. Check where you went wrong and improve the streak over 30.";
+    else if (score < 40) baseFeedback = "You are doing well! Keep the game tight, take streak beyond 40 now. Don't be lazy like CAT.";
+    else baseFeedback = "You are right there, dark horse! Nail it, then ace it and rock it. Hit consistent 100+ streak now. madMODEon!";
+
+    const sectionCorrect = {};
+    timeSpent.forEach(item => {
+      if (item.correct) {
+        sectionCorrect[item.section] = (sectionCorrect[item.section] || 0) + 1;
+      }
+    });
+
+    const strongSections = Object.entries(sectionCorrect)
+      .filter(([section, correct]) => correct >= 10)
+      .map(([section]) => section);
+
+    const strengthMsg = strongSections.length > 0
+      ? `\nYour ${strongSections.join(", ")} section${strongSections.length > 1 ? 's are' : ' is'} your strength. Keep it tight and double drill on other weak sections!`
+      : "";
+
+    return baseFeedback + strengthMsg;
+  };
+
+  const restartTest = () => {
+    stopStreakMusic();
+    setIndex(0);
+    setScore(0);
+    setTimeSpent([]);
+    setTestComplete(false);
+    setStartTime(Date.now());
+    setSeconds(0);
+    const shuffled = [...questions].sort(() => Math.random() - 0.5);
+    const result = shuffled.filter(q => {
+      const matchSection = sectionFilter === "All" || q.section === sectionFilter;
+      const matchDifficulty = difficultyFilter === "All" || q.level === difficultyFilter;
+      return matchSection && matchDifficulty;
+    });
+    setFilteredQuestions(result);
+  };
+
+  const current = filteredQuestions[index];
+
+  if (!current && !testComplete) {
+    return (
+      <div style={{ textAlign: 'center', padding: 40 }}>
+        <h2>No questions available for the selected filters.</h2>
+        <button onClick={() => navigate('/')} style={{ marginTop: 20, backgroundColor: '#1d4ed8', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+          🔙 Back to Homepage
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ backgroundColor: bgColor, minHeight: '100vh', fontFamily: 'Segoe UI, sans-serif' }}>
+      <header style={{ backgroundColor: '#16a34a', color: 'white', padding: '16px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1 style={{ fontSize: '24px', margin: 0 }}>StreakPeaked SSC CGL Practice</h1>
+        <button onClick={() => navigate('/')} style={{ backgroundColor: '#2563eb', color: 'white', padding: '8px 12px', borderRadius: '6px', border: 'none', cursor: 'pointer', fontSize: '14px' }}>⬅ Back to Homepage</button>
+      </header>
+
+      {!testComplete && (
+        <div style={{ textAlign: 'center', padding: 10 }}>
+          <h3 style={{ color: '#1e40af' }}>Timer: {seconds}s</h3>
+        </div>
+      )}
+
+      {testComplete ? (
+        <div style={{ maxWidth: '800px', margin: 'auto', backgroundColor: 'white', borderRadius: '12px', padding: '40px', boxShadow: '0 0 15px rgba(0,0,0,0.1)' }}>
+          <h1 style={{ fontSize: '32px', color: '#1e3a8a' }}>🎓 Test Summary</h1>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', margin: '20px 0' }}>
+            <div><strong>Streak Score:</strong> {score}</div>
+            <div><strong>Questions Attempted:</strong> {timeSpent.length}</div>
+            <div><strong>Accuracy:</strong> {((score / timeSpent.length) * 100).toFixed(1)}%</div>
+          </div>
+          <h3 style={{ color: '#2563eb' }}>📊 Score Matrix</h3>
+          {renderMatrixTable()}
+          <h3 style={{ color: '#2563eb', marginTop: '20px' }}>💡 Feedback</h3>
+          <p>{getCustomFeedback()}</p>
+          <div style={{ textAlign: 'center', marginTop: '30px' }}>
+            <button onClick={restartTest} style={{ backgroundColor: '#10b981', color: 'white', padding: '12px 24px', fontSize: '16px', borderRadius: '8px', cursor: 'pointer' }}>🔁 Retake Test</button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div style={{ marginBottom: 20, marginTop: 20, textAlign: 'center' }}>
+            <label>
+              Difficulty:
+              <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
+                <option value="All">All</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </label>
+            <label style={{ marginLeft: 20 }}>
+              Section:
+              <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)}>
+                <option value="All">All</option>
+                <option value="Maths">Maths</option>
+                <option value="GK">GK</option>
+                <option value="Reasoning">Reasoning</option>
+                <option value="English">English</option>
+              </select>
+            </label>
+          </div>
+
+          <div style={{ maxWidth: '700px', margin: 'auto', backgroundColor: '#ffffff', padding: '30px', borderRadius: '12px', boxShadow: '0 0 12px rgba(0,0,0,0.1)' }}>
+            <h2 style={{ fontSize: '22px', marginBottom: '10px' }}>{current.section} ({current.level})</h2>
+            <p style={{ fontSize: '18px' }}>{current.question}</p>
+
+            {current.options.map((opt, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleOption(opt)}
+                style={{
+                  margin: '10px 0',
+                  padding: '10px 16px',
+                  backgroundColor: selected === opt ? (opt === current.answer ? '#16a34a' : '#dc2626') : '#3b82f6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  width: '100%',
+                  textAlign: 'left'
+                }}
+              >
+                {String.fromCharCode(65 + idx)}. {opt}
+              </button>
+            ))}
+
+            {user && (
+              <div style={{ textAlign: 'center', marginTop: 20 }}>
+                <button onClick={() => setShowChat(!showChat)} style={{ padding: '10px 20px', fontSize: '14px', backgroundColor: '#1e40af', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
+                  {showChat ? 'Hide Chat' : 'Show Chat'}
+                </button>
+              </div>
+            )}
+          </div>
+
+          {user && showChat && (
+            <div style={{ maxWidth: '700px', margin: '20px auto' }}>
+              <ChatSidebar user={user} />
+            </div>
+          )}
+        </>
+      )}
+
+      <footer style={{ backgroundColor: '#1f2937', color: 'white', padding: '20px 40px', textAlign: 'center', marginTop: 40 }}>
+        <p>© 2025 StreakPeaked | Contact: support@streakpeaked.io | Gurgaon, India</p>
+      </footer>
+    </div>
+  );
+}
+export default SSCCGLApp;
