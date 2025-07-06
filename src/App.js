@@ -1,78 +1,122 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import { auth, provider } from './firebaseConfig';
-import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
-import LandingPage from './LandingPage';
-import SSCCGLApp from './SSCCGLApp';
-import ProfileModal from './ProfileModal';
-import PerformanceTracker from './PerformanceTracker';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from './firebaseConfig';
+import LandingPage from './components/LandingPage';
+import SSCCGLApp from './components/SSCCGLApp';
+import ChatSidebar from './components/ChatSidebar';
+import UserProfile from './components/UserProfile';
+import PerformanceTracker from './components/PerformanceTracker';
 import './App.css';
 
 function App() {
   const [user, setUser] = useState(null);
-  const [showProfile, setShowProfile] = useState(false);
-  const [showTracker, setShowTracker] = useState(false);
+  const [currentPage, setCurrentPage] = useState('home');
+  const [chatOpen, setChatOpen] = useState(false);
+  const [userScores, setUserScores] = useState([]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      if (currentUser) {
+        loadUserScores(currentUser.uid);
+      }
     });
+
     return () => unsubscribe();
   }, []);
 
-  const handleLogin = () => {
-    signInWithPopup(auth, provider)
-      .then(result => setUser(result.user))
-      .catch(error => console.error("Login error", error));
+  const loadUserScores = async (userId) => {
+    try {
+      const savedScores = localStorage.getItem(`scores_${userId}`);
+      if (savedScores) {
+        setUserScores(JSON.parse(savedScores));
+      }
+    } catch (error) {
+      console.error('Error loading user scores:', error);
+    }
   };
 
-  const handleLogout = () => {
-    signOut(auth).then(() => setUser(null));
+  const saveUserScore = (scoreData) => {
+    if (user) {
+      const newScore = {
+        ...scoreData,
+        timestamp: new Date().toISOString(),
+        userId: user.uid
+      };
+      
+      const updatedScores = [...userScores, newScore];
+      setUserScores(updatedScores);
+      
+      try {
+        localStorage.setItem(`scores_${user.uid}`, JSON.stringify(updatedScores));
+      } catch (error) {
+        console.error('Error saving user score:', error);
+      }
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+      setCurrentPage('home');
+      setChatOpen(false);
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'ssc-cgl':
+        return (
+          <SSCCGLApp
+            user={user}
+            onBackHome={() => setCurrentPage('home')}
+            onScoreSubmit={saveUserScore}
+          />
+        );
+      case 'profile':
+        return (
+          <UserProfile
+            user={user}
+            onBackHome={() => setCurrentPage('home')}
+            onViewPerformance={() => setCurrentPage('performance')}
+          />
+        );
+      case 'performance':
+        return (
+          <PerformanceTracker
+            user={user}
+            scores={userScores}
+            onBackHome={() => setCurrentPage('home')}
+            onBackProfile={() => setCurrentPage('profile')}
+          />
+        );
+      default:
+        return (
+          <LandingPage
+            user={user}
+            onExamSelect={(exam) => setCurrentPage(exam)}
+            onProfileClick={() => setCurrentPage('profile')}
+            onLogout={handleLogout}
+          />
+        );
+    }
   };
 
   return (
-    <Router>
-      <Routes>
-        <Route 
-          path="/" 
-          element={
-            <LandingPage 
-              user={user} 
-              onLogin={handleLogin} 
-              onLogout={handleLogout}
-              onShowProfile={() => setShowProfile(true)}
-              onShowTracker={() => setShowTracker(true)}
-            />
-          } 
-        />
-        <Route 
-          path="/ssc-cgl" 
-          element={
-            <SSCCGLApp 
-              user={user} 
-              onShowProfile={() => setShowProfile(true)}
-              onShowTracker={() => setShowTracker(true)}
-            />
-          } 
-        />
-      </Routes>
-      {user && showProfile && (
-        <ProfileModal 
-          user={user} 
-          onClose={() => setShowProfile(false)} 
-          onShowTracker={() => {
-            setShowProfile(false);
-            setShowTracker(true);
-          }}
+    <div className="App">
+      {renderCurrentPage()}
+      
+      {user && currentPage !== 'home' && (
+        <ChatSidebar
+          isOpen={chatOpen}
+          onToggle={() => setChatOpen(!chatOpen)}
+          user={user}
         />
       )}
-      {user && showTracker && (
-        <PerformanceTracker 
-          user={user} 
-          onClose={() => setShowTracker(false)} 
-        />
-      )}
-    </Router>
+    </div>
   );
 }
 
