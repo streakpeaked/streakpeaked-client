@@ -38,6 +38,12 @@ body {
   text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
+.nav-section {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
 .nav-menu {
   display: flex;
   list-style: none;
@@ -55,27 +61,10 @@ body {
   color: #FF7F32;
 }
 
-.nav-actions {
+.auth-section {
+  margin-left: 2rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
-}
-
-.login-btn, .profile-btn, .logout-btn {
-  background: #FF7F32;
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-left: 1rem;
-}
-
-.login-btn:hover, .profile-btn:hover, .logout-btn:hover {
-  background: #e86c1a;
-  transform: translateY(-2px);
 }
 
 .user-menu {
@@ -167,6 +156,23 @@ body {
   margin-bottom: 0.5rem;
 }
 
+.login-btn {
+  background: #FF7F32;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 1rem;
+}
+
+.login-btn:hover {
+  background: #e86c1a;
+  transform: translateY(-2px);
+}
+
 /* Hero Section */
 .hero {
   background: linear-gradient(135deg, #2C2361 0%, #3C2F7F 100%);
@@ -176,6 +182,14 @@ body {
   position: relative;
   overflow: hidden;
   padding-top: 90px;
+}
+
+.hero-bg-wallpaper {
+  background: linear-gradient(135deg, #2C2361 0%, #3C2F7F 100%), url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80');
+  background-blend-mode: overlay;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .hero-content {
@@ -207,35 +221,36 @@ body {
   margin-bottom: 3rem;
 }
 
-.test-buttons {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.test-btn {
-  background: #FF7F32;
-  color: white;
-  padding: 1rem 1.5rem;
+/* Pill Buttons (like screenshot) */
+.pill-btn {
+  background: #fff;
+  color: #444;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
+  border-radius: 2rem;
+  padding: 0.8rem 2.2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0.3rem 0.5rem 0.3rem 0;
   cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: center;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(44,35,97,0.04);
+  outline: none;
+  display: inline-block;
 }
 
-.test-btn:hover {
-  background: #e86c1a;
-  transform: translateY(-2px);
+.pill-btn.active,
+.pill-btn:focus,
+.pill-btn:hover {
+  background: #222;
+  color: #fff;
 }
 
+.test-buttons,
 .additional-tests {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 /* Remove student-image section */
@@ -555,11 +570,12 @@ body {
   display: flex;
   justify-content: center;
   gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .social-icon {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   background: white;
   border-radius: 50%;
   display: flex;
@@ -567,11 +583,37 @@ body {
   justify-content: center;
   color: #FF7F32;
   text-decoration: none;
+  font-size: 2rem;
+  position: relative;
   transition: transform 0.3s ease;
 }
 
 .social-icon:hover {
   transform: scale(1.1);
+}
+
+/* Tooltip for social icons */
+.social-icon::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: 110%;
+  transform: translateX(-50%);
+  background: #222;
+  color: #fff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.2s, bottom 0.2s;
+  z-index: 10;
+}
+
+.social-icon:hover::after {
+  opacity: 1;
+  bottom: 130%;
 }
 
 .footer-content {
@@ -672,7 +714,8 @@ body {
     font-size: 1.5rem;
   }
   .test-buttons, .additional-tests {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 }
 

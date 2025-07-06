@@ -1,7 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { auth } from '../firebaseConfig'; // Adjust path if needed
+import { auth } from '../firebaseConfig'; // Adjust path as needed
 import './LandingPage.css';
+
+const SOCIALS = [
+  { icon: '📧', name: 'Email', link: '#' },
+  { icon: '📘', name: 'Facebook', link: '#' },
+  { icon: '💼', name: 'LinkedIn', link: '#' },
+  { icon: '📺', name: 'YouTube', link: '#' },
+  { icon: '📷', name: 'Instagram', link: '#' },
+];
 
 const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -166,38 +174,38 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
       </header>
 
       {/* Hero Section */}
-      <section className="hero">
+      <section className="hero hero-bg-wallpaper">
         <div className="hero-content hero-content-single">
           <div className="hero-text">
             <h1>More than 10 Million Students Have Said Hello to Stress-Free Studying</h1>
             <p>Start preparing for your next test!</p>
             <div className="test-buttons">
               <button
-                className="test-btn"
+                className="pill-btn active"
                 onClick={() => handleTestClick('SSC CGL')}
               >
                 SSC CGL®
               </button>
               <button
-                className="test-btn"
+                className="pill-btn"
                 onClick={() => handleTestClick('NEET')}
               >
                 NEET®
               </button>
               <button
-                className="test-btn"
+                className="pill-btn"
                 onClick={() => handleTestClick('RBI Grade B')}
               >
                 RBI Grade B®
               </button>
               <button
-                className="test-btn"
+                className="pill-btn"
                 onClick={() => handleTestClick('CLAT')}
               >
                 CLAT®
               </button>
               <button
-                className="test-btn"
+                className="pill-btn"
                 onClick={() => handleTestClick('IBPS PO')}
               >
                 IBPS PO®
@@ -205,13 +213,13 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
             </div>
             <div className="additional-tests">
               <button
-                className="test-btn"
+                className="pill-btn"
                 onClick={() => handleTestClick('AI Champ')}
               >
                 AI Champ®
               </button>
               <button
-                className="test-btn"
+                className="pill-btn"
                 onClick={() => handleTestClick('Data Scientist')}
               >
                 Data Scientist®
@@ -365,11 +373,18 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
         <div className="footer-top">
           <div className="footer-social">Connect with us</div>
           <div className="social-icons">
-            <a href="#" className="social-icon">📧</a>
-            <a href="#" className="social-icon">📘</a>
-            <a href="#" className="social-icon">💼</a>
-            <a href="#" className="social-icon">📺</a>
-            <a href="#" className="social-icon">📷</a>
+            {SOCIALS.map((s, i) => (
+              <a
+                key={s.name}
+                href={s.link}
+                className="social-icon"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-tooltip={s.name}
+              >
+                {s.icon}
+              </a>
+            ))}
           </div>
         </div>
         <div className="footer-content">
