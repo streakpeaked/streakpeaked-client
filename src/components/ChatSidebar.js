@@ -1,58 +1,92 @@
-// Enhanced ChatSidebar.js
+// Enhanced Real-time Multi-user ChatSidebar.js
 import React, { useState, useEffect, useRef } from 'react';
+import { db } from './firebaseConfig';
+import { 
+  collection, 
+  addDoc, 
+  query, 
+  orderBy, 
+  onSnapshot, 
+  serverTimestamp, 
+  updateDoc, 
+  doc, 
+  deleteDoc,
+  where,
+  getDocs
+} from 'firebase/firestore';
+import Picker from 'emoji-picker-react';
+import { FaMicrophone, FaRegSmile, FaReply, FaTrash, FaUsers } from 'react-icons/fa';
 import './ChatSidebar.css';
 
 const ChatSidebar = ({ user, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [replyTo, setReplyTo] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
-  const [chatMode, setChatMode] = useState('general'); // 'general', 'study', 'motivation'
+  const [typingUsers, setTypingUsers] = useState([]);
+  const [onlineUsers, setOnlineUsers] = useState([]);
   const [isMinimized, setIsMinimized] = useState(false);
+  const [showUserList, setShowUserList] = useState(false);
+  const [chatMode, setChatMode] = useState('general');
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
+  const typingTimeoutRef = useRef(null);
 
-  const predefinedResponses = {
-    general: [
-      "How can I help you with your preparation today?",
-      "What specific topic would you like to focus on?",
-      "Are you feeling confident about your current progress?",
-      "Would you like some study tips or motivation?"
-    ],
-    study: [
-      "Try breaking down complex problems into smaller steps.",
-      "Focus on understanding concepts rather than memorizing.",
-      "Practice regularly and review your mistakes.",
-      "Use active recall techniques while studying."
-    ],
-    motivation: [
-      "You're doing great! Every question you solve makes you stronger.",
-      "Remember, consistency is key to success.",
-      "Believe in yourself - you have the potential to achieve your goals!",
-      "Take breaks when needed, but don't give up on your dreams."
-    ]
-  };
-
-  const quickActions = [
-    { label: "Study Tips", action: "study_tips" },
-    { label: "Motivation", action: "motivation" },
-    { label: "Time Management", action: "time_management" },
-    { label: "Exam Strategy", action: "exam_strategy" }
-  ];
-
+  // Real-time messages listener
   useEffect(() => {
-    // Add welcome message when chat opens
-    if (messages.length === 0) {
-      const welcomeMessage = {
-        id: Date.now(),
-        text: `Hi ${user?.displayName || 'there'}! I'm here to help you with your preparation. How can I assist you today?`,
-        sender: 'bot',
-        timestamp: new Date().toISOString(),
-        type: 'text'
-      };
-      setMessages([welcomeMessage]);
-    }
-  }, [user, messages.length]);
+    const q = query(collection(db, 'chats'), orderBy('timestamp'));
+    const unsubscribe = onSnapshot(q, snapshot => {
+      const msgs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setMessages(msgs);
+    });
+    return () => unsubscribe();
+  }, []);
 
+  // Online users listener
+  useEffect(() => {
+    const q = query(collection(db, 'onlineUsers'));
+    const unsubscribe = onSnapshot(q, snapshot => {
+      const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setOnlineUsers(users);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Typing indicator listener
+  useEffect(() => {
+    const q = query(collection(db, 'typing'));
+    const unsubscribe = onSnapshot(q, snapshot => {
+      const typing = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setTypingUsers(typing.filter(t => t.uid !== user.uid));
+    });
+    return () => unsubscribe();
+  }, [user.uid]);
+
+  // Set user as online when component mounts
+  useEffect(() => {
+    const setUserOnline = async () => {
+      await addDoc(collection(db, 'onlineUsers'), {
+        uid: user.uid,
+        name: user.displayName,
+        photo: user.photoURL,
+        timestamp: serverTimestamp()
+      });
+    };
+    
+    setUserOnline();
+    
+    // Remove user from online list when component unmounts
+    return async () => {
+      const q = query(collection(db, 'onlineUsers'), where('uid', '==', user.uid));
+      const snapshot = await getDocs(q);
+      snapshot.forEach(async (doc) => {
+        await deleteDoc(doc.ref);
+      });
+    };
+  }, [user]);
+
+  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -61,114 +95,189 @@ const ChatSidebar = ({ user, onClose }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleSendMessage = () => {
+  // Send message function
+  const sendMessage = async () => {
     if (newMessage.trim() === '') return;
 
-    const userMessage = {
-      id: Date.now(),
-      text: newMessage,
-      sender: 'user',
-      timestamp: new Date().toISOString(),
-      type: 'text'
+    try {
+      await addDoc(collection(db, 'chats'), {
+        text: newMessage,
+        timestamp: serverTimestamp(),
+        uid: user.uid,
+        name: user.displayName,
+        photo: user.photoURL,
+        replyTo: replyTo?.id || null,
+        reactions: {},
+        chatMode: chatMode
+      });
+
+      setNewMessage('');
+      setReplyTo(null);
+      setShowEmojiPicker(false);
+      
+      // Clear typing indicator
+      clearTypingIndicator();
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  };
+
+  // Handle emoji selection
+  const handleEmojiClick = (emojiData) => {
+    setNewMessage(prev => prev + emojiData.emoji);
+  };
+
+  // Voice input functionality
+  const toggleVoiceInput = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Speech Recognition not supported in this browser');
+      return;
+    }
+    
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-IN';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setNewMessage(prev => prev + transcript);
     };
+    
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
+    };
+    
+    recognition.start();
+  };
 
-    setMessages(prev => [...prev, userMessage]);
-    setNewMessage('');
-    setIsTyping(true);
+  // Handle typing indicator
+  const handleTypingStart = async () => {
+    if (!isTyping) {
+      setIsTyping(true);
+      try {
+        await addDoc(collection(db, 'typing'), {
+          uid: user.uid,
+          name: user.displayName,
+          timestamp: serverTimestamp()
+        });
+      } catch (error) {
+        console.error('Error setting typing indicator:', error);
+      }
+    }
+    
+    // Clear existing timeout
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+    
+    // Set new timeout
+    typingTimeoutRef.current = setTimeout(() => {
+      clearTypingIndicator();
+    }, 3000);
+  };
 
-    // Simulate bot response
-    setTimeout(() => {
-      const botResponse = generateBotResponse(newMessage);
-      setMessages(prev => [...prev, botResponse]);
+  const clearTypingIndicator = async () => {
+    if (isTyping) {
       setIsTyping(false);
-    }, 1000 + Math.random() * 2000);
-  };
-
-  const generateBotResponse = (userMessage) => {
-    const message = userMessage.toLowerCase();
-    let response = '';
-    
-    // Simple keyword-based responses
-    if (message.includes('help') || message.includes('stuck')) {
-      response = "I understand you need help. Can you tell me which specific topic or question type you're struggling with?";
-    } else if (message.includes('time') || message.includes('slow')) {
-      response = "Time management is crucial! Try setting time limits for each question and practice with a timer. Speed comes with practice.";
-    } else if (message.includes('difficult') || message.includes('hard')) {
-      response = "Don't worry about difficult questions! Start with easier ones to build confidence, then gradually tackle harder problems.";
-    } else if (message.includes('motivation') || message.includes('tired')) {
-      response = "Remember why you started this journey. Every small step counts, and you're already doing better than those who haven't even started!";
-    } else if (message.includes('strategy') || message.includes('approach')) {
-      response = "Great question! Focus on accuracy first, then speed. Identify your strong and weak areas, and allocate time accordingly.";
-    } else if (message.includes('thanks') || message.includes('thank')) {
-      response = "You're welcome! I'm here whenever you need support. Keep up the great work!";
-    } else {
-      // Random response from current mode
-      const responses = predefinedResponses[chatMode];
-      response = responses[Math.floor(Math.random() * responses.length)];
+      try {
+        const q = query(collection(db, 'typing'), where('uid', '==', user.uid));
+        const snapshot = await getDocs(q);
+        snapshot.forEach(async (doc) => {
+          await deleteDoc(doc.ref);
+        });
+      } catch (error) {
+        console.error('Error clearing typing indicator:', error);
+      }
     }
-
-    return {
-      id: Date.now(),
-      text: response,
-      sender: 'bot',
-      timestamp: new Date().toISOString(),
-      type: 'text'
-    };
   };
 
-  const handleQuickAction = (action) => {
-    let response = '';
-    
-    switch (action) {
-      case 'study_tips':
-        response = "Here are some effective study tips:\n\n• Use active recall - test yourself frequently\n• Create mind maps for complex topics\n• Practice previous year questions\n• Take regular breaks (Pomodoro technique)\n• Review mistakes immediately";
-        break;
-      case 'motivation':
-        response = "🌟 You're capable of amazing things! Remember:\n\n• Every expert was once a beginner\n• Progress, not perfection\n• Your future self will thank you\n• Success is the sum of small efforts repeated daily\n• Believe in yourself!";
-        break;
-      case 'time_management':
-        response = "⏰ Time Management Tips:\n\n• Set specific study hours\n• Use a timer for each topic\n• Prioritize high-weightage topics\n• Don't spend too long on one question\n• Practice speed with accuracy";
-        break;
-      case 'exam_strategy':
-        response = "🎯 Exam Strategy:\n\n• Read all questions first\n• Start with easier questions\n• Don't get stuck on one question\n• Manage your time wisely\n• Stay calm and focused\n• Review answers if time permits";
-        break;
-      default:
-        response = "I'm here to help! What would you like to know more about?";
+  // Handle message input change
+  const handleMessageChange = (e) => {
+    setNewMessage(e.target.value);
+    handleTypingStart();
+  };
+
+  // Handle message reactions
+  const handleReaction = async (messageId, emoji) => {
+    try {
+      const messageRef = doc(db, 'chats', messageId);
+      const message = messages.find(m => m.id === messageId);
+      const reactions = message.reactions || {};
+      
+      if (!reactions[user.uid]) {
+        reactions[user.uid] = [];
+      }
+      
+      if (reactions[user.uid].includes(emoji)) {
+        reactions[user.uid] = reactions[user.uid].filter(e => e !== emoji);
+      } else {
+        reactions[user.uid].push(emoji);
+      }
+      
+      await updateDoc(messageRef, { reactions });
+    } catch (error) {
+      console.error('Error updating reaction:', error);
     }
-
-    const botMessage = {
-      id: Date.now(),
-      text: response,
-      sender: 'bot',
-      timestamp: new Date().toISOString(),
-      type: 'text'
-    };
-
-    setMessages(prev => [...prev, botMessage]);
   };
 
+  // Delete message (only own messages)
+  const deleteMessage = async (messageId) => {
+    try {
+      await deleteDoc(doc(db, 'chats', messageId));
+    } catch (error) {
+      console.error('Error deleting message:', error);
+    }
+  };
+
+  // Group messages by date
+  const groupByDate = (msgs) => {
+    const grouped = {};
+    msgs.forEach(msg => {
+      if (msg.timestamp) {
+        const date = msg.timestamp.toDate().toDateString();
+        if (!grouped[date]) grouped[date] = [];
+        grouped[date].push(msg);
+      }
+    });
+    return grouped;
+  };
+
+  // Clear all messages (admin function)
+  const clearAllMessages = async () => {
+    if (window.confirm('Are you sure you want to clear all messages?')) {
+      try {
+        const q = query(collection(db, 'chats'));
+        const snapshot = await getDocs(q);
+        snapshot.forEach(async (doc) => {
+          await deleteDoc(doc.ref);
+        });
+      } catch (error) {
+        console.error('Error clearing messages:', error);
+      }
+    }
+  };
+
+  // Format time
   const formatTime = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (!timestamp) return '';
+    return timestamp.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  const clearChat = () => {
-    setMessages([]);
-    const welcomeMessage = {
-      id: Date.now(),
-      text: `Chat cleared! How can I help you now?`,
-      sender: 'bot',
-      timestamp: new Date().toISOString(),
-      type: 'text'
-    };
-    setMessages([welcomeMessage]);
-  };
+  const groupedMessages = groupByDate(messages);
 
+  // Minimized view
   if (isMinimized) {
     return (
       <div className="chat-sidebar minimized">
         <div className="chat-header minimized" onClick={() => setIsMinimized(false)}>
-          <div className="chat-title">💬 Chat</div>
+          <div className="chat-title">💬 Live Chat ({onlineUsers.length})</div>
+          {messages.length > 0 && (
+            <div className="unread-indicator">
+              {messages.slice(-1)[0]?.name}: {messages.slice(-1)[0]?.text.substring(0, 20)}...
+            </div>
+          )}
         </div>
       </div>
     );
@@ -177,8 +286,18 @@ const ChatSidebar = ({ user, onClose }) => {
   return (
     <div className="chat-sidebar">
       <div className="chat-header">
-        <div className="chat-title">💬 Study Assistant</div>
+        <div className="chat-title">
+          💬 Live Chat 
+          <span className="online-count">({onlineUsers.length} online)</span>
+        </div>
         <div className="chat-controls">
+          <button 
+            className={`users-btn ${showUserList ? 'active' : ''}`}
+            onClick={() => setShowUserList(!showUserList)}
+            title="Show online users"
+          >
+            <FaUsers />
+          </button>
           <button 
             className="minimize-btn"
             onClick={() => setIsMinimized(true)}
@@ -196,6 +315,27 @@ const ChatSidebar = ({ user, onClose }) => {
         </div>
       </div>
 
+      {/* Online Users List */}
+      {showUserList && (
+        <div className="online-users-list">
+          <div className="users-header">Online Users ({onlineUsers.length})</div>
+          <div className="users-grid">
+            {onlineUsers.map((onlineUser) => (
+              <div key={onlineUser.id} className="online-user">
+                <img 
+                  src={onlineUser.photo || '/default-avatar.png'} 
+                  alt={onlineUser.name}
+                  className="user-avatar"
+                />
+                <span className="user-name">{onlineUser.name}</span>
+                <span className="online-indicator">🟢</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Chat Mode Selector */}
       <div className="chat-mode-selector">
         <button 
           className={`mode-btn ${chatMode === 'general' ? 'active' : ''}`}
@@ -213,76 +353,191 @@ const ChatSidebar = ({ user, onClose }) => {
           className={`mode-btn ${chatMode === 'motivation' ? 'active' : ''}`}
           onClick={() => setChatMode('motivation')}
         >
-          Motivation
+          Help
         </button>
       </div>
 
-      <div className="quick-actions">
-        <div className="quick-actions-title">Quick Help:</div>
-        <div className="quick-actions-grid">
-          {quickActions.map((action, index) => (
-            <button 
-              key={index}
-              className="quick-action-btn"
-              onClick={() => handleQuickAction(action.action)}
-            >
-              {action.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
+      {/* Messages Container */}
       <div className="chat-messages" ref={chatContainerRef}>
-        {messages.map((message) => (
-          <div 
-            key={message.id} 
-            className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
-          >
-            <div className="message-content">
-              <div className="message-text">{message.text}</div>
-              <div className="message-time">{formatTime(message.timestamp)}</div>
-            </div>
+        {Object.entries(groupedMessages).map(([date, msgs]) => (
+          <div key={date}>
+            <div className="date-separator">{date}</div>
+            {msgs.map((msg) => {
+              const isCurrentUser = msg.uid === user.uid;
+              const replyToMessage = msg.replyTo ? messages.find(m => m.id === msg.replyTo) : null;
+              
+              return (
+                <div key={msg.id} className={`message ${isCurrentUser ? 'user-message' : 'other-message'}`}>
+                  <div className="message-header">
+                    <img 
+                      src={msg.photo || '/default-avatar.png'} 
+                      alt={msg.name}
+                      className="message-avatar"
+                    />
+                    <span className="message-author">{msg.name}</span>
+                    <span className="message-time">{formatTime(msg.timestamp)}</span>
+                    {msg.chatMode && (
+                      <span className={`message-mode ${msg.chatMode}`}>
+                        {msg.chatMode}
+                      </span>
+                    )}
+                  </div>
+                  
+                  <div className="message-content">
+                    {replyToMessage && (
+                      <div className="reply-reference">
+                        <FaReply className="reply-icon" />
+                        <span>Replying to {replyToMessage.name}: {replyToMessage.text.substring(0, 50)}...</span>
+                      </div>
+                    )}
+                    
+                    <div className="message-text">{msg.text}</div>
+                    
+                    {/* Reactions */}
+                    {msg.reactions && Object.keys(msg.reactions).length > 0 && (
+                      <div className="message-reactions">
+                        {Object.entries(msg.reactions).map(([uid, emojis]) => 
+                          emojis.map((emoji, index) => (
+                            <span key={`${uid}-${index}`} className="reaction">
+                              {emoji}
+                            </span>
+                          ))
+                        )}
+                      </div>
+                    )}
+                    
+                    {/* Message Actions */}
+                    <div className="message-actions">
+                      <button 
+                        className="action-btn"
+                        onClick={() => setReplyTo(msg)}
+                        title="Reply"
+                      >
+                        <FaReply />
+                      </button>
+                      <button 
+                        className="action-btn"
+                        onClick={() => handleReaction(msg.id, '👍')}
+                        title="Like"
+                      >
+                        👍
+                      </button>
+                      <button 
+                        className="action-btn"
+                        onClick={() => handleReaction(msg.id, '❤️')}
+                        title="Love"
+                      >
+                        ❤️
+                      </button>
+                      {isCurrentUser && (
+                        <button 
+                          className="action-btn delete-btn"
+                          onClick={() => deleteMessage(msg.id)}
+                          title="Delete"
+                        >
+                          <FaTrash />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         ))}
-        {isTyping && (
-          <div className="message bot-message">
-            <div className="message-content">
-              <div className="typing-indicator">
-                <div className="typing-dot"></div>
-                <div className="typing-dot"></div>
-                <div className="typing-dot"></div>
+        
+        {/* Typing Indicators */}
+        {typingUsers.length > 0 && (
+          <div className="typing-indicators">
+            {typingUsers.map((typingUser) => (
+              <div key={typingUser.id} className="typing-indicator">
+                <span className="typing-user">{typingUser.name}</span>
+                <span className="typing-text">is typing</span>
+                <div className="typing-dots">
+                  <div className="typing-dot"></div>
+                  <div className="typing-dot"></div>
+                  <div className="typing-dot"></div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         )}
+        
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Reply Preview */}
+      {replyTo && (
+        <div className="reply-preview">
+          <div className="reply-content">
+            <FaReply className="reply-icon" />
+            <span>Replying to {replyTo.name}: {replyTo.text.substring(0, 50)}...</span>
+          </div>
+          <button 
+            className="cancel-reply-btn"
+            onClick={() => setReplyTo(null)}
+          >
+            ✖️
+          </button>
+        </div>
+      )}
+
+      {/* Emoji Picker */}
+      {showEmojiPicker && (
+        <div className="emoji-picker-container">
+          <Picker 
+            onEmojiClick={handleEmojiClick} 
+            height={300} 
+            width={280}
+            theme="light"
+          />
+        </div>
+      )}
+
+      {/* Chat Input */}
       <div className="chat-input">
         <div className="input-container">
+          <button 
+            className="emoji-btn"
+            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+            title="Add emoji"
+          >
+            <FaRegSmile />
+          </button>
+          
           <input
             type="text"
             value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+            onChange={handleMessageChange}
+            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
             placeholder="Type your message..."
             className="message-input"
           />
+          
           <button 
-            onClick={handleSendMessage}
+            className="voice-btn"
+            onClick={toggleVoiceInput}
+            title="Voice input"
+          >
+            <FaMicrophone />
+          </button>
+          
+          <button 
+            onClick={sendMessage}
             className="send-btn"
             disabled={newMessage.trim() === ''}
           >
-            📤
+            Send
           </button>
         </div>
+        
         <div className="chat-actions">
           <button 
             className="clear-chat-btn"
-            onClick={clearChat}
-            title="Clear chat"
+            onClick={clearAllMessages}
+            title="Clear all messages"
           >
-            🗑️ Clear
+            🗑️ Clear All
           </button>
         </div>
       </div>

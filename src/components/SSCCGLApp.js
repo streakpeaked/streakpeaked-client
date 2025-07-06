@@ -26,6 +26,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
   const [backgroundColorIndex, setBackgroundColorIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [questionTimes, setQuestionTimes] = useState([]);
+  const [isAnswering, setIsAnswering] = useState(false); // Add this to prevent multiple clicks
   const timerRef = useRef(null);
   const totalTimerRef = useRef(null);
   const streakAudioRef = useRef(null);
@@ -99,6 +100,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
     const shuffledQuestions = shuffleArray(filtered);
     setFilteredQuestions(shuffledQuestions);
     setCurrentQuestion(0);
+    setSelectedAnswer(''); // Clear selected answer when filtering
     resetQuestionTimer();
   };
 
@@ -125,51 +127,59 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
   };
 
   const handleAnswer = (answer) => {
-    const timeForQuestion = questionTimer;
-    const question = filteredQuestions[currentQuestion];
-    
-    // Store the time taken for this question
-    setQuestionTimes(prev => [...prev, timeForQuestion]);
-    
-    // Check if answer is correct - using 'answer' key from JSON
-    const isCorrect = answer === question.answer;
+    if (isAnswering) return; // Prevent multiple clicks
+    setIsAnswering(true);
+    setSelectedAnswer(answer);
 
-    if (isCorrect) {
-      setStreak(prev => prev + 1);
-      setCorrectAnswers(prev => prev + 1);
+    // Small delay to show the selected answer
+    setTimeout(() => {
+      const timeForQuestion = questionTimer;
+      const question = filteredQuestions[currentQuestion];
       
-      // Update section scores
-      const difficultyLower = question.difficulty.toLowerCase();
-      setSectionScores(prev => ({
-        ...prev,
-        [question.section]: {
-          ...prev[question.section],
-          [difficultyLower]: prev[question.section][difficultyLower] + 1
+      // Store the time taken for this question
+      setQuestionTimes(prev => [...prev, timeForQuestion]);
+      
+      // Check if answer is correct - using 'answer' key from JSON
+      const isCorrect = answer === question.answer;
+
+      if (isCorrect) {
+        setStreak(prev => prev + 1);
+        setCorrectAnswers(prev => prev + 1);
+        
+        // Update section scores
+        const difficultyLower = question.difficulty.toLowerCase();
+        setSectionScores(prev => ({
+          ...prev,
+          [question.section]: {
+            ...prev[question.section],
+            [difficultyLower]: prev[question.section][difficultyLower] + 1
+          }
+        }));
+
+        setQuestionsAttempted(prev => prev + 1);
+        
+        // Move to next question
+        if (currentQuestion < filteredQuestions.length - 1) {
+          setCurrentQuestion(prev => prev + 1);
+          setSelectedAnswer(''); // Clear selected answer
+          resetQuestionTimer();
+          setIsAnswering(false);
+        } else {
+          // All questions completed successfully
+          stopAllTimers();
+          setShowResult(true);
+          playStreakMusic();
+          saveScoreToFirebase();
         }
-      }));
-
-      setQuestionsAttempted(prev => prev + 1);
-      setSelectedAnswer('');
-      
-      // Move to next question
-      if (currentQuestion < filteredQuestions.length - 1) {
-        setCurrentQuestion(prev => prev + 1);
-        resetQuestionTimer();
       } else {
-        // All questions completed successfully
+        // Wrong answer - end test immediately
+        setQuestionsAttempted(prev => prev + 1);
         stopAllTimers();
         setShowResult(true);
         playStreakMusic();
         saveScoreToFirebase();
       }
-    } else {
-      // Wrong answer - end test immediately
-      setQuestionsAttempted(prev => prev + 1);
-      stopAllTimers();
-      setShowResult(true);
-      playStreakMusic();
-      saveScoreToFirebase();
-    }
+    }, 500); // 500ms delay to show selection
   };
 
   const playStreakMusic = () => {
@@ -280,6 +290,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
     setQuestionsAttempted(0);
     setCorrectAnswers(0);
     setQuestionTimes([]);
+    setIsAnswering(false);
     setSectionScores({
       'General Knowledge': { easy: 0, medium: 0, hard: 0 },
       'Mathematics': { easy: 0, medium: 0, hard: 0 },
@@ -454,7 +465,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
         </button>
         <h1 className="app-title">SSC CGL Streak Test</h1>
         <button className="chat-toggle-btn" onClick={toggleChat}>
-          💬 Live Chat
+          💬 {showChat ? 'Hide Chat' : 'Live Chat'}
         </button>
       </div>
 
@@ -479,6 +490,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
           <select 
             value={difficulty} 
             onChange={(e) => setDifficulty(e.target.value)}
+            disabled={isAnswering}
           >
             {difficulties.map(diff => (
               <option key={diff} value={diff}>{diff}</option>
@@ -490,6 +502,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
           <select 
             value={section} 
             onChange={(e) => setSection(e.target.value)}
+            disabled={isAnswering}
           >
             {sections.map(sec => (
               <option key={sec} value={sec}>{sec}</option>
@@ -519,10 +532,8 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
               <button
                 key={index}
                 className={`answer-btn ${selectedAnswer === option ? 'selected' : ''}`}
-                onClick={() => {
-                  setSelectedAnswer(option);
-                  handleAnswer(option);
-                }}
+                onClick={() => handleAnswer(option)}
+                disabled={isAnswering}
               >
                 <span className="option-letter">{String.fromCharCode(65 + index)}</span>
                 <span className="option-text">{option}</span>
@@ -542,12 +553,17 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
       </div>
 
       {showChat && (
-        <ChatSidebar 
-          user={user} 
-          onClose={() => setShowChat(false)}
-          examType="ssc-cgl"
-          isLiveChat={true}
-        />
+        <div className="chat-overlay">
+          <div className="chat-container">
+            <div className="chat-header">
+              <h3>Live Chat - SSC CGL Test</h3>
+              <button className="close-chat-btn" onClick={() => setShowChat(false)}>
+                ✕
+              </button>
+            </div>
+            <ChatSidebar user={user} />
+          </div>
+        </div>
       )}
     </div>
   );
