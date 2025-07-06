@@ -177,8 +177,8 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
       <section className="hero hero-bg-wallpaper">
         <div className="hero-content hero-content-single">
           <div className="hero-text">
-            <h1>More than 10 Million Students Have Said Hello to Stress-Free Studying</h1>
-            <p>Start preparing for your next test!</p>
+            <h1>Take the fastest and sureshot method to conquer the exams by scoring bigger STREAKs and be RUTHLESS & AGGRESSIVE in your preparation </h1>
+            <p>Login & Start with your test STREAK!</p>
             <div className="test-buttons">
               <button
                 className="pill-btn active"
@@ -214,16 +214,22 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
             <div className="additional-tests">
               <button
                 className="pill-btn"
-                onClick={() => handleTestClick('AI Champ')}
+                onClick={() => handleTestClick('Learn AI')}
               >
-                AI Champ®
+                Learn AI®
               </button>
               <button
                 className="pill-btn"
-                onClick={() => handleTestClick('Data Scientist')}
+                onClick={() => handleTestClick('Learn Data Science')}
               >
-                Data Scientist®
+                Learn Data Science®
               </button>
+              <button
+                className="pill-btn"
+                onClick={() => handleTestClick('Build AI Agents')}
+              >
+                Build AI Agents®
+              </button>              
             </div>
           </div>
         </div>
@@ -235,17 +241,17 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
           <div className="stat-item">
             <div className="stat-icon">📝</div>
             <div className="stat-number">50K+</div>
-            <div className="stat-text">Creative questions to build Streak</div>
+            <div className="stat-text">Creative questions to build genuine STREAKs</div>
           </div>
           <div className="stat-item">
             <div className="stat-icon">🌍</div>
-            <div className="stat-number">1Million+</div>
-            <div className="stat-text">students to benefit by ruthless Streak scores</div>
+            <div className="stat-number">1Mn+</div>
+            <div className="stat-text">Students to benefit by ruthless Streak scores</div>
           </div>
           <div className="stat-item">
             <div className="stat-icon">📹</div>
-            <div className="stat-number">100K+</div>
-            <div className="stat-text">hours of video lessons watched</div>
+            <div className="stat-number">10K+</div>
+            <div className="stat-text">Competive users to challenge each other in live STREAK competition</div>
           </div>
         </div>
       </section>
@@ -254,9 +260,9 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
       <section className="ssc-section">
         <div className="ssc-container">
           <h2 className="ssc-title">
-            Expert <span className="ssc-highlight">SSC</span> instruction at a fraction of the price
+            Expert to share how to ruthlessly increase<span className="ssc-highlight">EXAM STREAK SCORES</span> and practical instructions at a fraction of the price
           </h2>
-          <button className="ssc-btn">check out our self-study plans</button>
+          <button className="ssc-btn">check out STREAK maximizer roadmap and connect to an expert</button>
         </div>
       </section>
 
@@ -362,7 +368,7 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
       <section className="mission">
         <div className="mission-container">
           <p className="mission-text">
-            We believe in making our students aggressive and ruthless in exams preparation and defy all the odds.
+            We believe in making our students aggressive and ruthless in exams preparation and teach the strategic & tactical war like approach to exams
           </p>
           <button className="mission-btn">we're hiring!</button>
         </div>
@@ -418,7 +424,7 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
             </ul>
           </div>
           <div className="footer-section">
-            <button className="mission-btn">meet our team</button>
+            <button className="mission-btn">Meet our team</button>
           </div>
         </div>
       </footer>
