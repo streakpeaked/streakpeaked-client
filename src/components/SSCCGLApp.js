@@ -8,7 +8,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
   const [selectedAnswer, setSelectedAnswer] = useState('');
   const [showResult, setShowResult] = useState(false);
   const [streak, setStreak] = useState(0);
-  const [timeSpent, setTimeSpent] = useState(0);
+  const [questionTimer, setQuestionTimer] = useState(0);
   const [questionStartTime, setQuestionStartTime] = useState(Date.now());
   const [totalTime, setTotalTime] = useState(0);
   const [showChat, setShowChat] = useState(false);
@@ -25,7 +25,10 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
   });
   const [backgroundColorIndex, setBackgroundColorIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(null);
+  const [questionTimes, setQuestionTimes] = useState([]);
+  const timerRef = useRef(null);
+  const totalTimerRef = useRef(null);
+  const streakAudioRef = useRef(null);
 
   const backgroundColors = [
     '#e8f5e8', '#fff3e0', '#f3e5f5', '#e1f5fe', '#fff8e1'
@@ -34,6 +37,16 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
   const difficulties = ['All', 'Easy', 'Medium', 'Hard'];
   const sections = ['All', 'General Knowledge', 'Mathematics', 'Reasoning', 'English'];
 
+  // Shuffle questions randomly
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
   useEffect(() => {
     if (questions && questions.length > 0) {
       filterQuestions();
@@ -41,12 +54,20 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
   }, [difficulty, section, questions]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeSpent(prev => prev + 1);
+    // Question timer - resets for each question
+    timerRef.current = setInterval(() => {
+      setQuestionTimer(prev => prev + 1);
+    }, 1000);
+
+    // Total timer - continuous
+    totalTimerRef.current = setInterval(() => {
       setTotalTime(prev => prev + 1);
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+      if (totalTimerRef.current) clearInterval(totalTimerRef.current);
+    };
   }, []);
 
   useEffect(() => {
@@ -74,13 +95,43 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
       filtered = filtered.filter(q => q.section === section);
     }
 
-    setFilteredQuestions(filtered);
+    // Shuffle the filtered questions randomly
+    const shuffledQuestions = shuffleArray(filtered);
+    setFilteredQuestions(shuffledQuestions);
     setCurrentQuestion(0);
+    resetQuestionTimer();
+  };
+
+  const resetQuestionTimer = () => {
+    setQuestionTimer(0);
+    setQuestionStartTime(Date.now());
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = setInterval(() => {
+        setQuestionTimer(prev => prev + 1);
+      }, 1000);
+    }
+  };
+
+  const stopAllTimers = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    if (totalTimerRef.current) {
+      clearInterval(totalTimerRef.current);
+      totalTimerRef.current = null;
+    }
   };
 
   const handleAnswer = (answer) => {
-    const timeForQuestion = Math.floor((Date.now() - questionStartTime) / 1000);
+    const timeForQuestion = questionTimer;
     const question = filteredQuestions[currentQuestion];
+    
+    // Store the time taken for this question
+    setQuestionTimes(prev => [...prev, timeForQuestion]);
+    
+    // Check if answer is correct
     const isCorrect = answer === question.correct_answer;
 
     if (isCorrect) {
@@ -96,35 +147,47 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
           [difficultyLower]: prev[question.section][difficultyLower] + 1
         }
       }));
-    } else {
-      // Wrong answer - show results
-      setShowResult(true);
-      playResultMusic();
-      saveScoreToFirebase();
-      return;
-    }
 
-    setQuestionsAttempted(prev => prev + 1);
-    setSelectedAnswer('');
-    setQuestionStartTime(Date.now());
-    setTimeSpent(0);
-
-    // Move to next question
-    if (currentQuestion < filteredQuestions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
+      setQuestionsAttempted(prev => prev + 1);
+      setSelectedAnswer('');
+      
+      // Move to next question
+      if (currentQuestion < filteredQuestions.length - 1) {
+        setCurrentQuestion(prev => prev + 1);
+        resetQuestionTimer();
+      } else {
+        // All questions completed successfully
+        stopAllTimers();
+        setShowResult(true);
+        playStreakMusic();
+        saveScoreToFirebase();
+      }
     } else {
-      // All questions completed
+      // Wrong answer - end test immediately
+      setQuestionsAttempted(prev => prev + 1);
+      stopAllTimers();
       setShowResult(true);
-      playResultMusic();
+      playStreakMusic();
       saveScoreToFirebase();
     }
   };
 
-  const playResultMusic = () => {
-    if (audioRef.current) {
-      audioRef.current.play().catch(e => console.log('Audio play failed:', e));
-      setIsPlaying(true);
+  const playStreakMusic = () => {
+    if (!streakAudioRef.current) {
+      streakAudioRef.current = new Audio('/music.mp3');
+      streakAudioRef.current.loop = true;
     }
+    streakAudioRef.current.play().catch((e) => console.log("Audio failed:", e));
+    setIsPlaying(true);
+  };
+
+  const stopStreakMusic = () => {
+    if (streakAudioRef.current) {
+      streakAudioRef.current.pause();
+      streakAudioRef.current.currentTime = 0;
+      streakAudioRef.current = null;
+    }
+    setIsPlaying(false);
   };
 
   const saveScoreToFirebase = async () => {
@@ -135,14 +198,15 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
       examType: 'ssc-cgl',
       streakScore: streak,
       totalTime: totalTime,
-      questionsAttempted: questionsAttempted + 1,
+      questionsAttempted: questionsAttempted,
       correctAnswers: correctAnswers,
-      accuracy: Math.round(((correctAnswers / (questionsAttempted + 1)) * 100)),
+      accuracy: questionsAttempted > 0 ? Math.round((correctAnswers / questionsAttempted) * 100) : 0,
       timestamp: new Date().toISOString(),
       difficulty: difficulty,
       section: section,
       sectionScores: sectionScores,
-      averageTimePerQuestion: Math.round(totalTime / (questionsAttempted + 1))
+      averageTimePerQuestion: questionsAttempted > 0 ? Math.round(totalTime / questionsAttempted) : 0,
+      questionTimes: questionTimes
     };
 
     try {
@@ -159,11 +223,20 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
   };
 
   const getStreakFeedback = () => {
-    if (streak >= 20) return "🔥 Incredible! You're on fire!";
-    if (streak >= 15) return "🌟 Outstanding performance!";
-    if (streak >= 10) return "💪 Great job! Keep it up!";
-    if (streak >= 5) return "👍 Good progress!";
-    return "🎯 Keep practicing!";
+    const score = streak;
+    let baseFeedback = "";
+    
+    if (score < 10) {
+      baseFeedback = "Your streak score is very low, not even crossing 10. Hope you got a reality check. Now buckle up and grind till you make this streak above 20.";
+    } else if (score < 20) {
+      baseFeedback = "Your streak score is decent but not crossing 20. Hope you don't want to take things lightly. Check where you went wrong and improve the streak over 30.";
+    } else if (score < 40) {
+      baseFeedback = "You are doing well! Keep the game tight, take streak beyond 40 now. Don't be lazy like CAT.";
+    } else {
+      baseFeedback = "You are right there, dark horse! Nail it, then ace it and rock it. Hit consistent 100+ streak now. madMODEon!";
+    }
+    
+    return baseFeedback;
   };
 
   const restartTest = () => {
@@ -171,11 +244,12 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
     setSelectedAnswer('');
     setShowResult(false);
     setStreak(0);
-    setTimeSpent(0);
+    setQuestionTimer(0);
     setQuestionStartTime(Date.now());
     setTotalTime(0);
     setQuestionsAttempted(0);
     setCorrectAnswers(0);
+    setQuestionTimes([]);
     setSectionScores({
       'General Knowledge': { easy: 0, medium: 0, hard: 0 },
       'Mathematics': { easy: 0, medium: 0, hard: 0 },
@@ -183,11 +257,16 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
       'English': { easy: 0, medium: 0, hard: 0 }
     });
     setBackgroundColorIndex(0);
-    setIsPlaying(false);
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
+    stopStreakMusic();
+    filterQuestions(); // This will shuffle questions again
+    
+    // Restart timers
+    timerRef.current = setInterval(() => {
+      setQuestionTimer(prev => prev + 1);
+    }, 1000);
+    totalTimerRef.current = setInterval(() => {
+      setTotalTime(prev => prev + 1);
+    }, 1000);
   };
 
   const toggleChat = () => {
@@ -251,10 +330,6 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
   if (showResult) {
     return (
       <div className="ssc-cgl-app result-screen">
-        <audio ref={audioRef} loop>
-          <source src="/music.mp3" type="audio/mpeg" />
-        </audio>
-        
         <div className="result-header">
           <button className="back-home-btn" onClick={onBackHome}>
             🏠 Back to Home
@@ -270,48 +345,55 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
           </div>
 
           <div className="score-matrix">
-            <div className="score-row">
-              <div className="score-item">
-                <div className="score-value">{questionsAttempted + 1}</div>
-                <div className="score-label">Questions Attempted</div>
+            <div className="matrix-header">
+              <h3>Performance Matrix</h3>
+            </div>
+            <div className="matrix-grid">
+              <div className="matrix-cell">
+                <div className="matrix-value">{questionsAttempted}</div>
+                <div className="matrix-label">Questions Attempted</div>
               </div>
-              <div className="score-item">
-                <div className="score-value">{correctAnswers}</div>
-                <div className="score-label">Correct Answers</div>
+              <div className="matrix-cell">
+                <div className="matrix-value">{correctAnswers}</div>
+                <div className="matrix-label">Correct Answers</div>
               </div>
-              <div className="score-item">
-                <div className="score-value">{Math.round(((correctAnswers / (questionsAttempted + 1)) * 100))}%</div>
-                <div className="score-label">Accuracy</div>
+              <div className="matrix-cell">
+                <div className="matrix-value">{questionsAttempted > 0 ? Math.round((correctAnswers / questionsAttempted) * 100) : 0}%</div>
+                <div className="matrix-label">Accuracy</div>
               </div>
-              <div className="score-item">
-                <div className="score-value">{formatTime(totalTime)}</div>
-                <div className="score-label">Total Time</div>
+              <div className="matrix-cell">
+                <div className="matrix-value">{formatTime(totalTime)}</div>
+                <div className="matrix-label">Total Time</div>
+              </div>
+              <div className="matrix-cell">
+                <div className="matrix-value">{questionsAttempted > 0 ? formatTime(Math.round(totalTime / questionsAttempted)) : '0:00'}</div>
+                <div className="matrix-label">Avg Time/Question</div>
+              </div>
+              <div className="matrix-cell">
+                <div className="matrix-value">{filteredQuestions.length}</div>
+                <div className="matrix-label">Total Questions</div>
               </div>
             </div>
-          </div>
-
-          <div className="section-breakdown">
-            <h3>Section-wise Performance</h3>
-            <div className="section-grid">
-              {Object.entries(sectionScores).map(([section, scores]) => (
-                <div key={section} className="section-card">
-                  <h4>{section}</h4>
-                  <div className="difficulty-scores">
-                    <div className="difficulty-item">
-                      <span className="difficulty-label easy">Easy:</span>
-                      <span className="difficulty-score">{scores.easy}</span>
+            
+            <div className="section-performance-matrix">
+              <h4>Section-wise Performance Matrix</h4>
+              <div className="section-matrix-grid">
+                {Object.entries(sectionScores).map(([section, scores]) => {
+                  const total = scores.easy + scores.medium + scores.hard;
+                  if (total === 0) return null;
+                  return (
+                    <div key={section} className="section-matrix-row">
+                      <div className="section-name">{section}</div>
+                      <div className="section-scores">
+                        <span className="easy-score">Easy: {scores.easy}</span>
+                        <span className="medium-score">Medium: {scores.medium}</span>
+                        <span className="hard-score">Hard: {scores.hard}</span>
+                        <span className="total-score">Total: {total}</span>
+                      </div>
                     </div>
-                    <div className="difficulty-item">
-                      <span className="difficulty-label medium">Medium:</span>
-                      <span className="difficulty-score">{scores.medium}</span>
-                    </div>
-                    <div className="difficulty-item">
-                      <span className="difficulty-label hard">Hard:</span>
-                      <span className="difficulty-score">{scores.hard}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                  );
+                })}
+              </div>
             </div>
           </div>
 
@@ -321,6 +403,9 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
             </button>
             <button className="home-btn" onClick={onBackHome}>
               🏠 Back to Home
+            </button>
+            <button className="music-btn" onClick={isPlaying ? stopStreakMusic : playStreakMusic}>
+              {isPlaying ? '🔇 Stop Music' : '🎵 Play Music'}
             </button>
           </div>
         </div>
@@ -339,14 +424,18 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
         </button>
         <h1 className="app-title">SSC CGL Streak Test</h1>
         <button className="chat-toggle-btn" onClick={toggleChat}>
-          💬 Chat
+          💬 Live Chat
         </button>
       </div>
 
       <div className="test-info">
         <div className="timer-display">
-          <div className="timer-label">Time Spent</div>
-          <div className="timer-value">{formatTime(timeSpent)}</div>
+          <div className="timer-label">Question Timer</div>
+          <div className="timer-value">{formatTime(questionTimer)}</div>
+        </div>
+        <div className="total-timer-display">
+          <div className="timer-label">Total Time</div>
+          <div className="timer-value">{formatTime(totalTime)}</div>
         </div>
         <div className="streak-display-small">
           <div className="streak-label">Current Streak</div>
@@ -426,6 +515,8 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
         <ChatSidebar 
           user={user} 
           onClose={() => setShowChat(false)}
+          examType="ssc-cgl"
+          isLiveChat={true}
         />
       )}
     </div>
