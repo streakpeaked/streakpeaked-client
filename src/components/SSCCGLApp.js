@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './SSCCGLApp.css';
 import ChatSidebar from './ChatSidebar';
-import { saveUserScore } from './firebaseConfig';
+import { saveUserScore } from '../firebaseConfig';
 
 const SSCCGLApp = ({ user, onBackToHome, questions }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
