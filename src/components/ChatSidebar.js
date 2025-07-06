@@ -1,6 +1,6 @@
 // Enhanced Real-time Multi-user ChatSidebar.js
 import React, { useState, useEffect, useRef } from 'react';
-import { db } from './firebaseConfig';
+import { db } from '../firebaseConfig';
 import { 
   collection, 
   addDoc, 
