@@ -131,8 +131,8 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
     // Store the time taken for this question
     setQuestionTimes(prev => [...prev, timeForQuestion]);
     
-    // Check if answer is correct
-    const isCorrect = answer === question.correct_answer;
+    // Check if answer is correct - using 'answer' key from JSON
+    const isCorrect = answer === question.answer;
 
     if (isCorrect) {
       setStreak(prev => prev + 1);
@@ -173,21 +173,51 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
   };
 
   const playStreakMusic = () => {
-    if (!streakAudioRef.current) {
-      streakAudioRef.current = new Audio('/music.mp3');
-      streakAudioRef.current.loop = true;
+    try {
+      if (!streakAudioRef.current) {
+        streakAudioRef.current = new Audio('/music.mp3');
+        streakAudioRef.current.loop = true;
+        streakAudioRef.current.volume = 0.5; // Set volume to 50%
+      }
+      
+      // Reset audio if it ended
+      if (streakAudioRef.current.ended) {
+        streakAudioRef.current.currentTime = 0;
+      }
+      
+      const playPromise = streakAudioRef.current.play();
+      
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            console.log("Music started playing");
+            setIsPlaying(true);
+          })
+          .catch((e) => {
+            console.log("Audio play failed:", e);
+            // Try to play again after user interaction
+            const playOnClick = () => {
+              streakAudioRef.current.play()
+                .then(() => {
+                  setIsPlaying(true);
+                  document.removeEventListener('click', playOnClick);
+                })
+                .catch(console.log);
+            };
+            document.addEventListener('click', playOnClick);
+          });
+      }
+    } catch (error) {
+      console.log("Error initializing audio:", error);
     }
-    streakAudioRef.current.play().catch((e) => console.log("Audio failed:", e));
-    setIsPlaying(true);
   };
 
   const stopStreakMusic = () => {
     if (streakAudioRef.current) {
       streakAudioRef.current.pause();
       streakAudioRef.current.currentTime = 0;
-      streakAudioRef.current = null;
+      setIsPlaying(false);
     }
-    setIsPlaying(false);
   };
 
   const saveScoreToFirebase = async () => {
