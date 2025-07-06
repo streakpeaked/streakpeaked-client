@@ -6,7 +6,7 @@ import SSCCGLApp from './components/SSCCGLApp';
 import ChatSidebar from './components/ChatSidebar';
 import UserProfile from './components/UserProfile';
 import PerformanceTracker from './components/PerformanceTracker';
-import questionsData from './ssc_cgl_questions_with_filters.json';
+import questionsData from '../ssc_cgl_questions_with_filters.json';
 import './App.css';
 
 function App() {
