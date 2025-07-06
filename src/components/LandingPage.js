@@ -132,7 +132,7 @@ const LandingPage = ({ user, onExamSelect, onProfileClick, onLogout }) => {
       <section className="hero">
         <div className="hero-content">
           <div className="hero-text">
-            <h1>Be more ruthless and aggressive in exam preparation with STREAKs. Let's not sit in the exam but conquer it!</h1>
+            <h1>More than 10 Million Students Have Said Hello to Stress-Free Studying</h1>
             <p>Start preparing for your next test!</p>
             <div className="test-buttons">
               <button className="test-btn" onClick={() => onExamSelect && onExamSelect('ssc-cgl')}>SSC CGL®</button>
@@ -155,8 +155,186 @@ const LandingPage = ({ user, onExamSelect, onProfileClick, onLogout }) => {
         </div>
       </section>
 
-      {/* ...rest of your sections remain unchanged... */}
-      {/* Stats, SSC, Testimonial, Features, Free Resources, Mission, Footer */}
+      {/* Stats Section */}
+      <section className="stats">
+        <div className="stats-container">
+          <div className="stat-item">
+            <div className="stat-icon">📝</div>
+            <div className="stat-number">50K+</div>
+            <div className="stat-text">Creative questions to build Streak</div>
+          </div>
+          <div className="stat-item">
+            <div className="stat-icon">🌍</div>
+            <div className="stat-number">1Million+</div>
+            <div className="stat-text">students to benefit by ruthless Streak scores</div>
+          </div>
+          <div className="stat-item">
+            <div className="stat-icon">📹</div>
+            <div className="stat-number">100K+</div>
+            <div className="stat-text">hours of video lessons watched</div>
+          </div>
+        </div>
+      </section>
+
+      {/* SSC Section */}
+      <section className="ssc-section">
+        <div className="ssc-container">
+          <h2 className="ssc-title">Expert <span className="ssc-highlight">SSC</span> instruction at a fraction of the price</h2>
+          <button className="ssc-btn">check out our self-study plans</button>
+        </div>
+      </section>
+
+      {/* Testimonial Section */}
+      <section className="testimonial">
+        <div className="testimonial-container">
+          <div className="testimonial-avatar">👨‍🎓</div>
+          <div className="testimonial-content">
+            <p className="testimonial-text">"StreakPeaked seemed to be by far the best option: a program that helped me become ruthless in questions solving. Started with streak score of 5, reached 55 in 15 days."</p>
+            <p className="testimonial-author">Arav- Student Success Story</p>
+          </div>
+          <button className="testimonial-btn">student testimonials</button>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="features">
+        <div className="features-container">
+          <div className="features-grid">
+            <div className="feature-column">
+              <h2>Web</h2>
+              <p style={{color: '#8B5FBF', fontSize: '1.1rem', marginBottom: '2rem'}}>Prep anytime from your desktop with our self-study platform</p>
+              <ul className="feature-list">
+                <li className="feature-item">
+                  <div className="feature-icon">⏰</div>
+                  <div className="feature-text">Thousands of timed practice questions</div>
+                </li>
+                <li className="feature-item">
+                  <div className="feature-icon">▶️</div>
+                  <div className="feature-text">guidance by experts</div>
+                </li>
+                <li className="feature-item">
+                  <div className="feature-icon">📊</div>
+                  <div className="feature-text">Track your streak progress</div>
+                </li>
+                <li className="feature-item">
+                  <div className="feature-icon">💬</div>
+                  <div className="feature-text">Friendly support team and regular discounts</div>
+                </li>
+              </ul>
+            </div>
+            <div className="feature-column">
+              <h2>Mobile</h2>
+              <p style={{color: '#8B5FBF', fontSize: '1.1rem', marginBottom: '2rem'}}>Study on-the-go with our free mobile apps</p>
+              <ul className="feature-list">
+                <li className="feature-item">
+                  <div className="feature-icon">📱</div>
+                  <div className="feature-text">performance tracking</div>
+                </li>
+                <li className="feature-item">
+                  <div className="feature-icon">✏️</div>
+                  <div className="feature-text">Section wise practice</div>
+                </li>
+                <li className="feature-item">
+                  <div className="feature-icon">👥</div>
+                  <div className="feature-text">Play an opponent</div>
+                </li>
+                <li className="feature-item">
+                  <div className="feature-icon">⭐</div>
+                  <div className="feature-text">5-star ratings</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Free Resources Section */}
+      <section className="free-resources">
+        <div className="resources-container">
+          <h2 className="resources-title">Free Prep Resources to Help You Study</h2>
+          <div className="resources-grid">
+            <div className="resource-card">
+              <h3 className="resource-title">SSC CGL</h3>
+              <p className="resource-subtitle">Practice Test</p>
+            </div>
+            <div className="resource-card">
+              <h3 className="resource-title">NEET</h3>
+              <p className="resource-subtitle">Practice Test</p>
+            </div>
+            <div className="resource-card">
+              <h3 className="resource-title">RBI Grade B</h3>
+              <p className="resource-subtitle">Practice Test</p>
+            </div>
+            <div className="resource-card">
+              <h3 className="resource-title">IBPS PO</h3>
+              <p className="resource-subtitle">Practice Test</p>
+            </div>
+          </div>
+          <p style={{color: '#333', fontSize: '1.1rem'}}>Friends, find out how StreakPeaked can help you become ruthless in conquring the exams and make it fun by competing with opponents!</p>
+        </div>
+      </section>
+
+      {/* Mission Section */}
+      <section className="mission">
+        <div className="mission-container">
+          <p className="mission-text">We believe in making our students aggressive and ruthless in exams preparation and defy all the odds.</p>
+          <button className="mission-btn">we're hiring!</button>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="footer-top">
+          <div className="footer-social">Connect with us</div>
+          <div className="social-icons">
+            <a href="#" className="social-icon">📧</a>
+            <a href="#" className="social-icon">📘</a>
+            <a href="#" className="social-icon">💼</a>
+            <a href="#" className="social-icon">📺</a>
+            <a href="#" className="social-icon">📷</a>
+          </div>
+        </div>
+        <div className="footer-content">
+          <div className="footer-section">
+            <div className="footer-logo">StreakPeaked</div>
+            <h3>Our Products</h3>
+            <ul>
+              <li><a href="#">SSC CGL Prep</a></li>
+              <li><a href="#">NEET Prep</a></li>
+              <li><a href="#">RBI Grade B Prep</a></li>
+              <li><a href="#">IBPS PO Prep</a></li>
+            </ul>
+          </div>
+          <div className="footer-section">
+            <h3>Company</h3>
+            <ul>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Mission</a></li>
+              {/* <li><a href="#">Press</a></li> */}
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              {/* <li><a href="#">Affiliates and Group Partners</a></li> */}
+              {/* <li><a href="#">Careers</a></li> */}
+              <li><a href="#">Student Beans Discount!</a></li>
+            </ul>
+          </div>
+          <div className="footer-section">
+            <h3>Our Blogs</h3>
+            <ul>
+              <li><a href="#">Company Blog</a></li>
+              <li><a href="#">SSC Blog</a></li>
+              <li><a href="#">NEET Blog</a></li>
+              <li><a href="#">CLAT Blog</a></li>
+            </ul>
+          </div>
+          <div className="footer-section">
+            <div style={{background: '#10B981', padding: '2rem', borderRadius: '10px', textAlign: 'center', marginBottom: '2rem'}}>
+              <div style={{fontSize: '2rem', color: 'white', fontWeight: 'bold'}}>SP</div>
+            </div>
+            <button className="mission-btn">meet our team</button>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
