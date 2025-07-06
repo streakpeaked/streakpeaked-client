@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { auth } from '../firebaseConfig';
+import { auth } from '../firebaseConfig'; // Adjust path if needed
 import './LandingPage.css';
 
-const LandingPage = ({ user, onExamSelect, onProfileClick, onLogout }) => {
+const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [loading, setLoading] = useState(false);
+  const profileMenuRef = useRef(null);
 
+  // Google login logic
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
     } catch (error) {
-      console.error('Error signing in with Google:', error);
+      alert('Google login failed');
     } finally {
       setLoading(false);
     }
@@ -35,9 +38,9 @@ const LandingPage = ({ user, onExamSelect, onProfileClick, onLogout }) => {
       const header = document.querySelector('.header');
       if (header) {
         if (window.scrollY > 100) {
-          header.style.background = 'rgba(107, 70, 193, 0.95)';
+          header.style.background = 'rgba(44, 35, 97, 0.95)';
         } else {
-          header.style.background = 'linear-gradient(135deg, #8B5FBF 0%, #6B46C1 100%)';
+          header.style.background = 'linear-gradient(135deg, #2C2361 0%, #3C2F7F 100%)';
         }
       }
     };
@@ -73,6 +76,18 @@ const LandingPage = ({ user, onExamSelect, onProfileClick, onLogout }) => {
       button.addEventListener('mouseleave', handleButtonHover);
     });
 
+    // Close profile dropdown on outside click
+    const handleClickOutside = (event) => {
+      if (
+        profileMenuRef.current &&
+        !profileMenuRef.current.contains(event.target) &&
+        !event.target.classList.contains('user-avatar')
+      ) {
+        setShowProfileMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+
     // Cleanup function
     return () => {
       document.removeEventListener('click', handleAnchorClick);
@@ -82,8 +97,22 @@ const LandingPage = ({ user, onExamSelect, onProfileClick, onLogout }) => {
         button.removeEventListener('mouseenter', handleButtonHover);
         button.removeEventListener('mouseleave', handleButtonHover);
       });
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  // Button click handler for tests
+  const handleTestClick = (testType) => {
+    if (!user) {
+      alert('Please login to access the test!');
+      return;
+    }
+    if (testType === 'SSC CGL') {
+      onExamSelect && onExamSelect('ssc-cgl');
+    } else {
+      alert(`${testType} test is coming soon!`);
+    }
+  };
 
   return (
     <div>
@@ -91,7 +120,7 @@ const LandingPage = ({ user, onExamSelect, onProfileClick, onLogout }) => {
       <header className="header">
         <div className="nav-container">
           <div className="logo">StreakPeaked</div>
-          <nav>
+          <nav className="nav-section">
             <ul className="nav-menu">
               <li><a href="#team">team</a></li>
               <li><a href="#careers">careers</a></li>
@@ -100,56 +129,93 @@ const LandingPage = ({ user, onExamSelect, onProfileClick, onLogout }) => {
               <li><a href="#press">press</a></li>
               <li><a href="#contact">contact</a></li>
             </ul>
-          </nav>
-          <div className="nav-actions">
-            {user ? (
-              <div className="user-menu">
-                <img 
-                  src={user.photoURL} 
-                  alt={user.displayName} 
-                  className="user-avatar"
-                />
-                <div className="user-dropdown">
-                  <span className="user-name">Welcome, {user.displayName}</span>
-                  <button className="profile-btn" onClick={onProfileClick}>My Profile</button>
-                  <button className="logout-btn" onClick={onLogout}>Logout</button>
+            <div className="auth-section">
+              {user ? (
+                <div className="user-menu">
+                  <div
+                    className="user-avatar"
+                    onClick={() => setShowProfileMenu((prev) => !prev)}
+                  >
+                    {user.photoURL ? (
+                      <img src={user.photoURL} alt={user.displayName} />
+                    ) : (
+                      <div className="avatar-placeholder">
+                        {user.displayName?.charAt(0).toUpperCase() || 'U'}
+                      </div>
+                    )}
+                  </div>
+                  {showProfileMenu && (
+                    <div className="profile-dropdown" ref={profileMenuRef}>
+                      <div className="profile-info">
+                        <p>{user.displayName}</p>
+                        <p className="user-email">{user.email}</p>
+                      </div>
+                      <button onClick={onProfileClick}>My Profile</button>
+                      <button onClick={onLogout}>Logout</button>
+                    </div>
+                  )}
                 </div>
-              </div>
-            ) : (
-              <button 
-                className="login-btn"
-                onClick={handleGoogleSignIn}
-                disabled={loading}
-              >
-                {loading ? 'Signing in...' : 'Login with Google'}
-              </button>
-            )}
-          </div>
+              ) : (
+                <button className="login-btn" onClick={handleGoogleSignIn} disabled={loading}>
+                  {loading ? 'Signing in...' : 'Login with Google'}
+                </button>
+              )}
+            </div>
+          </nav>
         </div>
       </header>
 
       {/* Hero Section */}
       <section className="hero">
-        <div className="hero-content">
+        <div className="hero-content hero-content-single">
           <div className="hero-text">
             <h1>More than 10 Million Students Have Said Hello to Stress-Free Studying</h1>
             <p>Start preparing for your next test!</p>
             <div className="test-buttons">
-              <button className="test-btn" onClick={() => onExamSelect && onExamSelect('ssc-cgl')}>SSC CGL®</button>
-              <button className="test-btn" onClick={() => onExamSelect && onExamSelect('neet')}>NEET®</button>
-              <button className="test-btn" onClick={() => onExamSelect && onExamSelect('rbi-grade-b')}>RBI Grade B®</button>
-              <button className="test-btn">CLAT®</button>
-              <button className="test-btn">RRB®</button>
-              <button className="test-btn">IBPS PO®</button>
+              <button
+                className="test-btn"
+                onClick={() => handleTestClick('SSC CGL')}
+              >
+                SSC CGL®
+              </button>
+              <button
+                className="test-btn"
+                onClick={() => handleTestClick('NEET')}
+              >
+                NEET®
+              </button>
+              <button
+                className="test-btn"
+                onClick={() => handleTestClick('RBI Grade B')}
+              >
+                RBI Grade B®
+              </button>
+              <button
+                className="test-btn"
+                onClick={() => handleTestClick('CLAT')}
+              >
+                CLAT®
+              </button>
+              <button
+                className="test-btn"
+                onClick={() => handleTestClick('IBPS PO')}
+              >
+                IBPS PO®
+              </button>
             </div>
             <div className="additional-tests">
-              <button className="test-btn">AI Champ®</button>
-              <button className="test-btn">Data Scientist®</button>
-            </div>
-          </div>
-          <div className="hero-image">
-            <div className="student-image">
-              👩‍🎓 Student Success Image
+              <button
+                className="test-btn"
+                onClick={() => handleTestClick('AI Champ')}
+              >
+                AI Champ®
+              </button>
+              <button
+                className="test-btn"
+                onClick={() => handleTestClick('Data Scientist')}
+              >
+                Data Scientist®
+              </button>
             </div>
           </div>
         </div>
@@ -179,17 +245,21 @@ const LandingPage = ({ user, onExamSelect, onProfileClick, onLogout }) => {
       {/* SSC Section */}
       <section className="ssc-section">
         <div className="ssc-container">
-          <h2 className="ssc-title">Expert <span className="ssc-highlight">SSC</span> instruction at a fraction of the price</h2>
+          <h2 className="ssc-title">
+            Expert <span className="ssc-highlight">SSC</span> instruction at a fraction of the price
+          </h2>
           <button className="ssc-btn">check out our self-study plans</button>
         </div>
       </section>
 
       {/* Testimonial Section */}
-      <section className="testimonial">
+      <section className="testimonial" id="testimonials">
         <div className="testimonial-container">
           <div className="testimonial-avatar">👨‍🎓</div>
           <div className="testimonial-content">
-            <p className="testimonial-text">"StreakPeaked seemed to be by far the best option: a program that helped me become ruthless in questions solving. Started with streak score of 5, reached 55 in 15 days."</p>
+            <p className="testimonial-text">
+              "StreakPeaked seemed to be by far the best option: a program that helped me become ruthless in questions solving. Started with streak score of 5, reached 55 in 15 days."
+            </p>
             <p className="testimonial-author">Arav- Student Success Story</p>
           </div>
           <button className="testimonial-btn">student testimonials</button>
@@ -202,7 +272,9 @@ const LandingPage = ({ user, onExamSelect, onProfileClick, onLogout }) => {
           <div className="features-grid">
             <div className="feature-column">
               <h2>Web</h2>
-              <p style={{color: '#8B5FBF', fontSize: '1.1rem', marginBottom: '2rem'}}>Prep anytime from your desktop with our self-study platform</p>
+              <p style={{ color: '#3C2F7F', fontSize: '1.1rem', marginBottom: '2rem' }}>
+                Prep anytime from your desktop with our self-study platform
+              </p>
               <ul className="feature-list">
                 <li className="feature-item">
                   <div className="feature-icon">⏰</div>
@@ -224,7 +296,9 @@ const LandingPage = ({ user, onExamSelect, onProfileClick, onLogout }) => {
             </div>
             <div className="feature-column">
               <h2>Mobile</h2>
-              <p style={{color: '#8B5FBF', fontSize: '1.1rem', marginBottom: '2rem'}}>Study on-the-go with our free mobile apps</p>
+              <p style={{ color: '#3C2F7F', fontSize: '1.1rem', marginBottom: '2rem' }}>
+                Study on-the-go with our free mobile apps
+              </p>
               <ul className="feature-list">
                 <li className="feature-item">
                   <div className="feature-icon">📱</div>
@@ -270,14 +344,18 @@ const LandingPage = ({ user, onExamSelect, onProfileClick, onLogout }) => {
               <p className="resource-subtitle">Practice Test</p>
             </div>
           </div>
-          <p style={{color: '#333', fontSize: '1.1rem'}}>Friends, find out how StreakPeaked can help you become ruthless in conquring the exams and make it fun by competing with opponents!</p>
+          <p style={{ color: '#333', fontSize: '1.1rem' }}>
+            Friends, find out how StreakPeaked can help you become ruthless in conquering the exams and make it fun by competing with opponents!
+          </p>
         </div>
       </section>
 
       {/* Mission Section */}
       <section className="mission">
         <div className="mission-container">
-          <p className="mission-text">We believe in making our students aggressive and ruthless in exams preparation and defy all the odds.</p>
+          <p className="mission-text">
+            We believe in making our students aggressive and ruthless in exams preparation and defy all the odds.
+          </p>
           <button className="mission-btn">we're hiring!</button>
         </div>
       </section>
@@ -310,11 +388,8 @@ const LandingPage = ({ user, onExamSelect, onProfileClick, onLogout }) => {
             <ul>
               <li><a href="#">About</a></li>
               <li><a href="#">Mission</a></li>
-              {/* <li><a href="#">Press</a></li> */}
               <li><a href="#">Contact</a></li>
               <li><a href="#">Privacy Policy</a></li>
-              {/* <li><a href="#">Affiliates and Group Partners</a></li> */}
-              {/* <li><a href="#">Careers</a></li> */}
               <li><a href="#">Student Beans Discount!</a></li>
             </ul>
           </div>
@@ -328,9 +403,6 @@ const LandingPage = ({ user, onExamSelect, onProfileClick, onLogout }) => {
             </ul>
           </div>
           <div className="footer-section">
-            <div style={{background: '#10B981', padding: '2rem', borderRadius: '10px', textAlign: 'center', marginBottom: '2rem'}}>
-              <div style={{fontSize: '2rem', color: 'white', fontWeight: 'bold'}}>SP</div>
-            </div>
             <button className="mission-btn">meet our team</button>
           </div>
         </div>
