@@ -97,11 +97,11 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
   };
 
   const moveToNextQuestion = () => {
+    setIsAnswering(false);
+    setIsProcessingAnswer(false);
     if (currentQuestion < filteredQuestions.length - 1) {
       setCurrentQuestion(prev => prev + 1);
       setSelectedAnswer('');
-      setIsAnswering(false);
-      setIsProcessingAnswer(false);
       resetQuestionTimer();
     } else {
       endTest();
@@ -248,7 +248,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
 
   const toggleChat = () => setShowChat(prev => !prev);
 
-  return null; // Render tree preserved in canvas for editing
+  return null; // UI JSX is omitted for clarity
 };
 
 export default SSCCGLApp;
