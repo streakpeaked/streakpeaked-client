@@ -291,7 +291,8 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
         });
         
         // Update section scores
-        const difficultyLower = question.difficulty.toLowerCase();
+      if (question?.difficulty && question?.section) {
+        const difficultyLower = question?.difficulty?.toLowerCase() || 'easy'; // fallback to 'easy'
         setSectionScores(prev => ({
           ...prev,
           [question.section]: {
@@ -299,6 +300,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
             [difficultyLower]: prev[question.section][difficultyLower] + 1
           }
         }));
+      }
         
         // Move to next question after a short delay
         setTimeout(() => {
