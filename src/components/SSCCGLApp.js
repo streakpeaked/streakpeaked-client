@@ -189,15 +189,21 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
         
         // Check if there are more questions
         if (currentQuestion < filteredQuestions.length - 1) {
-          // Move to next question
+          // Move to next question - FIXED: Use functional update and reset states immediately
           console.log('Moving to question:', currentQuestion + 1);
-          setCurrentQuestion(prev => {
-            console.log('Setting current question from', prev, 'to', prev + 1);
-            return prev + 1;
-          });
-          setSelectedAnswer(''); // Clear selected answer
-          resetQuestionTimer();
+          
+          // Reset states first
+          setSelectedAnswer('');
           setIsAnswering(false);
+          resetQuestionTimer();
+          
+          // Then update current question
+          setCurrentQuestion(prevQuestion => {
+            const nextQuestion = prevQuestion + 1;
+            console.log('Setting current question from', prevQuestion, 'to', nextQuestion);
+            return nextQuestion;
+          });
+          
         } else {
           // All questions completed successfully
           console.log('All questions completed!');
@@ -403,6 +409,20 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
     );
   }
 
+  // Add safety check for current question
+  if (currentQuestion >= filteredQuestions.length) {
+    console.error('Current question index out of bounds:', currentQuestion, 'vs', filteredQuestions.length);
+    return (
+      <div className="ssc-cgl-app">
+        <div className="loading-container">
+          <p>Loading next question...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const currentQuestionData = filteredQuestions[currentQuestion];
+
   if (showResult) {
     return (
       <div className="ssc-cgl-app result-screen">
@@ -552,18 +572,18 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
             Question {currentQuestion + 1} of {filteredQuestions.length}
           </div>
           <div className="question-meta">
-            <span className="difficulty-tag">{filteredQuestions[currentQuestion]?.difficulty}</span>
-            <span className="section-tag">{filteredQuestions[currentQuestion]?.section}</span>
+            <span className="difficulty-tag">{currentQuestionData?.difficulty}</span>
+            <span className="section-tag">{currentQuestionData?.section}</span>
           </div>
         </div>
 
         <div className="question-content">
           <h2 className="question-text">
-            {filteredQuestions[currentQuestion]?.question}
+            {currentQuestionData?.question}
           </h2>
           
           <div className="answers-grid">
-            {filteredQuestions[currentQuestion]?.options?.map((option, index) => (
+            {currentQuestionData?.options?.map((option, index) => (
               <button
                 key={index}
                 className={`answer-btn ${selectedAnswer === option ? 'selected' : ''}`}
