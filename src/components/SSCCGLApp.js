@@ -91,6 +91,17 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
     return () => clearInterval(colorInterval);
   }, []);
 
+  // Monitor currentQuestion changes
+  useEffect(() => {
+    console.log('🔍 useEffect: currentQuestion changed to:', currentQuestion);
+    console.log('🔍 useEffect: filteredQuestions.length:', filteredQuestions.length);
+    console.log('🔍 useEffect: isAnswering:', isAnswering);
+    console.log('🔍 useEffect: selectedAnswer:', selectedAnswer);
+    if (filteredQuestions[currentQuestion]) {
+      console.log('🔍 useEffect: New question loaded:', filteredQuestions[currentQuestion].question);
+    }
+  }, [currentQuestion, filteredQuestions, isAnswering, selectedAnswer]);
+
   const filterQuestions = () => {
     if (!questions || questions.length === 0) {
       setFilteredQuestions([]);
@@ -138,40 +149,93 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
   };
 
   const handleAnswer = (answer) => {
-    if (isAnswering) return; // Prevent multiple clicks
+    if (isAnswering) {
+      console.log('Already answering, ignoring click');
+      return;
+    }
+    
+    console.log('=== HANDLE ANSWER CALLED ===');
+    console.log('Answer clicked:', answer);
+    console.log('Current question index:', currentQuestion);
+    console.log('Total questions:', filteredQuestions.length);
+    
     setIsAnswering(true);
     setSelectedAnswer(answer);
 
-    // Debug logging
-    console.log('=== ANSWER SELECTED ===');
-    console.log('Selected answer:', answer);
-    console.log('Current question:', filteredQuestions[currentQuestion]);
-    console.log('Correct answer:', filteredQuestions[currentQuestion]?.answer);
-
+    const question = filteredQuestions[currentQuestion];
+    console.log('Current question object:', question);
+    console.log('Question text:', question?.question);
+    console.log('Question options:', question?.options);
+    console.log('Question answer field:', question?.answer);
+    console.log('Question correct_answer field:', question?.correct_answer);
+    
+    // Try multiple possible answer fields
+    const correctAnswer = question?.answer || question?.correct_answer || question?.correctAnswer;
+    console.log('Determined correct answer:', correctAnswer);
+    
     // Small delay to show the selected answer
     setTimeout(() => {
       const timeForQuestion = questionTimer;
-      const question = filteredQuestions[currentQuestion];
       
       // Store the time taken for this question
       setQuestionTimes(prev => [...prev, timeForQuestion]);
       
-      // Check if answer is correct - using 'answer' key from JSON
-      // More robust comparison to handle case sensitivity and whitespace
-      const isCorrect = answer.trim().toLowerCase() === question.answer.trim().toLowerCase();
+      // Multiple ways to check if answer is correct
+      let isCorrect = false;
       
+      if (correctAnswer) {
+        // Method 1: Direct comparison
+        isCorrect = answer.trim().toLowerCase() === correctAnswer.trim().toLowerCase();
+        console.log('Method 1 (direct):', isCorrect);
+        
+        // Method 2: Check if the answer matches any option position
+        if (!isCorrect && question?.options) {
+          const answerIndex = question.options.findIndex(opt => opt.trim().toLowerCase() === answer.trim().toLowerCase());
+          console.log('Selected answer index:', answerIndex);
+          
+          // Check if correctAnswer is a letter (A, B, C, D)
+          if (correctAnswer.length === 1 && correctAnswer.match(/[A-D]/i)) {
+            const correctIndex = correctAnswer.toUpperCase().charCodeAt(0) - 65; // A=0, B=1, etc.
+            isCorrect = answerIndex === correctIndex;
+            console.log('Method 2 (letter index):', isCorrect, 'correctIndex:', correctIndex);
+          }
+          
+          // Check if correctAnswer is a number (1, 2, 3, 4)
+          if (!isCorrect && correctAnswer.match(/^[1-4]$/)) {
+            const correctIndex = parseInt(correctAnswer) - 1; // 1=0, 2=1, etc.
+            isCorrect = answerIndex === correctIndex;
+            console.log('Method 3 (number index):', isCorrect, 'correctIndex:', correctIndex);
+          }
+        }
+      }
+      
+      console.log('=== FINAL ANSWER CHECK ===');
+      console.log('Selected answer:', answer);
+      console.log('Correct answer:', correctAnswer);
       console.log('Is correct:', isCorrect);
-      console.log('Answer comparison:', {
-        selected: answer.trim().toLowerCase(),
-        correct: question.answer.trim().toLowerCase()
-      });
+      console.log('========================');
       
       // Always increment questions attempted
-      setQuestionsAttempted(prev => prev + 1);
+      setQuestionsAttempted(prev => {
+        const newAttempted = prev + 1;
+        console.log('Questions attempted updated to:', newAttempted);
+        return newAttempted;
+      });
 
       if (isCorrect) {
-        setStreak(prev => prev + 1);
-        setCorrectAnswers(prev => prev + 1);
+        console.log('✅ CORRECT ANSWER! Moving to next question...');
+        
+        setStreak(prev => {
+          const newStreak = prev + 1;
+          console.log('Streak updated to:', newStreak);
+          return newStreak;
+        });
+        
+        setCorrectAnswers(prev => {
+          const newCorrect = prev + 1;
+          console.log('Correct answers updated to:', newCorrect);
+          return newCorrect;
+        });
         
         // Update section scores
         const difficultyLower = question.difficulty.toLowerCase();
@@ -183,44 +247,40 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
           }
         }));
         
-        console.log('Moving to next question...');
-        console.log('Current question index:', currentQuestion);
-        console.log('Total questions:', filteredQuestions.length);
+        console.log('Current question index before update:', currentQuestion);
+        console.log('Total questions available:', filteredQuestions.length);
         
         // Check if there are more questions
         if (currentQuestion < filteredQuestions.length - 1) {
-          // Move to next question - FIXED: Use functional update and reset states immediately
-          console.log('Moving to question:', currentQuestion + 1);
+          console.log('📝 Moving to next question...');
           
-          // Reset states first
+          // Reset states and move to next question
           setSelectedAnswer('');
           setIsAnswering(false);
           resetQuestionTimer();
           
-          // Then update current question
+          // Force immediate state update
           setCurrentQuestion(prevQuestion => {
             const nextQuestion = prevQuestion + 1;
-            console.log('Setting current question from', prevQuestion, 'to', nextQuestion);
+            console.log('🔄 Question index updated from', prevQuestion, 'to', nextQuestion);
             return nextQuestion;
           });
           
         } else {
-          // All questions completed successfully
-          console.log('All questions completed!');
+          console.log('🎉 All questions completed!');
           stopAllTimers();
           setShowResult(true);
           playStreakMusic();
           saveScoreToFirebase();
         }
       } else {
-        // Wrong answer - end test immediately
-        console.log('Wrong answer - ending test');
+        console.log('❌ WRONG ANSWER! Ending test...');
         stopAllTimers();
         setShowResult(true);
         playStreakMusic();
         saveScoreToFirebase();
       }
-    }, 500); // 500ms delay to show selection
+    }, 500);
   };
 
   const playStreakMusic = () => {
