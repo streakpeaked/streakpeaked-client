@@ -154,21 +154,18 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
 
   const moveToNextQuestion = () => {
     console.log('📝 moveToNextQuestion called');
-    console.log('Current question before move:', currentQuestion);
-    console.log('Total questions:', filteredQuestions.length);
 
     if (currentQuestion < filteredQuestions.length - 1) {
-      // Reset everything first
-      setIsAnswering(false);
-      setIsProcessingAnswer(false);
-      setSelectedAnswer('');
+      setCurrentQuestion(prev => prev + 1);
       resetQuestionTimer();
 
-      // Delay moving to next question slightly to allow UI reset
+      // 🟢 Reset interaction flags AFTER advancing
       setTimeout(() => {
-        setCurrentQuestion(prev => prev + 1);
-        console.log('✅ Successfully moved to next question');
-      }, 50); // <- small delay helps ensure reset before state change
+        setSelectedAnswer('');
+        setIsAnswering(false);
+        setIsProcessingAnswer(false);
+        console.log('✅ Moved to next question');
+      }, 100); // Give time for render
     } else {
       console.log('🎉 No more questions, ending test');
       endTest();
@@ -243,7 +240,6 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
     
     // Set processing states
     setIsAnswering(true);
-    setIsProcessingAnswer(true);
     setSelectedAnswer(answer);
 
     const question = filteredQuestions[currentQuestion];
