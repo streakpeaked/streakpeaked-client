@@ -156,7 +156,13 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
     console.log('📝 moveToNextQuestion called');
 
     if (currentQuestion < filteredQuestions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
+      console.log("Next question preview:", filteredQuestions[currentQuestion + 1]);
+      setFilteredQuestions((prevQs) => {
+        const updated = [...prevQs]; // force re-reference
+        setCurrentQuestion(currentQuestion + 1);
+        return updated;
+      });
+
       resetQuestionTimer();
 
       // 🟢 Reset interaction flags AFTER advancing
