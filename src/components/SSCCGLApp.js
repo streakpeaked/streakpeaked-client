@@ -26,7 +26,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
   const [backgroundColorIndex, setBackgroundColorIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [questionTimes, setQuestionTimes] = useState([]);
-  const [isAnswering, setIsAnswering] = useState(false); // Add this to prevent multiple clicks
+  const [isAnswering, setIsAnswering] = useState(false);
   const timerRef = useRef(null);
   const totalTimerRef = useRef(null);
   const streakAudioRef = useRef(null);
@@ -46,6 +46,17 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
+  };
+
+  // Debug function to help troubleshoot
+  const debugCurrentQuestion = () => {
+    console.log('=== DEBUG INFO ===');
+    console.log('Current Question Index:', currentQuestion);
+    console.log('Total Filtered Questions:', filteredQuestions.length);
+    console.log('Current Question Object:', filteredQuestions[currentQuestion]);
+    console.log('Is Answering:', isAnswering);
+    console.log('Selected Answer:', selectedAnswer);
+    console.log('==================');
   };
 
   useEffect(() => {
@@ -100,7 +111,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
     const shuffledQuestions = shuffleArray(filtered);
     setFilteredQuestions(shuffledQuestions);
     setCurrentQuestion(0);
-    setSelectedAnswer(''); // Clear selected answer when filtering
+    setSelectedAnswer('');
     resetQuestionTimer();
   };
 
@@ -131,6 +142,12 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
     setIsAnswering(true);
     setSelectedAnswer(answer);
 
+    // Debug logging
+    console.log('=== ANSWER SELECTED ===');
+    console.log('Selected answer:', answer);
+    console.log('Current question:', filteredQuestions[currentQuestion]);
+    console.log('Correct answer:', filteredQuestions[currentQuestion]?.answer);
+
     // Small delay to show the selected answer
     setTimeout(() => {
       const timeForQuestion = questionTimer;
@@ -140,7 +157,17 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
       setQuestionTimes(prev => [...prev, timeForQuestion]);
       
       // Check if answer is correct - using 'answer' key from JSON
-      const isCorrect = answer === question.answer;
+      // More robust comparison to handle case sensitivity and whitespace
+      const isCorrect = answer.trim().toLowerCase() === question.answer.trim().toLowerCase();
+      
+      console.log('Is correct:', isCorrect);
+      console.log('Answer comparison:', {
+        selected: answer.trim().toLowerCase(),
+        correct: question.answer.trim().toLowerCase()
+      });
+      
+      // Always increment questions attempted
+      setQuestionsAttempted(prev => prev + 1);
 
       if (isCorrect) {
         setStreak(prev => prev + 1);
@@ -155,17 +182,25 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
             [difficultyLower]: prev[question.section][difficultyLower] + 1
           }
         }));
-
-        setQuestionsAttempted(prev => prev + 1);
         
-        // Move to next question
+        console.log('Moving to next question...');
+        console.log('Current question index:', currentQuestion);
+        console.log('Total questions:', filteredQuestions.length);
+        
+        // Check if there are more questions
         if (currentQuestion < filteredQuestions.length - 1) {
-          setCurrentQuestion(prev => prev + 1);
+          // Move to next question
+          console.log('Moving to question:', currentQuestion + 1);
+          setCurrentQuestion(prev => {
+            console.log('Setting current question from', prev, 'to', prev + 1);
+            return prev + 1;
+          });
           setSelectedAnswer(''); // Clear selected answer
           resetQuestionTimer();
           setIsAnswering(false);
         } else {
           // All questions completed successfully
+          console.log('All questions completed!');
           stopAllTimers();
           setShowResult(true);
           playStreakMusic();
@@ -173,7 +208,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
         }
       } else {
         // Wrong answer - end test immediately
-        setQuestionsAttempted(prev => prev + 1);
+        console.log('Wrong answer - ending test');
         stopAllTimers();
         setShowResult(true);
         playStreakMusic();
@@ -551,6 +586,25 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
           }}
         ></div>
       </div>
+
+      {/* Debug button - remove in production */}
+      <button 
+        onClick={debugCurrentQuestion}
+        style={{
+          position: 'fixed',
+          top: '10px',
+          right: '10px',
+          padding: '5px 10px',
+          backgroundColor: '#ff6b6b',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          zIndex: 1000
+        }}
+      >
+        Debug
+      </button>
 
       {showChat && (
         <div className="chat-overlay">
