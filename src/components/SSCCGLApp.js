@@ -27,6 +27,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [questionTimes, setQuestionTimes] = useState([]);
   const [isAnswering, setIsAnswering] = useState(false);
+  const [isProcessingAnswer, setIsProcessingAnswer] = useState(false);
   const timerRef = useRef(null);
   const totalTimerRef = useRef(null);
   const streakAudioRef = useRef(null);
@@ -55,6 +56,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
     console.log('Total Filtered Questions:', filteredQuestions.length);
     console.log('Current Question Object:', filteredQuestions[currentQuestion]);
     console.log('Is Answering:', isAnswering);
+    console.log('Is Processing Answer:', isProcessingAnswer);
     console.log('Selected Answer:', selectedAnswer);
     console.log('==================');
   };
@@ -123,6 +125,8 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
     setFilteredQuestions(shuffledQuestions);
     setCurrentQuestion(0);
     setSelectedAnswer('');
+    setIsAnswering(false);
+    setIsProcessingAnswer(false);
     resetQuestionTimer();
   };
 
@@ -148,9 +152,90 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
     }
   };
 
+  const moveToNextQuestion = () => {
+    console.log('📝 moveToNextQuestion called');
+    console.log('Current question before move:', currentQuestion);
+    console.log('Total questions:', filteredQuestions.length);
+    
+    if (currentQuestion < filteredQuestions.length - 1) {
+      const nextQuestionIndex = currentQuestion + 1;
+      console.log('Moving to question index:', nextQuestionIndex);
+      
+      // Reset all question-specific states
+      setSelectedAnswer('');
+      setIsAnswering(false);
+      setIsProcessingAnswer(false);
+      
+      // Move to next question
+      setCurrentQuestion(nextQuestionIndex);
+      
+      // Reset question timer
+      resetQuestionTimer();
+      
+      console.log('✅ Successfully moved to next question');
+    } else {
+      console.log('🎉 No more questions, ending test');
+      endTest();
+    }
+  };
+
+  const endTest = () => {
+    console.log('🏁 Ending test');
+    stopAllTimers();
+    setShowResult(true);
+    playStreakMusic();
+    saveScoreToFirebase();
+  };
+
+  const checkAnswer = (selectedAnswer, question) => {
+    console.log('🔍 checkAnswer called with:', { selectedAnswer, question });
+    
+    // Try multiple possible answer fields
+    const correctAnswer = question?.answer || question?.correct_answer || question?.correctAnswer;
+    console.log('Determined correct answer:', correctAnswer);
+    
+    if (!correctAnswer) {
+      console.log('❌ No correct answer found in question data');
+      return false;
+    }
+    
+    // Multiple ways to check if answer is correct
+    let isCorrect = false;
+    
+    // Method 1: Direct comparison
+    isCorrect = selectedAnswer.trim().toLowerCase() === correctAnswer.trim().toLowerCase();
+    console.log('Method 1 (direct comparison):', isCorrect);
+    
+    // Method 2: Check if the answer matches any option position
+    if (!isCorrect && question?.options) {
+      const answerIndex = question.options.findIndex(opt => 
+        opt.trim().toLowerCase() === selectedAnswer.trim().toLowerCase()
+      );
+      console.log('Selected answer index:', answerIndex);
+      
+      // Check if correctAnswer is a letter (A, B, C, D)
+      if (correctAnswer.length === 1 && correctAnswer.match(/[A-D]/i)) {
+        const correctIndex = correctAnswer.toUpperCase().charCodeAt(0) - 65; // A=0, B=1, etc.
+        isCorrect = answerIndex === correctIndex;
+        console.log('Method 2 (letter index):', isCorrect, 'correctIndex:', correctIndex);
+      }
+      
+      // Check if correctAnswer is a number (1, 2, 3, 4)
+      if (!isCorrect && correctAnswer.match(/^[1-4]$/)) {
+        const correctIndex = parseInt(correctAnswer) - 1; // 1=0, 2=1, etc.
+        isCorrect = answerIndex === correctIndex;
+        console.log('Method 3 (number index):', isCorrect, 'correctIndex:', correctIndex);
+      }
+    }
+    
+    console.log('🎯 Final answer check result:', isCorrect);
+    return isCorrect;
+  };
+
   const handleAnswer = (answer) => {
-    if (isAnswering) {
-      console.log('Already answering, ignoring click');
+    // Prevent multiple clicks
+    if (isAnswering || isProcessingAnswer) {
+      console.log('Already processing answer, ignoring click');
       return;
     }
     
@@ -159,19 +244,13 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
     console.log('Current question index:', currentQuestion);
     console.log('Total questions:', filteredQuestions.length);
     
+    // Set processing states
     setIsAnswering(true);
+    setIsProcessingAnswer(true);
     setSelectedAnswer(answer);
 
     const question = filteredQuestions[currentQuestion];
     console.log('Current question object:', question);
-    console.log('Question text:', question?.question);
-    console.log('Question options:', question?.options);
-    console.log('Question answer field:', question?.answer);
-    console.log('Question correct_answer field:', question?.correct_answer);
-    
-    // Try multiple possible answer fields
-    const correctAnswer = question?.answer || question?.correct_answer || question?.correctAnswer;
-    console.log('Determined correct answer:', correctAnswer);
     
     // Small delay to show the selected answer
     setTimeout(() => {
@@ -180,38 +259,11 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
       // Store the time taken for this question
       setQuestionTimes(prev => [...prev, timeForQuestion]);
       
-      // Multiple ways to check if answer is correct
-      let isCorrect = false;
+      // Check if answer is correct
+      const isCorrect = checkAnswer(answer, question);
       
-      if (correctAnswer) {
-        // Method 1: Direct comparison
-        isCorrect = answer.trim().toLowerCase() === correctAnswer.trim().toLowerCase();
-        console.log('Method 1 (direct):', isCorrect);
-        
-        // Method 2: Check if the answer matches any option position
-        if (!isCorrect && question?.options) {
-          const answerIndex = question.options.findIndex(opt => opt.trim().toLowerCase() === answer.trim().toLowerCase());
-          console.log('Selected answer index:', answerIndex);
-          
-          // Check if correctAnswer is a letter (A, B, C, D)
-          if (correctAnswer.length === 1 && correctAnswer.match(/[A-D]/i)) {
-            const correctIndex = correctAnswer.toUpperCase().charCodeAt(0) - 65; // A=0, B=1, etc.
-            isCorrect = answerIndex === correctIndex;
-            console.log('Method 2 (letter index):', isCorrect, 'correctIndex:', correctIndex);
-          }
-          
-          // Check if correctAnswer is a number (1, 2, 3, 4)
-          if (!isCorrect && correctAnswer.match(/^[1-4]$/)) {
-            const correctIndex = parseInt(correctAnswer) - 1; // 1=0, 2=1, etc.
-            isCorrect = answerIndex === correctIndex;
-            console.log('Method 3 (number index):', isCorrect, 'correctIndex:', correctIndex);
-          }
-        }
-      }
-      
-      console.log('=== FINAL ANSWER CHECK ===');
+      console.log('=== FINAL ANSWER RESULT ===');
       console.log('Selected answer:', answer);
-      console.log('Correct answer:', correctAnswer);
       console.log('Is correct:', isCorrect);
       console.log('========================');
       
@@ -223,14 +275,16 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
       });
 
       if (isCorrect) {
-        console.log('✅ CORRECT ANSWER! Moving to next question...');
+        console.log('✅ CORRECT ANSWER!');
         
+        // Update streak
         setStreak(prev => {
           const newStreak = prev + 1;
           console.log('Streak updated to:', newStreak);
           return newStreak;
         });
         
+        // Update correct answers
         setCorrectAnswers(prev => {
           const newCorrect = prev + 1;
           console.log('Correct answers updated to:', newCorrect);
@@ -247,38 +301,16 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
           }
         }));
         
-        console.log('Current question index before update:', currentQuestion);
-        console.log('Total questions available:', filteredQuestions.length);
+        // Move to next question after a short delay
+        setTimeout(() => {
+          moveToNextQuestion();
+        }, 1000);
         
-        // Check if there are more questions
-        if (currentQuestion < filteredQuestions.length - 1) {
-          console.log('📝 Moving to next question...');
-          
-          // Reset states and move to next question
-          setSelectedAnswer('');
-          setIsAnswering(false);
-          resetQuestionTimer();
-          
-          // Force immediate state update
-          setCurrentQuestion(prevQuestion => {
-            const nextQuestion = prevQuestion + 1;
-            console.log('🔄 Question index updated from', prevQuestion, 'to', nextQuestion);
-            return nextQuestion;
-          });
-          
-        } else {
-          console.log('🎉 All questions completed!');
-          stopAllTimers();
-          setShowResult(true);
-          playStreakMusic();
-          saveScoreToFirebase();
-        }
       } else {
         console.log('❌ WRONG ANSWER! Ending test...');
-        stopAllTimers();
-        setShowResult(true);
-        playStreakMusic();
-        saveScoreToFirebase();
+        setTimeout(() => {
+          endTest();
+        }, 1000);
       }
     }, 500);
   };
@@ -392,6 +424,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
     setCorrectAnswers(0);
     setQuestionTimes([]);
     setIsAnswering(false);
+    setIsProcessingAnswer(false);
     setSectionScores({
       'General Knowledge': { easy: 0, medium: 0, hard: 0 },
       'Mathematics': { easy: 0, medium: 0, hard: 0 },
@@ -605,7 +638,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
           <select 
             value={difficulty} 
             onChange={(e) => setDifficulty(e.target.value)}
-            disabled={isAnswering}
+            disabled={isAnswering || isProcessingAnswer}
           >
             {difficulties.map(diff => (
               <option key={diff} value={diff}>{diff}</option>
@@ -617,7 +650,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
           <select 
             value={section} 
             onChange={(e) => setSection(e.target.value)}
-            disabled={isAnswering}
+            disabled={isAnswering || isProcessingAnswer}
           >
             {sections.map(sec => (
               <option key={sec} value={sec}>{sec}</option>
@@ -646,9 +679,9 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
             {currentQuestionData?.options?.map((option, index) => (
               <button
                 key={index}
-                className={`answer-btn ${selectedAnswer === option ? 'selected' : ''}`}
+                className={`answer-btn ${selectedAnswer === option ? 'selected' : ''} ${isProcessingAnswer ? 'processing' : ''}`}
                 onClick={() => handleAnswer(option)}
-                disabled={isAnswering}
+                disabled={isAnswering || isProcessingAnswer}
               >
                 <span className="option-letter">{String.fromCharCode(65 + index)}</span>
                 <span className="option-text">{option}</span>
