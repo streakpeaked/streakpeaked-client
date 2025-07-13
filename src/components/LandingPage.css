@@ -42,13 +42,15 @@ body {
 .nav-section {
   display: flex;
   align-items: center;
-  width: 100%;
+  justify-content: flex-end; /* Push auth section to the right */
+  flex: 1; /* Take remaining space */
 }
 
 .nav-menu {
   display: flex;
   list-style: none;
   gap: 2rem;
+  margin-right: auto; /* Push nav menu to center area */
 }
 
 .nav-menu a {
@@ -347,7 +349,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* Testimonial Section */
+/* Testimonial Section - IMPROVED DESIGN */
 .testimonial {
   background: #FF7F32;
   padding: 4rem 0;
@@ -365,14 +367,29 @@ body {
 .testimonial-avatar {
   width: 100px;
   height: 100px;
-  background: #fff;
+  background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: #FF7F32;
   flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  border: 3px solid rgba(255,255,255,0.8);
+  position: relative;
+}
+
+.testimonial-avatar::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
+  border-radius: 50%;
+  z-index: -1;
 }
 
 .testimonial-content {
@@ -384,11 +401,24 @@ body {
   color: white;
   margin-bottom: 1rem;
   line-height: 1.6;
+  font-style: italic;
+  position: relative;
+}
+
+.testimonial-text::before {
+  content: '"';
+  font-size: 3rem;
+  color: rgba(255,255,255,0.3);
+  position: absolute;
+  left: -20px;
+  top: -10px;
+  font-family: serif;
 }
 
 .testimonial-author {
-  color: rgba(255,255,255,0.8);
-  font-style: italic;
+  color: rgba(255,255,255,0.9);
+  font-weight: 600;
+  font-size: 1.1rem;
 }
 
 .testimonial-btn {
@@ -401,10 +431,13 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   margin-left: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .testimonial-btn:hover {
   background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
 }
 
 /* Features Section */
@@ -512,10 +545,10 @@ body {
   color: rgba(255,255,255,0.9);
 }
 
-/* Mission Section */
+/* Mission Section - REDUCED HEIGHT */
 .mission {
   background: linear-gradient(135deg, #2C2361 0%, #3C2F7F 100%);
-  padding: 6rem 0;
+  padding: 3rem 0; /* Reduced from 6rem to 3rem */
   text-align: center;
 }
 
@@ -529,7 +562,7 @@ body {
   font-size: 1.8rem;
   color: white;
   line-height: 1.6;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem; /* Reduced from 3rem to 2rem */
 }
 
 .mission-btn {
@@ -553,12 +586,13 @@ body {
 .footer {
   background: #222;
   color: white;
-  padding: 2rem 0 2rem;
+  padding: 4rem 0 2rem;
 }
 
+/* Footer Top - REDUCED HEIGHT */
 .footer-top {
   background: #FF7F32;
-  padding: 2rem 0;
+  padding: 1.5rem 0; /* Reduced from 2rem to 1.5rem */
   text-align: center;
 }
 
@@ -617,10 +651,11 @@ body {
   bottom: 130%;
 }
 
+/* Footer Content - INCREASED TOP SPACING */
 .footer-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 2rem 2rem 0 2rem; /* Increased top padding from 0 to 2rem */
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 3rem;
@@ -630,6 +665,7 @@ body {
   color: #FF7F32;
   margin-bottom: 1rem;
   font-size: 1.2rem;
+  padding-top: 0.5rem; /* Added top padding for better spacing */
 }
 
 .footer-section ul {
@@ -657,11 +693,9 @@ body {
   margin-bottom: 1.2rem;
   text-align: left;
   letter-spacing: 0.5px;
-  /* Make it visually consistent with h3 */
-  padding-top: 0.2rem;
+  padding-top: 0.5rem; /* Added top padding for consistency */
   padding-bottom: 0.2rem;
   line-height: 1.2;
-  /* Center on mobile */
 }
 
 @media (max-width: 768px) {
@@ -704,6 +738,9 @@ body {
   .logo {
     margin-right: 1.5rem;
   }
+  .footer-content {
+    padding: 1.5rem 1rem 0 1rem; /* Adjusted for mobile */
+  }
 }
 
 @media (max-width: 768px) {
@@ -739,6 +776,7 @@ body {
   .footer-content {
     grid-template-columns: 1fr;
     gap: 2rem;
+    padding: 1.5rem 1rem 0 1rem; /* Adjusted for mobile */
   }
   .testimonial-container {
     flex-direction: column;
@@ -790,4 +828,3 @@ html {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-

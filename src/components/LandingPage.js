@@ -260,7 +260,7 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
       <section className="ssc-section">
         <div className="ssc-container">
           <h2 className="ssc-title">
-            Expert to share how to ruthlessly increase<span className="ssc-highlight">EXAM STREAK SCORES</span> and practical instructions at a fraction of the price
+            Expert to share how to ruthlessly increase<span className="ssc-highlight"> EXAM STREAK SCORES</span> and practical instructions at a fraction of the price
           </h2>
           <button className="ssc-btn">check out STREAK maximizer roadmap and connect to an expert</button>
         </div>
@@ -269,7 +269,9 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
       {/* Testimonial Section */}
       <section className="testimonial" id="testimonials">
         <div className="testimonial-container">
-          <div className="testimonial-avatar">👨‍🎓</div>
+          <div className="testimonial-avatar">
+            <div className="testimonial-icon">🎓</div>
+          </div>
           <div className="testimonial-content">
             <p className="testimonial-text">
               "StreakPeaked seemed to be by far the best option: a program that helped me become ruthless in questions solving. Started with streak score of 5, reached 55 in 15 days."
