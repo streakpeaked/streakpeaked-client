@@ -213,21 +213,21 @@ body {
 
 .hero-text h1 {
   font-size: 3.5rem;
-  color: rgb(2, 2, 2);
+  color: rgb(243, 100, 5);
   margin-bottom: 2rem;
-  line-height: 1.2;
+  line-height: 1;
 }
 
 .hero-text p {
-  font-size: 1.2rem;
-  color: rgba(248, 86, 11, 0.9);
+  font-size: 2rem;
+  color: #5f03f3e6;
   margin-bottom: 3rem;
 }
 
 /* Pill Buttons (like screenshot) */
 .pill-btn {
   background: #ffffff;
-  color: #444;
+  color: #444444;
   border: none;
   border-radius: 2rem;
   padding: 0.8rem 2.2rem;
