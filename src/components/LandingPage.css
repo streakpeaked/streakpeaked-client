@@ -36,7 +36,7 @@ body {
   font-weight: bold;
   color: #FF7F32;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-  margin-right: 2.5rem; /* Add gap between logo and nav-menu */
+  margin-right: 3rem; /* Add gap between logo and nav-menu */
 }
 
 .nav-section {
@@ -213,20 +213,20 @@ body {
 
 .hero-text h1 {
   font-size: 3.5rem;
-  color: white;
+  color: rgb(2, 2, 2);
   margin-bottom: 2rem;
   line-height: 1.2;
 }
 
 .hero-text p {
   font-size: 1.2rem;
-  color: rgba(255,255,255,0.9);
+  color: rgba(248, 86, 11, 0.9);
   margin-bottom: 3rem;
 }
 
 /* Pill Buttons (like screenshot) */
 .pill-btn {
-  background: #fff;
+  background: #ffffff;
   color: #444;
   border: none;
   border-radius: 2rem;
