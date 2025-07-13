@@ -177,7 +177,8 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
       <section className="hero hero-bg-wallpaper">
         <div className="hero-content hero-content-single">
           <div className="hero-text">
-            <h1>Take the fastest and sureshot method to conquer the exams by scoring bigger STREAKs and be RUTHLESS & AGGRESSIVE in your preparation </h1>
+            <h1>Crack Exams with Ruthless Streaks.Push yourself.
+               Compete Live. Dominate the Leaderboard. Test Yourself. </h1>
             <p>Login & Start with your test STREAK!</p>
             <div className="test-buttons">
               <button
