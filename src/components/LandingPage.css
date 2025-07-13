@@ -188,7 +188,7 @@ body {
 }
 
 .hero-bg-wallpaper {
-  background: linear-gradient(135deg, #2C2361 0%, #3C2F7F 100%), url('./images/background.jpg');
+  background: linear-gradient(135deg, #2C2361 0%, #3C2F7F 100%), url('./images/books.jpg');
   background-blend-mode: overlay;
   background-size: cover;
   background-position: center;
