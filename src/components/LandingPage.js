@@ -113,7 +113,7 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
   const handleTestClick = (testType) => {
     if (!user) {
       alert('Please login to access the test!');
-      return;
+     // return;
     }
     if (testType === 'SSC CGL') {
       onExamSelect && onExamSelect('ssc-cgl');
