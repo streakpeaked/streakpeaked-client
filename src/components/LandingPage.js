@@ -25,7 +25,7 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
     } catch (error) {
       alert('Google login failed');
     } finally {
-      setLoading(false);
+      setLoading(true);
     }
   };
 
@@ -177,8 +177,8 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
       <section className="hero hero-bg-wallpaper">
         <div className="hero-content hero-content-single">
           <div className="hero-text">
-            <h1>Crack Exams with Ruthless Streaks </h1>
-            <h1>Compete LIVE. Test Yourself. Dominate the Leaderboard </h1>            
+            <h1>Crack Exams with Ruthless STREAKs </h1>
+            <h1>Compete LIVE. Dominate the Leaderboard </h1>            
             <p>Login & Start with your test STREAK!</p>
             <div className="test-buttons">
               <button
