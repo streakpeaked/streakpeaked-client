@@ -28,7 +28,7 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
     } catch (error) {
       alert('Google login failed');
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   };
 
