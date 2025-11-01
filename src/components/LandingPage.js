@@ -3,6 +3,8 @@ import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../firebaseConfig'; // Adjust path as needed
 import './LandingPage.css';
 
+const [showModeModal, setShowModeModal] = useState(false); //Nov2
+
 const SOCIALS = [
   { icon: '📧', name: 'Email', link: '#' },
   { icon: '📘', name: 'Facebook', link: '#' },
@@ -116,7 +118,7 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
      // return;
     }
     if (testType === 'SSC CGL') {
-      onExamSelect && onExamSelect('ssc-cgl');
+      setShowModeModal(true);//Nov2
     } else {
       alert(`${testType} test is coming soon!`);
     }
@@ -431,6 +433,16 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
           </div>
         </div>
       </footer>
+      
+      {showModeModal && (
+        <ModeSelectModal
+          onClose={() => setShowModeModal(false)}
+          onSelectMode={(mode, timeLimit) => {
+            setShowModeModal(false);
+            onExamSelect('ssc-cgl', { mode, timeLimit });
+          }}
+        />
+      )}
     </div>
   );
 };

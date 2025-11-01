@@ -3,7 +3,7 @@ import './SSCCGLApp.css';
 import ChatSidebar from './ChatSidebar';
 import { saveUserScore } from '../firebaseConfig';
 
-const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
+const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimit = null })  => { //Nov2
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState('');
   const [showResult, setShowResult] = useState(false);
@@ -31,6 +31,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
   const timerRef = useRef(null);
   const totalTimerRef = useRef(null);
   const streakAudioRef = useRef(null);
+  const [timeLeft, setTimeLeft] = useState(timeLimit);//Nov2
 
   const backgroundColors = [
     '#e8f5e8', '#fff3e0', '#f3e5f5', '#e1f5fe', '#fff8e1'
@@ -66,6 +67,23 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
       filterQuestions();
     }
   }, [difficulty, section, questions]);
+
+  //Nov2
+  useEffect(() => {
+  if (mode === 'compete' && timeLeft !== null) {
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          endTest(); // auto-end when time runs out
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }
+}, [mode, timeLimit]);
 
   useEffect(() => {
     // Question timer - resets for each question
@@ -733,6 +751,12 @@ const SSCCGLApp = ({ user, onBackHome, questions = [] }) => {
           </div>
         </div>
       )}
+{/* Nov2 */}
+      {mode === 'compete' && (
+        <div className="compete-timer">
+          Time Left: {timeLeft}s
+        </div>
+      )}      
     </div>
   );
 };
