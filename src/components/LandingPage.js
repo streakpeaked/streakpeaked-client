@@ -19,18 +19,19 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
   const profileMenuRef = useRef(null);
   const [showModeModal, setShowModeModal] = useState(false); //Nov2
 
-  // Google login logic
-  const handleGoogleSignIn = async () => {
-    setLoading(true);
-    try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      alert('Google login failed');
-    } finally {
-      setLoading(false);
-    }
-  };
+// Google login logic
+const handleGoogleSignIn = async () => {
+  setLoading(true);
+  try {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+  } catch (error) {
+    console.error("Google login error:", error); // 👈 log full error
+    alert(`Google login failed: ${error.code} - ${error.message}`);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     // Smooth scrolling for navigation links
