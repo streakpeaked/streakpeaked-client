@@ -3,8 +3,6 @@ import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../firebaseConfig'; // Adjust path as needed
 import './LandingPage.css';
 
-const [showModeModal, setShowModeModal] = useState(false); //Nov2
-
 const SOCIALS = [
   { icon: '📧', name: 'Email', link: '#' },
   { icon: '📘', name: 'Facebook', link: '#' },
@@ -17,6 +15,7 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [loading, setLoading] = useState(false);
   const profileMenuRef = useRef(null);
+  const [showModeModal, setShowModeModal] = useState(false); //Nov2
 
   // Google login logic
   const handleGoogleSignIn = async () => {
@@ -433,7 +432,7 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
           </div>
         </div>
       </footer>
-      
+
       {showModeModal && (
         <ModeSelectModal
           onClose={() => setShowModeModal(false)}
