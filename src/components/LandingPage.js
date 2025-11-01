@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../firebaseConfig'; // Adjust path as needed
 import './LandingPage.css';
+import ModeSelectModal from './ModeSelectModal';//Nov2
+
 
 const SOCIALS = [
   { icon: '📧', name: 'Email', link: '#' },
