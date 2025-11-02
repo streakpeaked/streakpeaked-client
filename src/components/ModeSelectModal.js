@@ -3,7 +3,7 @@ import './ModeSelectModal.css';
 import MatchMaker from '../MatchMaking/MatchMaker';//matching
 import Players from '../MatchMaking/Players';//matching
 const user = new Players(user.uid, user.displayName, user.photoURL);//matching
-const matchId = await MatchMaker.joinQueue(user, timeLimit);//matching
+const matchId = await MatchMaker.joinQueue(user, 60);//matching
 
 
 const ModeSelectModal = ({ onClose, onSelectMode }) => {
