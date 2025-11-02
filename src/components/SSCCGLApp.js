@@ -28,14 +28,10 @@ const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimi
   const [questionTimes, setQuestionTimes] = useState([]);
   const [isAnswering, setIsAnswering] = useState(false);
   const [isProcessingAnswer, setIsProcessingAnswer] = useState(false);
-  const questionTimerRef = useRef(null);
+  const timerRef = useRef(null);
   const totalTimerRef = useRef(null);
-  const competeTimerRef = useRef(null);
   const streakAudioRef = useRef(null);
-
-  const [timeLeft, setTimeLeft] = useState(
-    typeof timeLimit === 'number' ? timeLimit : (timeLimit ? Number(timeLimit) : null)
-  );
+  const [timeLeft, setTimeLeft] = useState(timeLimit);//Nov2
 
   const backgroundColors = [
     '#e8f5e8', '#fff3e0', '#f3e5f5', '#e1f5fe', '#fff8e1'
@@ -74,71 +70,96 @@ const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimi
 
   //Nov2
   useEffect(() => {
-    // Clear any previous compete interval whenever mode/timeLimit changes
-    if (competeTimerRef.current) {
-      clearInterval(competeTimerRef.current);
-      competeTimerRef.current = null;
-    }
-
     if (mode === 'compete' && timeLimit !== null) {
-      const initial = typeof timeLimit === 'number' ? timeLimit : Number(timeLimit);
-      setTimeLeft(initial);
+      let timerId;
+      setTimeLeft(timeLimit); // ✅ reset once
 
-      // Start a single, dedicated interval for compete mode
-      competeTimerRef.current = setInterval(() => {
-        setTimeLeft(prev => {
-          if (prev === null) return null;
-          if (prev <= 1) {
-            clearInterval(competeTimerRef.current);
-            competeTimerRef.current = null;
-            endTest(); // end test at 0
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    } else {
-      // Not in compete mode: ensure countdown is off
-      setTimeLeft(null);
+      // Delay interval setup slightly to avoid race condition
+      timerId = setTimeout(() => {
+        const interval = setInterval(() => {
+          setTimeLeft(prev => {
+            if (prev <= 1) {
+              clearInterval(interval);
+              endTest();
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+
+        // Store interval ID for cleanup
+        timerRef.current = interval;
+      }, 50); // slight delay to ensure clean mount
+
+      return () => {
+        clearTimeout(timerId);
+        if (timerRef.current) clearInterval(timerRef.current);
+      };
     }
-
-    return () => {
-      if (competeTimerRef.current) {
-        clearInterval(competeTimerRef.current);
-        competeTimerRef.current = null;
-      }
-    };
   }, [mode, timeLimit]);
 
-  // ---- QUESTION + TOTAL TIMERS (replace your effect using timerRef/totalTimerRef with this) ----
+
+
   useEffect(() => {
-    // Question timer - increments every second
-    questionTimerRef.current = setInterval(() => {
+    // Question timer - resets for each question
+    timerRef.current = setInterval(() => {
       setQuestionTimer(prev => prev + 1);
     }, 1000);
 
-    // Total timer - increments every second
+    // Total timer - continuous
     totalTimerRef.current = setInterval(() => {
       setTotalTime(prev => prev + 1);
     }, 1000);
 
     return () => {
-      if (questionTimerRef.current) clearInterval(questionTimerRef.current);
+      if (timerRef.current) clearInterval(timerRef.current);
       if (totalTimerRef.current) clearInterval(totalTimerRef.current);
     };
   }, []);
 
-  // ---- COLOR ROTATION (optional cleanup for consistency) ----
-  const colorTimerRef = useRef(null);
   useEffect(() => {
-    colorTimerRef.current = setInterval(() => {
+    // Change background color every 10 seconds
+    const colorInterval = setInterval(() => {
       setBackgroundColorIndex(prev => (prev + 1) % backgroundColors.length);
     }, 10000);
 
-    return () => {
-      if (colorTimerRef.current) clearInterval(colorTimerRef.current);
-    };
+    return () => clearInterval(colorInterval);
   }, []);
+
+  // Monitor currentQuestion changes
+  useEffect(() => {
+    console.log('🔍 useEffect: currentQuestion changed to:', currentQuestion);
+    console.log('🔍 useEffect: filteredQuestions.length:', filteredQuestions.length);
+    console.log('🔍 useEffect: isAnswering:', isAnswering);
+    console.log('🔍 useEffect: selectedAnswer:', selectedAnswer);
+    if (filteredQuestions[currentQuestion]) {
+      console.log('🔍 useEffect: New question loaded:', filteredQuestions[currentQuestion].question);
+    }
+  }, [currentQuestion, filteredQuestions, isAnswering, selectedAnswer]);
+
+//Nov3 - to set up timers/state
+  useEffect(() => {
+    if (mode === "streak") {
+      setIsPlaying(true);
+    } else if (mode === "compete" && timeLimit) {
+      setTimeLeft(timeLimit);
+      setIsPlaying(true);
+
+      const timer = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            // end the test here
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [mode, timeLimit]);
+
 
   const filterQuestions = () => {
     if (!questions || questions.length === 0) {
