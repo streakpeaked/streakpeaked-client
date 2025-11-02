@@ -4,7 +4,6 @@ import { auth } from '../firebaseConfig'; // Adjust path as needed
 import './LandingPage.css';
 import ModeSelectModal from './ModeSelectModal';//Nov2
 
-
 const SOCIALS = [
   { icon: '📧', name: 'Email', link: '#' },
   { icon: '📘', name: 'Facebook', link: '#' },
@@ -18,6 +17,8 @@ const LandingPage = ({ user, onLogout, onExamSelect, onProfileClick }) => {
   const [loading, setLoading] = useState(false);
   const profileMenuRef = useRef(null);
   const [showModeModal, setShowModeModal] = useState(false); //Nov2
+  const [selectedMode, setSelectedMode] = useState(null);
+
 
 // Google login logic
 const handleGoogleSignIn = async () => {
