@@ -656,9 +656,10 @@ const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimi
           🏠 Back to Home
         </button>
         <h1 className="app-title">SSC CGL Streak Test</h1>
+        {/*}
         <button className="chat-toggle-btn" onClick={toggleChat}>
-          💬 {showChat ? 'Hide Chat' : 'Live Chat'}
-        </button>
+          💬 {showChat ? 'Hide Chat' : 'Live Chat'
+        </button> */} //Nov3
       </div>
 
       <div className="test-info">
@@ -666,15 +667,25 @@ const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimi
           <div className="timer-label">Question Timer</div>
           <div className="timer-value">{formatTime(questionTimer)}</div>
         </div>
-        <div className="total-timer-display">
-          <div className="timer-label">Total Time</div>
-          <div className="timer-value">{formatTime(totalTime)}</div>
-        </div>
+
+        {mode === 'compete' ? (
+          <div className="compete-timer">
+            <div className="timer-label">Time Left</div>
+            <div className="timer-value">{timeLeft}s</div>
+          </div>
+        ) : (
+          <div className="total-timer-display">
+            <div className="timer-label">Total Time</div>
+            <div className="timer-value">{formatTime(totalTime)}</div>
+          </div>
+        )}
+
         <div className="streak-display-small">
           <div className="streak-label">Current Streak</div>
           <div className="streak-value">{streak}</div>
         </div>
       </div>
+
 
       <div className="filters-section">
         <div className="filter-group">
