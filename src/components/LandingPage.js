@@ -450,4 +450,4 @@ const handleGoogleSignIn = async () => {
   );
 };
 
-export default LandingPage;
+export default LandingPage; 
