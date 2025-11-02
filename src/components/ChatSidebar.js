@@ -509,7 +509,12 @@ const ChatSidebar = ({ user, onClose }) => {
             type="text"
             value={newMessage}
             onChange={handleMessageChange}
-            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                sendMessage(); 
+              }
+            }}
             placeholder="Type your message..."
             className="message-input"
           />

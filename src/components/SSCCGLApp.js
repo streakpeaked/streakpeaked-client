@@ -69,22 +69,31 @@ const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimi
   }, [difficulty, section, questions]);
 
   //Nov2
+  // ✅ Set timeLeft once when mode/timeLimit changes
   useEffect(() => {
     if (mode === 'compete' && timeLimit !== null) {
-      setTimeLeft(timeLimit); // reset timer on mount
+      setTimeLeft(timeLimit); // clean reset
+    }
+  }, [mode, timeLimit]);
+
+  // ✅ Countdown timer — runs only once per mount
+  useEffect(() => {
+    if (mode === 'compete' && timeLeft !== null) {
       const timer = setInterval(() => {
         setTimeLeft(prev => {
           if (prev <= 1) {
             clearInterval(timer);
-            endTest(); // ✅ ends only for 1-min/2-min modes
+            endTest(); // ends only for 1-min/2-min modes
             return 0;
           }
           return prev - 1;
         });
       }, 1000);
+
       return () => clearInterval(timer);
     }
-  }, [mode, timeLimit]);
+  }, [mode, timeLeft]);
+
 
   useEffect(() => {
     // Question timer - resets for each question
