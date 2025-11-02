@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from './firebaseConfig';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import SSCCGLApp from './components/SSCCGLApp';
 import ChatSidebar from './components/ChatSidebar';
@@ -11,7 +12,6 @@ import './App.css';
 
 function App() {
   const [user, setUser] = useState(null);
-  const [currentPage, setCurrentPage] = useState('home');
   const [chatOpen, setChatOpen] = useState(false);
   const [userScores, setUserScores] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -62,62 +62,10 @@ function App() {
     try {
       await signOut(auth);
       setUser(null);
-      setCurrentPage('home');
       setChatOpen(false);
     } catch (error) {
       console.error('Error signing out:', error);
       setError('Failed to sign out');
-    }
-  };
-
-  const renderCurrentPage = () => {
-    try {
-      switch (currentPage) {
-        case 'ssc-cgl':
-          return (
-            <SSCCGLApp
-              user={user}
-              onBackHome={() => setCurrentPage('home')}
-              onScoreSubmit={saveUserScore}
-              questions={questionsData}
-            />
-          );
-        case 'profile':
-          return (
-            <UserProfile
-              user={user}
-              onBackHome={() => setCurrentPage('home')}
-              onViewPerformance={() => setCurrentPage('performance')}
-            />
-          );
-        case 'performance':
-          return (
-            <PerformanceTracker
-              user={user}
-              scores={userScores}
-              onBackHome={() => setCurrentPage('home')}
-              onBackProfile={() => setCurrentPage('profile')}
-            />
-          );
-        default:
-          return (
-            <LandingPage
-              user={user}
-              onExamSelect={(exam) => setCurrentPage(exam)}
-              onProfileClick={() => setCurrentPage('profile')}
-              onLogout={handleLogout}
-            />
-          );
-      }
-    } catch (error) {
-      console.error('Error rendering page:', error);
-      return (
-        <div className="error-container">
-          <h2>Something went wrong</h2>
-          <p>{error?.message || 'An unexpected error occurred'}</p>
-          <button onClick={() => setCurrentPage('home')}>Go Home</button>
-        </div>
-      );
     }
   };
 
@@ -140,16 +88,62 @@ function App() {
   }
 
   return (
-    <div className="App">
-      {renderCurrentPage()}
-      {user && currentPage !== 'home' && (
-        <ChatSidebar
-          isOpen={chatOpen}
-          onToggle={() => setChatOpen(!chatOpen)}
-          user={user}
-        />
-      )}
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <LandingPage
+                user={user}
+                onProfileClick={() => {}}
+                onLogout={handleLogout}
+              />
+            }
+          />
+          <Route
+            path="/ssc-cgl"
+            element={
+              <SSCCGLApp
+                user={user}
+                onBackHome={() => window.location.href = '/'}
+                onScoreSubmit={saveUserScore}
+                questions={questionsData}
+              />
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <UserProfile
+                user={user}
+                onBackHome={() => window.location.href = '/'}
+                onViewPerformance={() => window.location.href = '/performance'}
+              />
+            }
+          />
+          <Route
+            path="/performance"
+            element={
+              <PerformanceTracker
+                user={user}
+                scores={userScores}
+                onBackHome={() => window.location.href = '/'}
+                onBackProfile={() => window.location.href = '/profile'}
+              />
+            }
+          />
+        </Routes>
+
+        {user && (
+          <ChatSidebar
+            isOpen={chatOpen}
+            onToggle={() => setChatOpen(!chatOpen)}
+            user={user}
+          />
+        )}
+      </div>
+    </Router>
   );
 }
 
