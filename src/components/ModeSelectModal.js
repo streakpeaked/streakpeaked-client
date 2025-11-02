@@ -1,5 +1,10 @@
 import React from 'react';
 import './ModeSelectModal.css';
+import MatchMaker from '../MatchMaking/MatchMaker';//matching
+import Player from '../MatchMaking/Players';//matching
+const player = new Player(user.uid, user.displayName, user.photoURL);//matching
+const matchId = await MatchMaker.joinQueue(player, timeLimit);//matching
+
 
 const ModeSelectModal = ({ onClose, onSelectMode }) => {
   return (

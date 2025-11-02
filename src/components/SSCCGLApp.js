@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import './SSCCGLApp.css';
 import ChatSidebar from './ChatSidebar';
 import { saveUserScore } from '../firebaseConfig';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';//matching
+import { db } from '../firebaseConfig';//matching
 
 const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimit = null })  => { //Nov2
   const [currentQuestion, setCurrentQuestion] = useState(0);
