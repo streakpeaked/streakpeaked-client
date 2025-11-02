@@ -70,20 +70,21 @@ const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimi
 
   //Nov2
   useEffect(() => {
-  if (mode === 'compete' && timeLeft !== null) {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          endTest(); // auto-end when time runs out
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }
-}, [mode, timeLimit]);
+    if (mode === 'compete' && timeLimit !== null) {
+      setTimeLeft(timeLimit); // reset timer on mount
+      const timer = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            endTest(); // ✅ ends only for 1-min/2-min modes
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [mode, timeLimit]);
 
   useEffect(() => {
     // Question timer - resets for each question
@@ -508,7 +509,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimi
     return (
       <div className="ssc-cgl-app">
         <div className="app-header">
-          <button className="back-home-btn" onClick={onBackHome}>
+          <button className="back-home-btn" onClick={() => {stopStreakMusic(); onBackHome();}}>
             🏠 Back to Home
           </button>
           <h1 className="app-title">SSC CGL Streak Test</h1>
@@ -563,7 +564,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimi
     return (
       <div className="ssc-cgl-app result-screen">
         <div className="result-header">
-          <button className="back-home-btn" onClick={onBackHome}>
+          <button className="back-home-btn" onClick={() => {stopStreakMusic(); onBackHome();}}>
             🏠 Back to Home
           </button>
           <h1 className="result-title">Test Results</h1>
@@ -630,10 +631,10 @@ const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimi
           </div>
 
           <div className="result-actions">
-            <button className="restart-btn" onClick={restartTest}>
+            <button className="restart-btn" onClick={() => {stopStreakMusic(); restartTest();}}>
               🔄 Take Test Again
             </button>
-            <button className="home-btn" onClick={onBackHome}>
+            <button className="home-btn" onClick={() => {stopStreakMusic(); onBackHome();}}>
               🏠 Back to Home
             </button>
             <button className="music-btn" onClick={isPlaying ? stopStreakMusic : playStreakMusic}>
@@ -651,7 +652,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimi
       style={{ backgroundColor: backgroundColors[backgroundColorIndex] }}
     >
       <div className="app-header">
-        <button className="back-home-btn" onClick={onBackHome}>
+        <button className="back-home-btn" onClick={() => {stopStreakMusic(); onBackHome();}}>
           🏠 Back to Home
         </button>
         <h1 className="app-title">SSC CGL Streak Test</h1>
