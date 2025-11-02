@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './SSCCGLApp.css';
 import ChatSidebar from './ChatSidebar';
 import { saveUserScore } from '../firebaseConfig';
+import { useLocation } from "react-router-dom";
 
 const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimit = null })  => { //Nov2
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -32,6 +33,16 @@ const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimi
   const totalTimerRef = useRef(null);
   const streakAudioRef = useRef(null);
   const [timeLeft, setTimeLeft] = useState(timeLimit);//Nov2
+
+//Nov3 - code to read mode and time from URL
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const queryMode = queryParams.get("mode");   // "streak" or "compete"
+  const queryTime = queryParams.get("time");   // "60", "120", or null
+
+  //Nov3 - Override props with query params if present
+  const effectiveMode = queryMode || mode;
+  const effectiveTimeLimit = queryTime ? parseInt(queryTime, 10) : timeLimit;
 
   const backgroundColors = [
     '#e8f5e8', '#fff3e0', '#f3e5f5', '#e1f5fe', '#fff8e1'
@@ -121,6 +132,23 @@ const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimi
       console.log('🔍 useEffect: New question loaded:', filteredQuestions[currentQuestion].question);
     }
   }, [currentQuestion, filteredQuestions, isAnswering, selectedAnswer]);
+
+//Nov3 - to set up timers/state
+  useEffect(() => {
+    if (effectiveMode === "streak") {
+      // initialize streak flow
+      setIsPlaying(true);
+    } else if (effectiveMode === "compete" && effectiveTimeLimit === 60) {
+      // initialize 1-minute flow
+      setTimeLeft(60);
+      setIsPlaying(true);
+    } else if (effectiveMode === "compete" && effectiveTimeLimit === 120) {
+      // initialize 2-minute flow
+      setTimeLeft(120);
+      setIsPlaying(true);
+    }
+  }, [effectiveMode, effectiveTimeLimit]);
+
 
   const filterQuestions = () => {
     if (!questions || questions.length === 0) {
@@ -751,10 +779,17 @@ const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimi
           </div>
         </div>
       )}
-{/* Nov2 */}
-      {mode === 'compete' && (
+      {/* Nov2 */}
+      {effectiveMode === 'compete' && (
         <div className="compete-timer">
-          Time Left: {timeLeft}s
+          {effectiveTimeLimit === 60 && <div>1‑Minute Match — Time Left: {timeLeft}s</div>}
+          {effectiveTimeLimit === 120 && <div>2‑Minute Match — Time Left: {timeLeft}s</div>}
+        </div>
+      )}
+
+      {effectiveMode === 'streak' && (
+        <div className="streak-banner">
+          Streak Mode Active — Current Streak: {streak}
         </div>
       )}      
     </div>
