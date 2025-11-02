@@ -790,7 +790,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimi
         Debug
       </button>
 
-      {showChat && (
+      {/* {showChat && (
         <div className="chat-overlay">
           <div className="chat-container">
             <div className="chat-header">
@@ -802,7 +802,7 @@ const SSCCGLApp = ({ user, onBackHome, questions = [], mode = 'streak', timeLimi
             <ChatSidebar user={user} />
           </div>
         </div>
-      )}
+      )} */}
       /* Nov3 */
       {mode === 'compete' && (
         <div className="compete-timer">
